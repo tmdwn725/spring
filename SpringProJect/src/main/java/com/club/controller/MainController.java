@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 	@GetMapping("/main")
-	public String main(Model model) {
-		
+	public String main(Model model) {		
 		//System.out.println(memberList.size());
 		return "main";
 	}
