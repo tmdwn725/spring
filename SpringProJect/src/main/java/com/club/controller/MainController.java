@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 	@GetMapping("/main")
 	public String main(Model model) {
-		
+		// 젠킨스 테스트 좀
 		//System.out.println(memberList.size());
 		return "main";
 	}
