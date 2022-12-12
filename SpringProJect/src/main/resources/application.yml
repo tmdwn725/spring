@@ -6,6 +6,12 @@ spring:
   url: jdbc:mariadb://3.112.33.192:3306/CLUB?useUnicode=true&characterEncoding=utf-8
   username: root
   password: 1234
+
+  devtools:
+   livereload:
+    enabled: true
  jpa:
   show:
     sql: true
+  hibernate:
+   ddl-auto: create-drop
