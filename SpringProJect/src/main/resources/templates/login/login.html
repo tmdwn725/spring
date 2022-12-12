@@ -1,8 +1,12 @@
 <!DOCTYPE html>
- <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
- <head th:fragment="head(title)">
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/bootstrap/js/bootstrap.min.js}" rel="stylesheet" />
 </head>
 <body>
  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
