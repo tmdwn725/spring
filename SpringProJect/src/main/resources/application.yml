@@ -14,7 +14,6 @@ spring:
   hibernate:
    ddl-auto: create-drop
  thymeleaf:
-  prefix: class:path:templates/
   cache: false
  
  
