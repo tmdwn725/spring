@@ -1,41 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:fragment="head(title)">
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/bootstrap/js/bootstrap.min.js}" rel="stylesheet" />
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/header :: headFragment">
 </head>
-<body>
- <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
-          <a class="navbar-brand" href="#">Spring boot Service</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
+<link th:href="@{/css/login.css}" rel="stylesheet" />
+<body class="text-center">
+<main class="form-signin">
+    <form action="login.jsp" method="post">
+        <img class="mb-4" th:src="@{/images/bootstrap-logo.svg}" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">로그인 페이지</h1>
 
-          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-              <ul class="navbar-nav mr-auto">
-                  <li class="nav-item" th:classappend="${menu} == 'home'? 'active'">
-                      <a class="nav-link" href="#" th:href="@{/}">홈 <span class="sr-only"
-                              th:if="${menu} == 'home'">(current)</span></a>
-                  </li>
-                  <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
-                      <a class="nav-link" href="#" th:href="@{/board/list}">게시판 <span class="sr-only"
-                              th:if="${menu} == 'board'">(current)</span></a>
-                  </li>
-              </ul>
-              <a class="btn btn-secondary mr-2 my-2 my-sm-0" th:href="@{/account/register}" sec:authorize="!isAuthenticated()">register</a>
-              <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/account/login}" sec:authorize="!isAuthenticated()">login</a> <!-- 로그인이 안된 경우  -->
+        <div class="form-floating">
+            <input type="text" class="form-control" id="id" placeholder="아이디 입력...">
+            <label for="id">아이디</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="pwd" placeholder="Password">
+            <label for="pwd">비밀번호</label>
+        </div>
 
-              <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                  <span class="text-white mr-2 mx-2" sec:authentication="name">사용자</span>
-                  <span class="text-white mr-2 mx-2" sec:authentication="principal.authorities">권한</span>
-                  <button class="btn btn-secondary my-2 my-sm-0" type="submit">logout</button>
-              </form>
-          </div>
-      </nav>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> 아이디 저장
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    </form>
+</main>
 </body>
 </html>
