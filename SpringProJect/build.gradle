@@ -8,6 +8,10 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+bootJar {
+	mainClass = 'org.springframework.boot.SpringApplication'
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
