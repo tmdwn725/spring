@@ -1,6 +1,5 @@
 package com.example.demo.club.dto;
 
-
 public class UserDTO {
 	private long  id;
 	private String pw;
