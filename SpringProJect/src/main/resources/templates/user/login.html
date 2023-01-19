@@ -5,18 +5,19 @@
 <link th:href="@{/css/login.css}" rel="stylesheet" />
 <body class="text-center">
 <main class="form-signin">
-    <form action="login.jsp" method="post">
+    <form action="/login" method="post">
         <img class="mb-4" th:src="@{/images/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인 페이지</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="id" placeholder="아이디 입력...">
+            <input type="text" class="form-control" name="userId" placeholder="ID">
             <label for="id">아이디</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="pwd" placeholder="Password">
+            <input type="password" class="form-control" name="userPassword" placeholder="Password">
             <label for="pwd">비밀번호</label>
         </div>
+        <input type="hidden" th:name="test" th:value="${user_id}"/>
 
         <div class="checkbox mb-3">
             <label>
@@ -24,7 +25,7 @@
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+
     </form>
 </main>
 </body>

@@ -27,6 +27,8 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
 }
 
 tasks.named('test') {

@@ -3,7 +3,7 @@ server:
 spring:
  datasource:
   driverClassName: org.mariadb.jdbc.Driver
-  url: jdbc:mariadb://43.206.122.133:3306/CLUB?useUnicode=true&characterEncoding=utf-8
+  url: jdbc:mariadb://3.112.49.158:3306/CLUB?useUnicode=true&characterEncoding=utf-8
   username: root
   password: 1234
  devtools:
@@ -12,9 +12,11 @@ spring:
  jpa:
   show-sql: true
   hibernate:
+#   ddl-auto: update
    ddl-auto: create-drop
  thymeleaf:
   cache: false
-
+jwt:
+ secretKey: "test123"
 
 
