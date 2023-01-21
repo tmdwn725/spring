@@ -19,8 +19,6 @@ spring:
   suffix: .html
   cache: false
   check-template-location: true
- pid:
-  file: boot.pid
 jwt:
  secretKey: "test123"
 

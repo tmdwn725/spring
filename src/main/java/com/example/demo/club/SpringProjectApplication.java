@@ -10,9 +10,7 @@ import org.springframework.context.ApplicationContext;
 public class SpringProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication application = new SpringApplication(SpringProjectApplication.class);
-	    application.addListeners(new ApplicationPidFileWriter());
-	    application.run(args);
+		SpringApplication.run(SpringProjectApplication.class, args);
 	}
 
 }
