@@ -14,6 +14,10 @@ public class MemberService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    public MemberService(UserRepository userRepository) {
+    	this.userRepository = userRepository;
+    }
 
     public String createMember(MEMBER member) {
         member = userRepository.save(member);
