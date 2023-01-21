@@ -15,7 +15,10 @@ spring:
 #   ddl-auto: update
    ddl-auto: create-drop
  thymeleaf:
+  prefix: classpath:templates/
+  suffix: .html
   cache: false
+  check-template-location: true
 jwt:
  secretKey: "test123"
 
