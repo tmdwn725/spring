@@ -2,15 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
-<!-- <head th:replace="/common/header :: headFragment">
-</head> -->
-<!-- <link th:href="@{/css/login.css}" rel="stylesheet" /> -->
+<head th:replace="common/header :: headFragment">
+</head>
+<link th:href="@{css/login.css}" rel="stylesheet" />
 <body class="text-center">
 <main class="form-signin">
-로그인
-    <!--  <form action="/login" method="post">
-    	
-       <img class="mb-4" th:src="@{/images/bootstrap-logo.svg}" alt="" width="72" height="57">
+	<form action="login" method="post">
+       <img class="mb-4" th:src="@{images/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인 페이지</h1>
 
         <div class="form-floating">
@@ -29,8 +27,7 @@
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button> 
-
-    </form>-->
+    </form>
 </main>
 </body>
 </html>
