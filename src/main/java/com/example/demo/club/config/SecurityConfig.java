@@ -46,8 +46,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         http.formLogin()
             .loginPage("/login")
-                .usernameParameter("userId")
-                .passwordParameter("userPassword")
+                .usernameParameter("memberId")
+                .passwordParameter("password")
                 .permitAll()
                 .successHandler(authenticationSuccessHandler())
                 .and()

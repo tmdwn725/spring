@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class MemberDTO {
 
-	private long id;
-	private String userId;
-	private String userPassword;
+	private long memberSeq;
+	private String memberId;
+	private String password;
 	private Role role;
 
 }

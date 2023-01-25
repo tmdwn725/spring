@@ -17,17 +17,17 @@ public class MemberService implements UserDetailsService {
 
     public String createMember(MEMBER member) {
         member = userRepository.save(member);
-        return member.getUserId();
+        return member.getMemberId();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MEMBER member = userRepository.findByUserId(username)
+        MEMBER member = userRepository.findByMemberId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
 
         return User.builder()
-                .username(member.getUserId())
-                .password(getEncodedPassword(member.getUserPassword()))
+                .username(member.getMemberId())
+                .password(getEncodedPassword(member.getPassword()))
                 .roles("USER")
                 .build();
     }

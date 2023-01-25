@@ -12,8 +12,8 @@ spring:
  jpa:
   show-sql: true
   hibernate:
-#   ddl-auto: update
-   ddl-auto: create-drop
+   ddl-auto: update
+#   ddl-auto: create-drop
  thymeleaf:
   prefix: classpath:templates/
   suffix: .html

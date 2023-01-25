@@ -17,7 +17,7 @@ public class LoginService {
     private UserRepository userRepository;
 
     public Optional<MEMBER> findUser(MemberDTO memberDTO){
-        Optional<MEMBER> user = userRepository.findByUserId(memberDTO.getUserId());
+        Optional<MEMBER> user = userRepository.findByMemberId(memberDTO.getMemberId());
         return user;
     }
 }

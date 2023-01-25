@@ -12,11 +12,11 @@ import javax.persistence.*;
 public class MEMBER {
 
     @Id
-    @Column(name ="id")
+    @Column(name ="member_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String userId;
-    private String userPassword;
+    private Long memberSeq;
+    private String memberId;
+    private String password;
     private String authority;
     private Role role;
 
