@@ -3,9 +3,9 @@ server:
 spring:
  datasource:
   driverClassName: org.mariadb.jdbc.Driver
-  url: jdbc:mariadb://3.112.49.158:3306/CLUB?useUnicode=true&characterEncoding=utf-8
+  url: jdbc:mariadb://3.112.49.158:3306/club?useUnicode=true&characterEncoding=utf-8
   username: root
-  password: 1234
+  password: root
  devtools:
    livereload:
     enabled: true
