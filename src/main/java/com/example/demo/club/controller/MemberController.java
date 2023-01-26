@@ -21,7 +21,7 @@ public class MemberController {
         model.addAttribute("hello", "hi");
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
 
-        return "main";
+        return "main/main";
     }
 
 }
