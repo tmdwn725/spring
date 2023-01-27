@@ -1,6 +1,6 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.domain.MEMBER;
+import com.example.demo.club.domain.member;
 import com.example.demo.club.service.LoginService;
 import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class LoginController {
 
 	@RequestMapping("/join")
 	@ResponseBody
-	public void join(MEMBER member) {
+	public void join(member member) {
 		memberService.createMember(member);
 	}
 

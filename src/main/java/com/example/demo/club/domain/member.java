@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "member")
 @NoArgsConstructor
-public class MEMBER {
+public class member {
 
     @Id
     @Column(name ="member_seq")

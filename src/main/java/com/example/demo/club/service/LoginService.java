@@ -1,6 +1,6 @@
 package com.example.demo.club.service;
 
-import com.example.demo.club.domain.MEMBER;
+import com.example.demo.club.domain.member;
 import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,8 @@ public class LoginService {
 	@Autowired
     private UserRepository userRepository;
 
-    public Optional<MEMBER> findUser(MemberDTO memberDTO){
-        Optional<MEMBER> user = userRepository.findByMemberId(memberDTO.getMemberId());
+    public Optional<member> findUser(MemberDTO memberDTO){
+        Optional<member> user = userRepository.findByMemberId(memberDTO.getMemberId());
         return user;
     }
 }

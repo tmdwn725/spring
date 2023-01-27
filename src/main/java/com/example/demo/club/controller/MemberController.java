@@ -1,5 +1,6 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,13 +15,14 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private ClubService clubService;
 
     @GetMapping("/main")
     public String main(Model model) {
-
-        model.addAttribute("hello", "hi");
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
-
+        model.addAttribute("clubList",clubService.selectClubList());
         return "main/main";
     }
 

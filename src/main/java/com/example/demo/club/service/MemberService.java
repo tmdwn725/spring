@@ -1,6 +1,6 @@
 package com.example.demo.club.service;
 
-import com.example.demo.club.domain.MEMBER;
+import com.example.demo.club.domain.member;
 import com.example.demo.club.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -15,14 +15,14 @@ public class MemberService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public String createMember(MEMBER member) {
+    public String createMember(member member) {
         member = userRepository.save(member);
         return member.getMemberId();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MEMBER member = userRepository.findByMemberId(username)
+        member member = userRepository.findByMemberId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
 
         return User.builder()
