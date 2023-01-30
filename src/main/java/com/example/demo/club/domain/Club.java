@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "club")
 @NoArgsConstructor
-public class club {
+public class Club {
 	@Id
     @Column(name ="club_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

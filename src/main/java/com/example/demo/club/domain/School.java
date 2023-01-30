@@ -14,14 +14,24 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "school")
 @NoArgsConstructor
-public class school {
+public class School {
 	@Id
     @Column(name ="school_cd")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String schoolCd;
+
+	@Column(name = "school_nm")
 	private String schoolNm;
+
+	@Column(name = "address")
 	private String address;
+
+	@Column(name = "tel_no")
 	private String telNo;
+
+	@Column(name = "reg_dt")
 	private String regDt;
+
+	@Column(name = "mod_dt")
 	private String modDt;	
 }

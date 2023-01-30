@@ -1,8 +1,10 @@
 package com.example.demo.club.service;
 
-import com.example.demo.club.domain.member;
+import com.example.demo.club.config.SecurityConfig;
+import com.example.demo.club.domain.Member;
 import com.example.demo.club.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,15 +17,18 @@ public class MemberService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public String createMember(member member) {
+    public String createMember(Member member) {
         member = userRepository.save(member);
         return member.getMemberId();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        member member = userRepository.findByMemberId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Could not found user"));
+        Member member = userRepository.findByMemberId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 찾을 수 없습니다."));
+
+
+//        new SecurityConfig().getPasswordEncoder().matches()
 
         return User.builder()
                 .username(member.getMemberId())
