@@ -25,7 +25,7 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = userRepository.findByMemberId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 사용자 입니다."));
 
 
 //        new SecurityConfig().getPasswordEncoder().matches()
