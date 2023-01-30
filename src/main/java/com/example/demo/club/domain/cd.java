@@ -20,7 +20,7 @@ public class cd {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String cd;
 	private String cdNm;
-	private String reg_dt;
-	private String mod_dt;
+	private String regDt;
+	private String modDt;
 }
 

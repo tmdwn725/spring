@@ -21,7 +21,7 @@ public class school {
 	private String schoolCd;
 	private String schoolNm;
 	private String address;
-	private String tel_no;
-	private String reg_dt;
-	private String mod_dt;	
+	private String telNo;
+	private String regDt;
+	private String modDt;	
 }
