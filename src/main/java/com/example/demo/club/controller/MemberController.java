@@ -23,7 +23,7 @@ public class MemberController {
     public String main(Model model) {
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
-        return "main/main";
+        return "main/daygrid-views.html";
     }
 
 }

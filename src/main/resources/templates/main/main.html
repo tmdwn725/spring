@@ -12,6 +12,7 @@
   <!-- Favicons -->
   <link th:href="@{/bootstrap/img/favicon.png}" rel="icon">
   <link th:href="@{/bootstrap/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <link th:href="@{/fullcalendar-4.4.0/examples/daygrid-views.html}" rel="import">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -934,6 +935,7 @@
 
             <div class="card-body pb-0">
               <h5 class="card-title">Budget Report <span>| This Month</span></h5>
+              <div th:replcace="/calendar.html"></div>
               <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
             </div>
           </div><!-- End Budget Report -->
