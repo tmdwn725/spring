@@ -1,13 +1,11 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.domain.member;
+import com.example.demo.club.domain.Member;
 import com.example.demo.club.service.LoginService;
 import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +28,7 @@ public class LoginController {
 
 	@RequestMapping("/join")
 	@ResponseBody
-	public void join(member member) {
+	public void join(Member member) {
 		memberService.createMember(member);
 	}
 
