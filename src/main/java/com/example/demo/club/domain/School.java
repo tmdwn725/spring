@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "school")
 @NoArgsConstructor
-public class School {
+public class School extends BaseEntity {
+
 	@Id
     @Column(name ="school_cd")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +30,4 @@ public class School {
 	@Column(name = "tel_no")
 	private String telNo;
 
-	@Column(name = "reg_dt")
-	private String regDt;
-
-	@Column(name = "mod_dt")
-	private String modDt;	
 }

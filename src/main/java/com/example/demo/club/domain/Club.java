@@ -1,29 +1,34 @@
 package com.example.demo.club.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "club")
 @NoArgsConstructor
-public class Club {
+public class Club extends BaseEntity {
+
 	@Id
     @Column(name ="club_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clubSeq;
+
+	@Column(name = "school_cd")
 	private String schoolCd;
+
+	@Column(name = "club_cls_cd")
 	private String clubClsCd;
+
+	@Column(name = "club_nm")
 	private String clubNm;
+
+	@Column(name = "room_nm")
 	private String roomNm;
-	private String regDt;
-	private String modDt;
 
 }

@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "code")
 @NoArgsConstructor
-public class Code {
+public class Code extends BaseEntity {
+
 	@Id
     @Column(name ="cd")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +26,4 @@ public class Code {
 	@Column(name = "code_nm")
 	private String codeNm;
 
-	@Column(name = "reg_dt")
-	private LocalDateTime regDt;
-
-	@Column(name = "mod_dt")
-	private LocalDateTime modDt;
 }
-
