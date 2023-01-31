@@ -9,7 +9,7 @@ public class MainController {
 	
 	@RequestMapping("/main")
 	public String getMain(Model model){
-		return "main/login";
+		return "main/main";
 	}
 
 }

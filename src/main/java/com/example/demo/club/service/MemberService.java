@@ -27,18 +27,11 @@ public class MemberService implements UserDetailsService {
         Member member = userRepository.findByMemberId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 사용자 입니다."));
 
-
-//        new SecurityConfig().getPasswordEncoder().matches()
-
         return User.builder()
                 .username(member.getMemberId())
-                .password(getEncodedPassword(member.getPassword()))
+                .password(member.getPassword())
                 .roles("USER")
                 .build();
-    }
-
-    private String getEncodedPassword(String password) {
-        return ("{noop}" + password);
     }
 
 }

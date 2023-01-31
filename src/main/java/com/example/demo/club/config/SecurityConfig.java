@@ -45,6 +45,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .mvcMatchers("/member/**").permitAll()
                 .mvcMatchers("/common/**").permitAll()
+                .mvcMatchers("/main/**").permitAll()
+                .mvcMatchers("/bootstrap/**").permitAll()
                 .anyRequest().authenticated();
         http.formLogin()
             .loginPage("/login")

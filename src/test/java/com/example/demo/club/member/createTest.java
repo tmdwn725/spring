@@ -17,8 +17,8 @@ public class createTest {
     @Test
     public void createMember(){
         Member mem = new Member();
-        String password = new SecurityConfig().getPasswordEncoder().encode("123");
-        mem.createMember("test", password, "", Role.USER);
+        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
+        mem.createMember("phg", password, "", Role.USER);
         userRepository.save(mem);
     }
 

@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Table(name = "code")
@@ -18,15 +20,15 @@ public class Code {
 	@Id
     @Column(name ="cd")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String cd;
+	private Long cd;
 
 	@Column(name = "code_nm")
 	private String codeNm;
 
 	@Column(name = "reg_dt")
-	private String regDt;
+	private LocalDateTime regDt;
 
 	@Column(name = "mod_dt")
-	private String modDt;
+	private LocalDateTime modDt;
 }
 
