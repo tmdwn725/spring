@@ -39,7 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        //CustomAuthenticationToken를 구현받았는지 체크
+        //supports 이후 authenticate
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }
