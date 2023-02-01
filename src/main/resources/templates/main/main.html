@@ -10,8 +10,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link th:href="@{/bootstrap/img/favicon.png}" rel="icon">
-  <link th:href="@{/bootstrap/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <link th:href="@{/images/main/favicon.png}" rel="icon">
+  <link th:href="@{/images/main/apple-touch-icon.png}" rel="apple-touch-icon">
   <link th:href="@{/fullcalendar-4.4.0/examples/daygrid-views.html}" rel="import">
 
   <!-- Google Fonts -->
@@ -20,16 +20,16 @@
 
   <!-- Vendor CSS Files -->
   <!-- <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" /> -->
-  <link th:href="@{/bootstrap/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/quill/quill.snow.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/quill/quill.bubble.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/remixicon/remixicon.css}" rel="stylesheet">
-  <link th:href="@{/bootstrap/vendor/simple-datatables/style.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/bootstrap/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/boxicons/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/css/main/vendor/simple-datatables/style.css}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link th:href="@{/bootstrap/css/style.css}" rel="stylesheet">
+  <link th:href="@{/css/main/style.css}" rel="stylesheet">
   <!-- calendar Template -->
   
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
@@ -37,15 +37,15 @@
   <link th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" rel="stylesheet">
 
  <!-- Calendar File -->
- <link th:href="@{/fullcalendar/packages/core/main.css}" rel="stylesheet">
- <link th:href="@{/fullcalendar/packages/daygrid/main.css}" rel="stylesheet">
- <link th:href="@{/fullcalendar/packages/list/main.css}" rel="stylesheet">
+ <link th:href="@{/css/calendar/core/main.css}" rel="stylesheet">
+ <link th:href="@{/css/calendar/daygrid/main.css}" rel="stylesheet">
+ <link th:href="@{/css/calendar/list/main.css}" rel="stylesheet">
 
- <script type="text/javascript" th:src="@{/fullcalendar/packages/core/main.js}"></script>
- <script type="text/javascript" th:src="@{/fullcalendar/packages/interaction/main.js}"></script>
- <script type="text/javascript" th:src="@{/fullcalendar/packages/daygrid/main.js}"></script>
- <script type="text/javascript" th:src="@{/fullcalendar/packages/list/main.js}"></script>
- <script type="text/javascript" th:src="@{/fullcalendar/packages/google-calendar/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/calendar/core/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/calendar/google-calendar/main.js}"></script>
 
 <script>
 
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="@{index.html" class="logo d-flex align-items-center">
-        <img th:src="@{/bootstrap/img/logo.png}" alt="">
+        <img th:src="@{/images/main/logo.png}" alt="">
         <span class="d-none d-lg-block">Club</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <li class="message-item">
               <a href="#">
-                <img class="rounded-circle" th:src="@{/bootstrap/img/messages-1.jpg}" alt="">
+                <img class="rounded-circle" th:src="@{/images/main/messages-1.jpg}" alt="">
                 <div>
                   <h4>Maria Hudson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <li class="message-item">
               <a href="#">
-                <img class="rounded-circle" th:src="@{/bootstrap/img/messages-2.jpg}" alt="">
+                <img class="rounded-circle" th:src="@{/images/main/messages-2.jpg}" alt="">
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <li class="message-item">
               <a href="#">
-                <img class="rounded-circle" th:src="@{/bootstrap/img/messages-3.jpg}" alt="">
+                <img class="rounded-circle" th:src="@{/images/main/messages-3.jpg}" alt="">
                 <div>
                   <h4>David Muldon</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img class="rounded-circle" th:src="@{/bootstrap/img/profile-img.jpg}" alt="Profile">
+            <img class="rounded-circle" th:src="@{/images/main/profile-img.jpg}" alt="Profile">
             <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${userName}">사용자</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -611,31 +611,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
               <div class="news">
                 <div class="post-item clearfix">
-                  <img th:src="@{/bootstrap/img/news-1.jpg}" alt="">
+                  <img th:src="@{/images/main/news-1.jpg}" alt="">
                   <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
                   <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img th:src="@{/bootstrap/img/news-2.jpg}" alt="">
+                  <img th:src="@{/images/main/news-2.jpg}" alt="">
                   <h4><a href="#">Quidem autem et impedit</a></h4>
                   <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img th:src="@{/bootstrap/img/news-3.jpg}" alt="">
+                  <img th:src="@{/images/main/news-3.jpg}" alt="">
                   <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
                   <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img th:src="@{/bootstrap/img/news-4.jpg}" alt=""> 
+                  <img th:src="@{/images/main/news-4.jpg}" alt=""> 
                   <h4><a href="#">Laborum corporis quo dara net para</a></h4>
                   <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img th:src="@{/bootstrap/img/news-5.jpg}" alt="">               
+                  <img th:src="@{/images/main/news-5.jpg}" alt="">               
                   <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
                   <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
                 </div>
@@ -679,7 +679,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </thead>
                     <tbody>
                       <tr th:each="clubList : ${clubList}">
-                        <th scope="row"><a href="#"><img th:src="@{/bootstrap/img/product-1.jpg}" alt=""></a></th>
+                        <th scope="row"><a href="#"><img th:src="@{/images/main/product-1.jpg}" alt=""></a></th>
                         <td th:text="${clubList.clubNm}"></td>
                         <td th:text="${clubList.roomNm}"></td>
                         <td th:text="${clubList.regDt}"></td>
@@ -914,14 +914,14 @@ document.addEventListener('DOMContentLoaded', function() {
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/apexcharts/apexcharts.min.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/chart.js/chart.umd.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/echarts/echarts.min.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/quill/quill.min.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/simple-datatables/simple-datatables.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/tinymce/tinymce.min.js}"></script>
-  <script type="text/javascript" th:src="@{/bootstrap/vendor/php-email-form/validate.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/apexcharts/apexcharts.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/bootstrap/bootstrap.bundle.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/chart.js/chart.umd.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/echarts/echarts.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/quill/quill.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/simple-datatables/simple-datatables.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/tinymce/tinymce.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/main/vendor/php-email-form/validate.js}"></script>
   <!-- Template Main JS File -->
   <!--  <script type="text/javascript" th:src="@{/bootstrap/js/main.js}"></script>-->   
 </body>
