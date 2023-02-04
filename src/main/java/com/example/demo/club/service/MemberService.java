@@ -3,6 +3,7 @@ package com.example.demo.club.service;
 import com.example.demo.club.config.SecurityConfig;
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -12,10 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public String createMember(Member member) {
         member = userRepository.save(member);

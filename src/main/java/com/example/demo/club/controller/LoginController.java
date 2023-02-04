@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class LoginController {
 
-	@Autowired private LoginService loginService;
-	@Autowired private MemberService memberService;
+	private final LoginService loginService;
+	private final MemberService memberService;
 
 
 	@RequestMapping("/login")
 	public String findUser(Model model){
-
+		log.debug("test11111");
 		return "user/login";
 	}
 

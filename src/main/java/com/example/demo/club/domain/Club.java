@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,5 +32,8 @@ public class Club extends BaseEntity {
 
 	@Column(name = "room_nm")
 	private String roomNm;
+
+	@OneToMany(mappedBy = "club")
+	private List<Member> members = new ArrayList<Member>();
 
 }

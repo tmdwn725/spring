@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @EnableWebSecurity
-@RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
 
@@ -43,10 +42,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable();
         http.authorizeHttpRequests()
+                .mvcMatchers("/").permitAll()
                 .mvcMatchers("/member/**").permitAll()
                 .mvcMatchers("/common/**").permitAll()
                 .mvcMatchers("/main/**").permitAll()
-                .mvcMatchers("/bootstrap/**").permitAll()
                 .anyRequest().authenticated();
         http.formLogin()
             .loginPage("/login")
