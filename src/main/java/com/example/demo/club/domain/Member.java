@@ -3,11 +3,16 @@ package com.example.demo.club.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "member")
 @NoArgsConstructor
 public class Member {
@@ -29,6 +34,10 @@ public class Member {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+    
+    @OneToMany(mappedBy = "member")
+	private List<ClubInfo> clubInfoList = new ArrayList<>();
+
 
     @Builder
     public void createMember(String memberId, String password, String authority, Role role){
