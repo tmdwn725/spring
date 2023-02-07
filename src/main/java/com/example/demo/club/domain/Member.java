@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,11 +36,11 @@ public class Member {
     @JoinColumn(name = "club_seq")
     private Club club;
 
-    @Builder
     public void createMember(String memberId, String password, String authority, Role role){
         this.memberId = memberId;
         this.password = password;
         this.authority = authority;
         this.role = role;
     }
+
 }
