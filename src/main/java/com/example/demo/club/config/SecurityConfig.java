@@ -1,10 +1,14 @@
 package com.example.demo.club.config;
 
+import com.example.demo.club.domain.Role;
+import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +22,9 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig {
+
+    @Autowired
+    private MemberService memberService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
@@ -39,24 +46,29 @@ public class SecurityConfig {
     }
 
     @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(memberService);
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable();
         http.authorizeHttpRequests()
-                .mvcMatchers("/").permitAll()
-                .mvcMatchers("/member/**").permitAll()
-                .mvcMatchers("/common/**").permitAll()
-                .mvcMatchers("/main/**").permitAll()
+                .mvcMatchers("/login").permitAll()
+                .mvcMatchers("/member/**").hasRole("USER")
                 .anyRequest().authenticated();
         http.formLogin()
             .loginPage("/login")
                 .usernameParameter("memberId")
                 .passwordParameter("password")
-                .permitAll()
                 .successHandler(authenticationSuccessHandler())
                 .and()
             .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/member/main")
+                .logoutSuccessUrl("/login")
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("/login");
