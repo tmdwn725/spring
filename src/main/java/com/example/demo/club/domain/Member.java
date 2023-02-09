@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "member")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
