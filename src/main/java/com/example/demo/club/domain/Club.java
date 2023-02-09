@@ -2,19 +2,19 @@ package com.example.demo.club.domain;
 
 import javax.persistence.*;
 
-import com.example.demo.club.domain.Member.VoidBuilder;
-
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Table(name = "club")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseEntity {
 
 	@Id
@@ -33,17 +33,15 @@ public class Club extends BaseEntity {
 
 	@Column(name = "room_nm")
 	private String roomNm;
-	
+
 	@OneToMany(mappedBy = "club")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-	
-	@Builder
-    public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm){
-        this.schoolCd = schoolCd;
-        this.clubClsCd = clubClsCd;
-        this.clubNm = clubNm;
-        this.roomNm = roomNm;
-    }
+	public void create(Club club) {
+		this.schoolCd = club.getSchoolCd();
+		this.clubNm = club.getClubNm();
+		this.clubClsCd = club.getClubClsCd();
+		this.roomNm = club.getRoomNm();
+	}
 
 }

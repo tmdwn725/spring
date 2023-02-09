@@ -1,5 +1,6 @@
 package com.example.demo.club.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "member")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -39,11 +41,15 @@ public class Member {
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
 
-    @Builder
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_seq")
+    private Club club;
+
     public void createMember(String memberId, String password, String authority, Role role){
         this.memberId = memberId;
         this.password = password;
         this.authority = authority;
         this.role = role;
     }
+
 }
