@@ -1,9 +1,8 @@
-package com.example.demo.club.config;
+package com.example.demo.club.security;
 
 import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,14 +17,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final MemberService memberService;
+    private final CustomUserDetailService customUserDetailService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName().toString();
         String password = authentication.getCredentials().toString();
 
-        UserDetails user = memberService.loadUserByUsername(username);
+        UserDetails user = customUserDetailService.loadUserByUsername(username);
         Boolean checkPassword = new SecurityConfig().getPasswordEncoder().matches(password,user.getPassword());
 
         if(user == null) {

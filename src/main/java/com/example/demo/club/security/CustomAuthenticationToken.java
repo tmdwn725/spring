@@ -1,4 +1,4 @@
-package com.example.demo.club.config;
+package com.example.demo.club.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

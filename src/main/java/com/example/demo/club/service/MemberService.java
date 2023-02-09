@@ -19,10 +19,10 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class MemberService implements UserDetailsService {
+@RequiredArgsConstructor
+public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     /** 생성 **/
 
@@ -43,19 +43,6 @@ public class MemberService implements UserDetailsService {
     public Member findOne(String memberId) {
         return memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("아이디를 확인해주세요."));
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByMemberId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 사용자 입니다."));
-
-        return User.builder()
-                .username(member.getMemberId())
-                .password(member.getPassword())
-                .roles(member.getRole().name())
-                .build();
     }
 
 }

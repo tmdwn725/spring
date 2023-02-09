@@ -13,10 +13,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final MemberRepository userRepository;
+    private final MemberRepository memberRepository;
 
     public Optional<Member> findUser(MemberDTO memberDTO){
-        Optional<Member> user = userRepository.findByMemberId(memberDTO.getMemberId());
+        Optional<Member> user = memberRepository.findByMemberId(memberDTO.getMemberId());
         return user;
     }
 

@@ -3,6 +3,7 @@ package com.example.demo.club.domain;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "club")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseEntity {
 
 	@Id
@@ -37,11 +37,12 @@ public class Club extends BaseEntity {
 	@OneToMany(mappedBy = "club")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-	public void create(Club club) {
-		this.schoolCd = club.getSchoolCd();
-		this.clubNm = club.getClubNm();
-		this.clubClsCd = club.getClubClsCd();
-		this.roomNm = club.getRoomNm();
+	@Builder
+	public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm){
+		this.schoolCd = schoolCd;
+		this.clubClsCd = clubClsCd;
+		this.clubNm = clubNm;
+		this.roomNm = roomNm;
 	}
 
 }

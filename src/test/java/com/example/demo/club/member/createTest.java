@@ -1,12 +1,12 @@
 package com.example.demo.club.member;
 
 
-import com.example.demo.club.config.SecurityConfig;
+import com.example.demo.club.security.SecurityConfig;
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.domain.Club;
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.repository.ClubRepository;
-import com.example.demo.club.repository.UserRepository;
+import com.example.demo.club.repository.MemberRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class createTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository MemberRepository;
     
     @Autowired
     private ClubRepository clubRepository;
@@ -28,8 +28,8 @@ public class createTest {
     public void createMember(){
         Member mem = new Member();
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        mem.createMember("sjmoon", password, "", Role.USER);
-        userRepository.save(mem);
+        mem.createMember("phg", password, "", Role.USER);
+        MemberRepository.save(mem);
     }
     
     @Test
