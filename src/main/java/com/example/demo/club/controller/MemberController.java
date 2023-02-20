@@ -2,7 +2,6 @@ package com.example.demo.club.controller;
 
 import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,9 @@ public class MemberController {
     public String main(Model model) {
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
+        MemberDTO member  =  new MemberDTO();
+        member.setMemberSeq(4);
+        model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
     }
     

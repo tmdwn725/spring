@@ -23,6 +23,7 @@ Docs & License: https://fullcalendar.io/
     };
     function createElement(tagName, attrs, content) {
         var el = document.createElement(tagName);
+        
         if (attrs) {
             for (var attrName in attrs) {
                 if (attrName === 'style') {
