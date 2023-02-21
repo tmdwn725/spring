@@ -1,7 +1,5 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.dto.MemberDTO;
-import com.example.demo.club.service.ClubInfoService;
 import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
-    
-    @Autowired
-    private ClubService clubService;
-    
-    @Autowired
-    private ClubInfoService clubInfoService;
+    private final MemberService memberService;
+    private final ClubService clubService;
 
     @GetMapping("/main")
-    public String main(Model model) {   	
+    public String main(Model model) {
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
         MemberDTO member  =  new MemberDTO();

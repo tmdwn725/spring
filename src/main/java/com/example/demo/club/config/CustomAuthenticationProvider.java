@@ -1,6 +1,7 @@
 package com.example.demo.club.config;
 
 import com.example.demo.club.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,9 +15,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-    @Autowired
-    private MemberService memberService;
+
+    private final MemberService memberService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
