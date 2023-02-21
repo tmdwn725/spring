@@ -2,11 +2,14 @@ package com.example.demo.club.domain;
 
 import javax.persistence.*;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,8 +35,7 @@ public class Club extends BaseEntity {
 	private String roomNm;
 
 	@OneToMany(mappedBy = "club")
-	private List<ClubInfo> clubInfoList = new ArrayList<>();
-
+	private List<ClubInfo> clubInfoList = new ArrayList<ClubInfo>();
 
 	@Builder
     public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm){

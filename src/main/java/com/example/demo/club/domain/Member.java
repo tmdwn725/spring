@@ -39,7 +39,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_seq")
     private Club club;
