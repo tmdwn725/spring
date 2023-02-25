@@ -25,6 +25,4 @@ public class ClubInfoService {
 
 		return clubInfoRepository.findAll();
 	}
-	
-
 }

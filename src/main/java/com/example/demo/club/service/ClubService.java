@@ -17,9 +17,14 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
 
-	//
 	public List<Club> selectClubList(){
 		return clubRepository.findAll();
+	}
+	
+	public Club selectClub(Long clubSeq) {
+		Club club = clubRepository.getReferenceById(clubSeq);
+		club.getClubSeq();
+		return club;
 	}
 
 	@Transactional
