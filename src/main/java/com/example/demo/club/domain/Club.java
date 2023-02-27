@@ -36,6 +36,10 @@ public class Club extends BaseEntity {
 
 	@OneToMany(mappedBy = "club")
 	private List<ClubInfo> clubInfoList = new ArrayList<ClubInfo>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Member member;
 
 	@Builder
     public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm){

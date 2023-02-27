@@ -40,7 +40,7 @@ public class Member {
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_seq")
+    @JoinColumn(name = "club_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Club club;
 
     public void createMember(String memberId, String password, String authority, Role role){
