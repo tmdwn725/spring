@@ -3,10 +3,13 @@ package com.example.demo.club.service;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.club.domain.Club;
+import com.example.demo.club.dto.ClubDTO;
 import com.example.demo.club.repository.ClubRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    
+    @Autowired
+	ModelMapper modelMapper;
 
 	public List<Club> selectClubList(){
 		return clubRepository.findAll();
 	}
 	
-	public Club selectClub(Long clubSeq) {
-		Club club = clubRepository.getReferenceById(clubSeq);
-		club.getClubSeq();
-		return club;
+	public ClubDTO selectClub(Long clubSeq) {
+		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
+		return dto;
 	}
 
 	@Transactional

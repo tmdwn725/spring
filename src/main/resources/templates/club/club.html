@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="@{index.html" class="logo d-flex align-items-center">
+      <a th:href="@{/member/main}" class="logo d-flex align-items-center">
         <img th:src="@{/images/main/logo.png}" alt="">
         <span class="d-none d-lg-block">Club</span>
       </a>
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <div class="news">
 
                 <div class="post-item clearfix">
-                  <h4>축구 동아리</h4>
+                  <h4 th:text="${club.clubNm}"></h4>
                   <p>축구를 좋아하는 동아리 입니다.</p>
                   <img th:src="@{/images/main/news-2.jpg}" alt="">                
                 </div>

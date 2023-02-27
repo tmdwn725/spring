@@ -19,7 +19,6 @@ public class School extends BaseEntity {
 
 	@Id
     @Column(name ="school_cd")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String schoolCd;
 
 	@Column(name = "school_nm")
@@ -33,6 +32,7 @@ public class School extends BaseEntity {
 	
 	@Builder
 	public void createSchool(String schoolCd,String schoolNm, String address,String telNo){
+		this.schoolCd = schoolCd;
 		this.schoolNm = schoolNm;
 		this.address = address;
 		this.telNo = telNo;

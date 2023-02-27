@@ -17,10 +17,10 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "reg_dt")
-    private LocalDateTime regDt;
+    private String regDt;
 
     @LastModifiedDate
     @Column(name = "mod_dt")
-    private LocalDateTime modDt;
+    private String modDt;
 
 }

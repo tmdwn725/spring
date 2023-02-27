@@ -1,15 +1,16 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.dto.MemberDTO;
-import com.example.demo.club.service.ClubInfoService;
-import com.example.demo.club.service.ClubService;
-import com.example.demo.club.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.demo.club.dto.MemberDTO;
+import com.example.demo.club.service.ClubInfoService;
+import com.example.demo.club.service.ClubService;
+import com.example.demo.club.service.MemberService;
 
 @Controller
 @RequestMapping("/member")
@@ -29,7 +30,8 @@ public class MemberController {
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
         MemberDTO member = new MemberDTO();
-        member.setMemberSeq(1);
+        member.setMemberSeq(5);
+        model.addAttribute("memberSeq", 5);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
     }

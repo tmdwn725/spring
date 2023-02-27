@@ -29,17 +29,19 @@ static ObjectMapper objectMapper = new ObjectMapper();
 		Class objectClass = null;
 		String className = from.getName();
         // 경로를 포함한 클래스 이름이 나온다.
-        className = className.substring(className.lastIndexOf(".")+1).toLowerCase();
-        
+        String classNameChk = className.substring(className.lastIndexOf(".")+1).toLowerCase();
+        if(className.indexOf("$HibernateProxy$") > -1) {
+        	className = className.substring(0,className.indexOf("$HibernateProxy$"));
+        }
         // 클래스의 전체 이름(경로를 포함)
         // com.semi.dto.MemberDTO
         // com.semi.entity.Member
         // 디렉토리 이름과 클래스 이름을 수정해서 ClassLoader를 통해 변환할 클래스를 찾아낸다.
         try {
-            if(className.contains("dto")) {
-                objectClass = from.getClassLoader().loadClass(from.getName().replace(".dto", ".domain").replace("DTO",""));
+            if(classNameChk.contains("dto")) {
+                objectClass = from.getClassLoader().loadClass(className.replace(".dto", ".domain").replace("DTO",""));
             }else {
-            	objectClass = from.getClassLoader().loadClass(from.getName().replace(".domain", ".dto") + "DTO");
+            	objectClass = from.getClassLoader().loadClass(className.replace(".domain", ".dto") + "DTO");
             	
             }
             	
