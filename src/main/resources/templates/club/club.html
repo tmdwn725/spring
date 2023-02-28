@@ -27,6 +27,7 @@
   <link th:href="@{/css/main/vendor/quill/quill.bubble.css}" rel="stylesheet">
   <link th:href="@{/css/main/vendor/remixicon/remixicon.css}" rel="stylesheet">
   <link th:href="@{/css/main/vendor/simple-datatables/style.css}" rel="stylesheet">
+  <link th:href="@{/css/common/side.css}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link th:href="@{/css/main/style.css}" rel="stylesheet">
@@ -46,6 +47,7 @@
  <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/google-calendar/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
 
 <script>
 
@@ -348,21 +350,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link " href="@{index.html">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-      
-      <!-- 사이드 바 -->
-	  <th:block th:replace="common/side :: sideFragment"></th:block>
-      <!-- 사이드 바 -->
-    </ul>
-    
+    <!-- 사이드 바 -->
+    <th:block th:replace="common/side :: sideFragment"></th:block>
+    <!-- <div class="slide-div">
+	</div>
+	<div class="button-div div-close">
+	  <div class="button-open"></div>
+	</div> -->
+     <!-- 사이드 바 -->
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
