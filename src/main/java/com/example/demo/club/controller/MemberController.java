@@ -29,9 +29,8 @@ public class MemberController {
     public String main(Model model) {   	
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
-        MemberDTO member = new MemberDTO();
-        member.setMemberSeq(5);
-        model.addAttribute("memberSeq", 5);
+        MemberDTO member = memberService.selectMemberById("sjmoon");
+        model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
     }

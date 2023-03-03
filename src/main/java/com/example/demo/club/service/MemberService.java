@@ -2,8 +2,13 @@ package com.example.demo.club.service;
 
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.domain.Role;
+import com.example.demo.club.dto.ClubDTO;
+import com.example.demo.club.dto.MemberDTO;
+import com.example.demo.club.repository.ClubRepository;
 import com.example.demo.club.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,11 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService implements UserDetailsService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    
+    private final ModelMapper modelMapper;
 
     /** 생성 **/
 
@@ -56,6 +63,17 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().name())
                 .build();
+    }
+    
+    
+    public MemberDTO selectMemberById(String id) {
+    	MemberDTO dto = modelMapper.map(memberRepository.fingByMemberId(id), MemberDTO.class); 
+		return dto;
+	}
+    
+    public MemberDTO selectMemberBySeq(Long memberSeq) {
+    	MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq), MemberDTO.class);
+    	return dto;
     }
 
 }

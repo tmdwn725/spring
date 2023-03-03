@@ -20,15 +20,14 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     
-    @Autowired
-	ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
 	public List<Club> selectClubList(){
 		return clubRepository.findAll();
 	}
 	
 	public ClubDTO selectClub(Long clubSeq) {
-		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
+		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class); //modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
 		return dto;
 	}
 
