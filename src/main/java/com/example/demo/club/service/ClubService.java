@@ -27,7 +27,7 @@ public class ClubService {
 	}
 	
 	public ClubDTO selectClub(Long clubSeq) {
-		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class); //modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
+		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
 		return dto;
 	}
 
