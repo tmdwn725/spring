@@ -1,4 +1,4 @@
-package com.example.demo.club.config;
+package com.example.demo.club.security;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

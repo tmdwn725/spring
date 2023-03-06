@@ -1,6 +1,10 @@
 package com.example.demo.club.dto;
 
+import com.example.demo.club.domain.Club;
+import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class ClubDTO {
@@ -9,6 +13,15 @@ public class ClubDTO {
 	private String clubClsCd;
 	private String clubNm;
 	private String roomNm;
-	private String regDt;
-	private String modDt;
+	private LocalDateTime regDt;
+	private LocalDateTime modDt;
+
+	public ClubDTO(Club club) {
+		clubSeq = club.getClubSeq();
+		schoolCd = club.getSchoolCd();
+		clubNm = club.getClubNm();
+		roomNm = club.getRoomNm();
+		regDt = club.getRegDt();
+		modDt = club.getModDt();
+	}
 }

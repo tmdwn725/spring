@@ -16,12 +16,6 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11.0.17'
 
-configurations {
-   compileOnly {
-      extendsFrom annotationProcessor
-   }
-}
-
 bootJar {
 	mainClass = 'com.example.demo.club.SpringProjectApplication'
 }
@@ -46,6 +40,12 @@ dependencies {
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	/**
+	 * 테스트 lombok 추가
+	 */
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	
 }
 
