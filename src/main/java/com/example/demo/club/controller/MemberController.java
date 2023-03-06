@@ -6,7 +6,9 @@ import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,13 +34,14 @@ public class MemberController {
     private ClubInfoService clubInfoService;
 
     @GetMapping("/main")
-    public String main(Model model) {   	
-        model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
+    public String main(Model model) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("userName", userId);
         model.addAttribute("clubList",clubService.selectClubList());
-        MemberDTO member = memberService.selectMemberById("sjmoon");
+        MemberDTO member = memberService.selectMemberById(userId);
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
     }
-    
+
 }

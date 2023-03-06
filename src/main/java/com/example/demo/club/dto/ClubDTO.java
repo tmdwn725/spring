@@ -17,7 +17,6 @@ public class ClubDTO {
 	private LocalDateTime modDt;
 
 	public ClubDTO(Club club) {
-		clubSeq = club.getClubSeq();
 		schoolCd = club.getSchoolCd();
 		clubNm = club.getClubNm();
 		roomNm = club.getRoomNm();
