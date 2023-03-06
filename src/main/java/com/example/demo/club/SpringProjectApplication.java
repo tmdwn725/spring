@@ -7,7 +7,6 @@ import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@EnableJpaAuditing
 @SpringBootApplication
 public class SpringProjectApplication {
 

@@ -1,7 +1,6 @@
 package com.example.demo.club.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,10 +22,8 @@ public class ClubService {
     
     private final ModelMapper modelMapper;
 
-	public List<ClubDTO> selecAllClubList(){
-		List<Club> findAllClubList = clubRepository.findAll();			
-		List<ClubDTO> selectAllClubList = findAllClubList.stream().map(p -> modelMapper.map(p, ClubDTO.class)).collect(Collectors.toList());
-		return selectAllClubList;
+	public List<Club> selectClubList(){
+		return clubRepository.findAll();
 	}
 	
 	public ClubDTO selectClub(Long clubSeq) {

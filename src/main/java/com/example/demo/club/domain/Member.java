@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "member")
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name ="member_seq")
@@ -47,10 +48,6 @@ public class Member {
     
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Club club;
 
     public void createMember(String memberId, String password, String authority, Role role){
         this.memberId = memberId;

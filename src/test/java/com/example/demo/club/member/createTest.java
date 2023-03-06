@@ -1,7 +1,6 @@
 package com.example.demo.club.member;
 
 
-import com.example.demo.club.config.SecurityConfig;
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.domain.School;
 import com.example.demo.club.domain.Club;
@@ -16,25 +15,51 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.example.demo.club.security.SecurityConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
+@Slf4j
 @SpringBootTest
 public class createTest {
 
     @Autowired
-    private MemberRepository userRepository;
-    
+    private MemberRepository memberRepository;
+
     @Autowired
     private ClubRepository clubRepository;
-    
+
     @Autowired
     private ClubInfoRepository clubinfoRepository;
-    
+
     @Autowired
     private SchoolRepository schoolRepository;
+
+    @Test
+    @Rollback(value = false)
+    void onlyMemberCreate() {
+        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
+        Member member = new Member();
+        member.createMember("phg", password, "", Role.USER);
+        memberRepository.save(member);
+    }
+
+    @Test
+    @Rollback(value = false)
+    void onlyClubCreate() {
+        Optional<Member> member = memberRepository.findByMemberId("phg");
+        Club club = clubRepository.findByClubNm("축구동아리");
+        member.ifPresentOrElse(value -> {
+            ClubInfo clubInfo = new ClubInfo();
+            clubInfo.createClubInfo(club,value,LocalDateTime.now());
+            clubinfoRepository.save(clubInfo);
+        }, () -> log.error("존재하지 않는 계정!"));
+    }
 
     @Test
     public void createMember(){
@@ -43,37 +68,38 @@ public class createTest {
     	List<Club>clubs = new ArrayList<>();
     	ClubInfo clubInfo = new ClubInfo();
     	List<ClubInfo>clubInfos = new ArrayList<>();
-    	LocalDate currentDate = LocalDate.now();
-    	
-    	
-        String password = new SecurityConfig().getPasswordEncoder().encode("1234");        
+    	LocalDateTime currentDate = LocalDateTime.now();
+
+
+        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         mem.createMember("sjmoon", password, "", Role.USER);
-        
-        
+
+
         club.createClub("100101", "200101", "축구동아리", "101");
     	clubs.add(club);
-    	
+
     	clubInfo.createClubInfo(club, mem, currentDate);
     	clubInfos.add(clubInfo);
-    	
+
     	club = new Club();
     	club.createClub("100101", "200101", "농구동아리", "102");
     	clubs.add(club);
-    	
+
     	clubInfo = new ClubInfo();
     	clubInfo.createClubInfo(club, mem, currentDate);
     	clubInfos.add(clubInfo);
-    	
+
     	club = new Club();
     	club.createClub("100101", "200102", "공예동아리", "103");
     	clubs.add(club);
-    	
-    	userRepository.save(mem);
+
+    	memberRepository.save(mem);
         clubRepository.saveAll(clubs);
         clubinfoRepository.saveAll(clubInfos);
-        
+
+
     }
-    
+
     @Test
     public void createSchool() {
     	School sc = new School();

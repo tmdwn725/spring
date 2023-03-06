@@ -2,7 +2,9 @@ package com.example.demo.club.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import com.example.demo.club.repository.ClubInfoRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ClubInfoService {
 	
@@ -25,14 +28,9 @@ public class ClubInfoService {
 	private final ModelMapper modelMapper;
 
 	public List<ClubDTO> selectMyClubList(MemberDTO dto){
-		Member member = new Member();
-		member.setMemberSeq(dto.getMemberSeq());
-		
-		List<Club> findMyClubList = clubInfoRepository.selectMyClubList(member.getMemberSeq());
-		
-		
-		List<ClubDTO> selectMyClubList = findMyClubList.stream().map(p -> modelMapper.map(p, ClubDTO.class)).collect(Collectors.toList());
-		
+		List<Club> findMyClubList = clubInfoRepository.selectMyClubList(dto.getMemberSeq());
+		List<ClubDTO> selectMyClubList = findMyClubList.stream().map(ClubDTO::new).collect(Collectors.toList());
+
 		return selectMyClubList;
 	}
 }

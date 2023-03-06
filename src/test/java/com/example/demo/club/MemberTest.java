@@ -1,9 +1,9 @@
 package com.example.demo.club;
 
-import com.example.demo.club.config.SecurityConfig;
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.repository.MemberRepository;
+import com.example.demo.club.security.SecurityConfig;
 import com.example.demo.club.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

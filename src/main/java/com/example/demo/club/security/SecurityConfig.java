@@ -1,4 +1,4 @@
-package com.example.demo.club.config;
+package com.example.demo.club.security;
 
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.service.MemberService;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 public class SecurityConfig {
 
     @Autowired
-    private MemberService memberService;
+    private CustomUserDetailService customUserDetailService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
@@ -49,7 +49,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(memberService);
+        daoAuthenticationProvider.setUserDetailsService(customUserDetailService);
         return daoAuthenticationProvider;
     }
 

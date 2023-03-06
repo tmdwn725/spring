@@ -28,7 +28,7 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    
+
     private final ModelMapper modelMapper;
 
     /** 생성 **/
@@ -64,13 +64,13 @@ public class MemberService implements UserDetailsService {
                 .roles(member.getRole().name())
                 .build();
     }
-    
-    
+
+
     public MemberDTO selectMemberById(String id) {
-    	MemberDTO dto = modelMapper.map(memberRepository.fingByMemberId(id), MemberDTO.class); 
+    	MemberDTO dto = modelMapper.map(memberRepository.fingByMemberId(id), MemberDTO.class);
 		return dto;
 	}
-    
+
     public MemberDTO selectMemberBySeq(Long memberSeq) {
     	MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq), MemberDTO.class);
     	return dto;
