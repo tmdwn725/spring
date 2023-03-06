@@ -28,7 +28,7 @@ public class MemberController {
     @GetMapping("/main")
     public String main(Model model) {   	
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("clubList",clubService.selectClubList());
+        model.addAttribute("clubList",clubService.selecAllClubList());
         MemberDTO member = memberService.selectMemberById("sjmoon");
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));

@@ -23,10 +23,8 @@ public class ClubService {
     
     private final ModelMapper modelMapper;
 
-	public List<ClubDTO> selectClubList(){
-		
-		List<Club> findAllClubList = clubRepository.findAll();		
-		
+	public List<ClubDTO> selecAllClubList(){
+		List<Club> findAllClubList = clubRepository.findAll();			
 		List<ClubDTO> selectAllClubList = findAllClubList.stream().map(p -> modelMapper.map(p, ClubDTO.class)).collect(Collectors.toList());
 		return selectAllClubList;
 	}
