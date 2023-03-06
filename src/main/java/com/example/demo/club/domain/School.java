@@ -7,22 +7,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "school")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class School extends BaseEntity {
 
 	@Id
-	@Column(name ="school_seq")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long schoolSeq;
-
-	@Column(name ="school_cd")
+    @Column(name ="school_cd")
 	private String schoolCd;
 
 	@Column(name = "school_nm")
@@ -33,7 +29,14 @@ public class School extends BaseEntity {
 
 	@Column(name = "tel_no")
 	private String telNo;
-
-
+	
+	@Builder
+	public void createSchool(String schoolCd,String schoolNm, String address,String telNo){
+		this.schoolCd = schoolCd;
+		this.schoolNm = schoolNm;
+		this.address = address;
+		this.telNo = telNo;
+		
+	}
 
 }

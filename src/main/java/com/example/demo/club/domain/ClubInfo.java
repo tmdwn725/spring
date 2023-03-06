@@ -1,6 +1,6 @@
 package com.example.demo.club.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.example.demo.club.domain.School.VoidBuilder;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,10 +42,17 @@ public class ClubInfo {
 	
 	@CreatedDate
     @Column(name = "join_date")
-	private LocalDateTime joinDate;
+	private LocalDate joinDate;
 	
 	@CreatedDate
     @Column(name = "withdraw_date")
-	private LocalDateTime withdrawDate;
+	private LocalDate withdrawDate;
+	
+	@Builder
+	public void createClubInfo(Club club, Member member,LocalDate joinDate) {
+		this.club = club;
+		this.member = member;
+		this.joinDate = joinDate;
+	}
 
 }

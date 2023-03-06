@@ -1,16 +1,25 @@
 package com.example.demo.club.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -39,9 +48,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_seq")
+    @JoinColumn(name = "club_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Club club;
 
     public void createMember(String memberId, String password, String authority, Role role){

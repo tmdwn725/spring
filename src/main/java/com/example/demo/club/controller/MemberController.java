@@ -12,21 +12,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.club.dto.MemberDTO;
+import com.example.demo.club.service.ClubInfoService;
+import com.example.demo.club.service.ClubService;
+import com.example.demo.club.service.MemberService;
+
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
-    private final ClubService clubService;
-    private final ClubInfoService clubInfoService;
+    @Autowired
+    private MemberService memberService;
+    
+    @Autowired
+    private ClubService clubService;
+    
+    @Autowired
+    private ClubInfoService clubInfoService;
 
     @GetMapping("/main")
-    public String main(Model model) {
+    public String main(Model model) {   	
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("clubList",clubService.selectClubList());
-        MemberDTO member  =  new MemberDTO();
-        member.setMemberSeq(4);
+        MemberDTO member = memberService.selectMemberById("sjmoon");
+        model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
     }
