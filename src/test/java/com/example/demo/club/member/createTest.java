@@ -5,9 +5,11 @@ import com.example.demo.club.domain.Role;
 import com.example.demo.club.domain.School;
 import com.example.demo.club.domain.Club;
 import com.example.demo.club.domain.ClubInfo;
+import com.example.demo.club.domain.File;
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.repository.ClubInfoRepository;
 import com.example.demo.club.repository.ClubRepository;
+import com.example.demo.club.repository.FileRepository;
 import com.example.demo.club.repository.MemberRepository;
 import com.example.demo.club.repository.SchoolRepository;
 
@@ -39,6 +41,9 @@ public class createTest {
 
     @Autowired
     private SchoolRepository schoolRepository;
+    
+    @Autowired
+    private FileRepository fileRepository;
 
     @Test
     @Rollback(value = false)
@@ -65,24 +70,32 @@ public class createTest {
     public void createMember(){
         Member mem = new Member();
         Club club = new Club();
+        File fl = new File();
     	List<Club>clubs = new ArrayList<>();
     	ClubInfo clubInfo = new ClubInfo();
     	List<ClubInfo>clubInfos = new ArrayList<>();
     	LocalDateTime currentDate = LocalDateTime.now();
+    	List<File> files = new ArrayList<>();
 
 
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         mem.createMember("sjmoon", password, "", Role.USER);
+       
+    	fl.createFile("soccer.jpg","/images/club/soccer.jpg", "jpg");
+    	files.add(fl);
 
-
-        club.createClub("100101", "200101", "축구동아리", "101");
+        club.createClub("100101", "200101", "축구동아리","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.", "101",fl);
     	clubs.add(club);
 
     	clubInfo.createClubInfo(club, mem, currentDate);
     	clubInfos.add(clubInfo);
 
+    	fl = new File();
+    	fl.createFile("baseball.jpg","/images/club/baseball.jpg", "jpg");
+    	files.add(fl);
+    	
     	club = new Club();
-    	club.createClub("100101", "200101", "농구동아리", "102");
+    	club.createClub("100101", "200101", "농구동아리","저희는 서울대학교의 대표 농구동아리 비스킷입니다.", "102",fl);
     	clubs.add(club);
 
     	clubInfo = new ClubInfo();
@@ -90,9 +103,10 @@ public class createTest {
     	clubInfos.add(clubInfo);
 
     	club = new Club();
-    	club.createClub("100101", "200102", "공예동아리", "103");
+    	club.createClub("100101", "200102", "공예동아리","저희는 예술을 좋아하는 동아리입니다.", "103",null);
     	clubs.add(club);
 
+    	fileRepository.saveAll(files);
     	memberRepository.save(mem);
         clubRepository.saveAll(clubs);
         clubinfoRepository.saveAll(clubInfos);

@@ -72,7 +72,7 @@ public class MemberService implements UserDetailsService {
 	}
 
     public MemberDTO selectMemberBySeq(Long memberSeq) {
-    	MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq), MemberDTO.class);
+    	MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq).orElse(null), MemberDTO.class);
     	return dto;
     }
 

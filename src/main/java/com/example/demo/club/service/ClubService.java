@@ -2,16 +2,15 @@ package com.example.demo.club.service;
 
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
-
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.club.domain.Club;
 import com.example.demo.club.dto.ClubDTO;
 import com.example.demo.club.repository.ClubRepository;
-import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

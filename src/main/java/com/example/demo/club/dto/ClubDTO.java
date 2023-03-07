@@ -1,11 +1,8 @@
 package com.example.demo.club.dto;
 
-import com.example.demo.club.domain.Club;
-import lombok.Builder;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 @Data
 public class ClubDTO {
@@ -16,4 +13,6 @@ public class ClubDTO {
 	private String roomNm;
 	private LocalDateTime regDt;
 	private LocalDateTime modDt;
+	private String introduce;
+	private String filePth;
 }

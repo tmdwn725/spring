@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -41,16 +42,25 @@ public class Club extends BaseEntity {
 
 	@Column(name = "room_nm")
 	private String roomNm;
+	
+	@Column(name = "introduce")
+	private String introduce;
 
 	@OneToMany(mappedBy = "club")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
+	
+	@OneToOne
+	@JoinColumn(name="rpt_img_fl_seq")
+	private File file;
 
 	@Builder
-    public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm){
+    public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm,String introduce, File file){
         this.schoolCd = schoolCd;
         this.clubClsCd = clubClsCd;
         this.clubNm = clubNm;
         this.roomNm = roomNm;
+        this.introduce = introduce;
+        this.file = file;
     }
 
 }
