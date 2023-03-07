@@ -27,7 +27,7 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String login(Model model){
-		return "user/login";
+		return "member/login";
 	}
 
 	@RequestMapping("/join")

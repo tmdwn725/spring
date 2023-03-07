@@ -170,7 +170,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img class="rounded-circle" th:src="@{/images/main/profile-img.jpg}" alt="Profile">
+            <!--<img class="rounded-circle" th:src="@{/images/main/profile-img.jpg}" alt="Profile">-->
             <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${userName}">사용자</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -184,7 +184,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="@{users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" th:href="@{/member/mypage/{memberSeq}(memberSeq=${member.memberSeq})}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -225,6 +225,6 @@
 
       </ul>
     </nav><!-- End Icons Navigation -->
-    </header>
-   </th:block>
+  </header>
+</th:block>
 </html>
