@@ -221,11 +221,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </thead>
                     <tbody>
                       <tr th:each="clubList : ${clubList}">
-                        <th scope="row"><a href="#"><img th:src="@{/images/main/product-1.jpg}" alt=""></a></th>
+                        <th scope="row"><img th:src="@{/images/main/product-1.jpg}" alt=""></th>
                         <td th:text="${clubList.clubNm}"></td>
                         <td th:text="${clubList.roomNm}"></td>
-                        <td th:text="${clubList.regDt}"></td>
-                        <td th:text="${clubList.modDt}"></td>
+                        <td th:text="${#temporals.format(clubList.regDt, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#temporals.format(clubList.modDt, 'yyyy-MM-dd')}"></td>
                       </tr>
                     </tbody>
                   </table>

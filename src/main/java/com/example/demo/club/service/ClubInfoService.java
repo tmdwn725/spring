@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.example.demo.club.common.ModelMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,9 @@ public class ClubInfoService {
 	@Autowired
 	private ClubInfoRepository clubInfoRepository;
 	
-	private final ModelMapper modelMapper;
-
 	public List<ClubDTO> selectMyClubList(MemberDTO dto){
 		List<Club> findMyClubList = clubInfoRepository.selectMyClubList(dto.getMemberSeq());
-		List<ClubDTO> selectMyClubList = findMyClubList.stream().map(ClubDTO::new).collect(Collectors.toList());
+		List<ClubDTO> selectMyClubList = ModelMapperUtil.mapAll(findMyClubList, ClubDTO.class);
 
 		return selectMyClubList;
 	}
