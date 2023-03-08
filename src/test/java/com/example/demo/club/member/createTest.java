@@ -1,30 +1,30 @@
 package com.example.demo.club.member;
 
 
-import com.example.demo.club.domain.Role;
-import com.example.demo.club.domain.School;
-import com.example.demo.club.domain.Club;
-import com.example.demo.club.domain.ClubInfo;
-import com.example.demo.club.domain.File;
-import com.example.demo.club.domain.Member;
-import com.example.demo.club.repository.ClubInfoRepository;
-import com.example.demo.club.repository.ClubRepository;
-import com.example.demo.club.repository.FileRepository;
-import com.example.demo.club.repository.MemberRepository;
-import com.example.demo.club.repository.SchoolRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.club.security.SecurityConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+
+import com.example.demo.club.domain.Club;
+import com.example.demo.club.domain.ClubInfo;
+import com.example.demo.club.domain.File;
+import com.example.demo.club.domain.Member;
+import com.example.demo.club.domain.Role;
+import com.example.demo.club.domain.School;
+import com.example.demo.club.repository.ClubInfoRepository;
+import com.example.demo.club.repository.ClubRepository;
+import com.example.demo.club.repository.FileRepository;
+import com.example.demo.club.repository.MemberRepository;
+import com.example.demo.club.repository.SchoolRepository;
+import com.example.demo.club.security.SecurityConfig;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest

@@ -5,13 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.example.demo.club.domain.School.VoidBuilder;
-
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +35,6 @@ public class File {
 	private Club club;
 	
 	
-	@Builder
 	public void createFile(String fileNm, String filePth, String fileExt) {
 		this.fileNm = fileNm;
 		this.filePth = filePth;
