@@ -84,7 +84,7 @@ public class createTest {
     	fl.createFile("soccer.jpg","/images/club/soccer.jpg", "jpg");
     	files.add(fl);
 
-        club.createClub("100101", "200101", "축구동아리","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.", "101",fl);
+        club.createClub("100101", "200101", "축구동아리","101","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.",fl);
     	clubs.add(club);
 
     	clubInfo.createClubInfo(club, mem, currentDate);
@@ -95,7 +95,7 @@ public class createTest {
     	files.add(fl);
     	
     	club = new Club();
-    	club.createClub("100101", "200101", "농구동아리","저희는 서울대학교의 대표 농구동아리 비스킷입니다.", "102",fl);
+    	club.createClub("100101", "200101", "농구동아리","102","저희는 서울대학교의 대표 농구동아리 비스킷입니다.",fl);
     	clubs.add(club);
 
     	clubInfo = new ClubInfo();
@@ -103,7 +103,7 @@ public class createTest {
     	clubInfos.add(clubInfo);
 
     	club = new Club();
-    	club.createClub("100101", "200102", "공예동아리","저희는 예술을 좋아하는 동아리입니다.", "103",null);
+    	club.createClub("100101", "200102", "공예동아리","103","저희는 예술을 좋아하는 동아리입니다.",null);
     	clubs.add(club);
 
     	fileRepository.saveAll(files);
