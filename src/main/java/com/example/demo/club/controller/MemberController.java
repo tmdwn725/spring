@@ -27,17 +27,6 @@ public class MemberController {
     private final ClubService clubService;
     private final ClubInfoService clubInfoService;
 
-    @GetMapping("/mypage/{memberSeq}")
-    public String mypage(@PathVariable(required = false) Long memberSeq, Model model) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("userName", userId);
-        MemberDTO member = memberService.selectMemberBySeq(memberSeq);
-        model.addAttribute("member",member);
-        model.addAttribute("clubList",clubService.selectClubList());
-        model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
-        return "member/mypage";
-    }
-
     @GetMapping("/main")
     public String main(Model model) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -47,6 +36,26 @@ public class MemberController {
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "main/main";
+    }
+
+    /** 마이페이지 **/
+
+    /* 내 프로필 */
+    @GetMapping("/mypage/{memberSeq}")
+    public String mypage(@PathVariable(required = false) Long memberSeq, Model model) {
+        MemberDTO member = memberService.selectMemberBySeq(memberSeq);
+        model.addAttribute("member",member);
+        model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
+        return "member/mypage";
+    }
+
+    /* 패스워드 변경 */
+    @GetMapping("/mypage/updatePassword/{memberSeq}")
+    public String updatePassword(@PathVariable(required = false) Long memberSeq, Model model) {
+        MemberDTO member = memberService.selectMemberBySeq(memberSeq);
+        model.addAttribute("member",member);
+        model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
+        return "member/updatePassword";
     }
 
 }

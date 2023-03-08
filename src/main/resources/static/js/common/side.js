@@ -1,4 +1,3 @@
-<s
 $(".button-div").click(function(){
   
   $(this).toggleClass("div-close");
