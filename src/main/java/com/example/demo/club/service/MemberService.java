@@ -1,5 +1,6 @@
 package com.example.demo.club.service;
 
+import com.example.demo.club.common.ModelMapperUtil;
 import com.example.demo.club.domain.Member;
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.dto.ClubDTO;
@@ -28,7 +29,6 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-
     private final ModelMapper modelMapper;
 
     /** 생성 **/
