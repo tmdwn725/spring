@@ -1,18 +1,17 @@
 package com.example.demo.club;
 
-import com.example.demo.club.domain.Role;
-import com.example.demo.club.domain.Member;
-import com.example.demo.club.repository.MemberRepository;
-import com.example.demo.club.security.SecurityConfig;
-import com.example.demo.club.service.MemberService;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.example.demo.club.domain.Member;
+import com.example.demo.club.domain.Role;
+import com.example.demo.club.repository.MemberRepository;
+import com.example.demo.club.security.SecurityConfig;
+import com.example.demo.club.service.MemberService;
 
 @SpringBootTest
 public class MemberTest {

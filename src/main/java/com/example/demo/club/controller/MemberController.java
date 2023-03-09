@@ -1,21 +1,19 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.domain.Member;
-import com.example.demo.club.dto.MemberDTO;
-import com.example.demo.club.service.*;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.service.ClubInfoService;
 import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller

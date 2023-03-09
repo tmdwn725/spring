@@ -1,30 +1,30 @@
 package com.example.demo.club.member;
 
 
-import com.example.demo.club.domain.Role;
-import com.example.demo.club.domain.School;
-import com.example.demo.club.domain.Club;
-import com.example.demo.club.domain.ClubInfo;
-import com.example.demo.club.domain.File;
-import com.example.demo.club.domain.Member;
-import com.example.demo.club.repository.ClubInfoRepository;
-import com.example.demo.club.repository.ClubRepository;
-import com.example.demo.club.repository.FileRepository;
-import com.example.demo.club.repository.MemberRepository;
-import com.example.demo.club.repository.SchoolRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.club.security.SecurityConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+
+import com.example.demo.club.domain.Club;
+import com.example.demo.club.domain.ClubInfo;
+import com.example.demo.club.domain.File;
+import com.example.demo.club.domain.Member;
+import com.example.demo.club.domain.Role;
+import com.example.demo.club.domain.School;
+import com.example.demo.club.repository.ClubInfoRepository;
+import com.example.demo.club.repository.ClubRepository;
+import com.example.demo.club.repository.FileRepository;
+import com.example.demo.club.repository.MemberRepository;
+import com.example.demo.club.repository.SchoolRepository;
+import com.example.demo.club.security.SecurityConfig;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
@@ -84,7 +84,7 @@ public class createTest {
     	fl.createFile("soccer.jpg","/images/club/soccer.jpg", "jpg");
     	files.add(fl);
 
-        club.createClub("100101", "200101", "축구동아리","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.", "101",fl);
+        club.createClub("100101", "200101", "축구동아리","101","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.",fl);
     	clubs.add(club);
 
     	clubInfo.createClubInfo(club, mem, currentDate);
@@ -95,7 +95,7 @@ public class createTest {
     	files.add(fl);
     	
     	club = new Club();
-    	club.createClub("100101", "200101", "농구동아리","저희는 서울대학교의 대표 농구동아리 비스킷입니다.", "102",fl);
+    	club.createClub("100101", "200101", "농구동아리","102","저희는 서울대학교의 대표 농구동아리 비스킷입니다.",fl);
     	clubs.add(club);
 
     	clubInfo = new ClubInfo();
@@ -103,7 +103,7 @@ public class createTest {
     	clubInfos.add(clubInfo);
 
     	club = new Club();
-    	club.createClub("100101", "200102", "공예동아리","저희는 예술을 좋아하는 동아리입니다.", "103",null);
+    	club.createClub("100101", "200102", "공예동아리","103","저희는 예술을 좋아하는 동아리입니다.",null);
     	clubs.add(club);
 
     	fileRepository.saveAll(files);
