@@ -48,7 +48,7 @@
  <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/google-calendar/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -90,7 +90,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
   });
+  
 
+
+function div_click(){
+	 (this).toggleClass("div-close");
+	  
+	  if ($(this).hasClass("div-close")) {
+	    $(".slide-div").animate({ left: "-130px"}, 800);  
+	    $(".button-div").animate({ left: "-10px"}, 800);
+	    $(this).find(".button-open").attr("class", "button-close");
+	  } else {
+	    $(".slide-div").animate({ left: "0px"}, 800);  
+	    $(".button-div").animate({ left: "120px"}, 800);
+	    $(this).find(".button-close").attr("class", "button-open");
+	  }
+}
 </script>
 <style>
 
@@ -150,6 +165,44 @@ document.addEventListener('DOMContentLoaded', function() {
 	margin-top: 5%;
 	margin-left: 5;
   }
+  
+  
+  
+  .slide-div {
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 150px;
+  height: 500px;
+  background: #57b0ff;
+}
+
+.button-div {
+  position: absolute;
+  left: 120px;
+  top: 60px;
+  width: 70px;
+  height: 50px;
+  background: #17b0af;
+}
+
+.button-open {
+  width: 0px;
+  height: 0px;
+  border-top: 10px solid transparent;
+  border-right: 20px solid #0f304e;
+  border-bottom: 10px solid transparent;
+  margin: 15px 40px;
+}
+
+.button-close {
+  width: 0px;
+  height: 0px;
+  border-top: 10px solid transparent;
+  border-left: 20px solid #0f304e;
+  border-bottom: 10px solid transparent;
+  margin: 15px 40px;
+}
 
 </style>
 
@@ -161,6 +214,11 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
+  	<!--<div class="slide-div">
+	</div>
+	<div class="button-div div-close" onclick="div_click()">
+	  <div class="button-open"></div>
+	</div>-->
     <th:block th:replace="common/side :: sideFragment"></th:block>
   <!-- End Sidebar-->
 
