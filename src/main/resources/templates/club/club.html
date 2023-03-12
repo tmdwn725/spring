@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="card-body">
               <h5 class="card-title">동아리원 <span>| 4/5</span></h5>
               <div class="activity" th:each="clubInfoList : ${club.clubInfoList}">
-				<p><span th:text="${clubInfoList.member.memberId}">문승주</span></p>
+				<p><span th:text="${clubInfoList.member.member}님"></span></p>
               </div>
 
             </div>
