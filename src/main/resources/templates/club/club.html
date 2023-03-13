@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="club-body">
               <h5 class="club-title">동아리 소개 </h5>
 			  <div class="introduce">
-        		<div class="left"><img class="clubImg" th:src="${club.filePth}" alt=""></div>
+        		<div class="left"><img class="clubImg" th:src="${club.file.filePth}" alt=""></div>
         		<div class="right">
         			<h4 th:text="${club.clubNm}"></h4>
                   	<textarea th:text="${club.introduce}" style="width:50%;text-align:5center;"></textarea>
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="card-body">
               <h5 class="card-title">동아리원 <span>| 4/5</span></h5>
               <div class="activity" th:each="clubInfoList : ${club.clubInfoList}">
-				<p><span th:text="${clubInfoList.member.member}님"></span></p>
+                  <p><span th:text="${clubInfoList.member.memberNm}"></span></p>
               </div>
 
             </div>

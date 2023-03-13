@@ -1,4 +1,4 @@
-package com.example.demo.club.domain;
+package com.example.demo.club.dto;
 
 import java.time.LocalDateTime;
 

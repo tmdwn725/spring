@@ -226,7 +226,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </thead>
                     <tbody>
                       <tr th:each="clubList : ${clubList}">
-                        <th scope="row"><img th:src="@{/images/main/product-1.jpg}" alt=""></th>
+
+                        <td>
+                        <!--<img th:src="${clubList.file.filePth}" alt=""/>-->
+                          <!--<img th:src="@{/images/main/product-1.jpg}" alt="">-->
+                        </td>
                         <td th:text="${clubList.clubNm}"></td>
                         <td th:text="${clubList.roomNm}"></td>
                         <td th:text="${#temporals.format(clubList.regDt, 'yyyy-MM-dd')}"></td>

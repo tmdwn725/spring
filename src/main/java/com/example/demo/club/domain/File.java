@@ -5,10 +5,12 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "file")
-@NoArgsConstructor
 public class File {
 	
 	@Id
@@ -24,11 +26,10 @@ public class File {
 	    
 	@Column(name = "file_ext")
 	private String fileExt;
-	
-	@OneToOne(mappedBy = "file", fetch = FetchType.LAZY)
+
+	@OneToOne(mappedBy = "file")
 	private Club club;
-	
-	
+
 	public void createFile(String fileNm, String filePth, String fileExt) {
 		this.fileNm = fileNm;
 		this.filePth = filePth;

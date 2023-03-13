@@ -30,15 +30,16 @@ public class Club extends BaseEntity {
 
 	@Column(name = "room_nm")
 	private String roomNm;
-	
 	@Column(name = "introduce")
 	private String introduce;
+	@Transient
+	private String filePth;
 
 	@OneToMany(mappedBy = "club")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="rpt_img_fl_seq")
+	@JoinColumn(name="rpt_img_fl_seq", referencedColumnName = "file_seq")
 	private File file;
 
 	@Builder
@@ -48,7 +49,6 @@ public class Club extends BaseEntity {
         this.clubNm = clubNm;
         this.roomNm = roomNm;
         this.introduce = introduce;
-        this.file = file;
     }
 
 }

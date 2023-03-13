@@ -16,26 +16,26 @@ import com.example.demo.club.service.MemberService;
 @SpringBootTest
 public class MemberTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private MemberService memberService;
+	@Autowired
+	private MemberRepository memberRepository;
+	@Autowired
+	private MemberService memberService;
 
-    @Test
-    @Rollback(value = false)
-    public void createMember(){
-        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        Member member = new Member();
-        member.createMember("phg", password, "", Role.USER);
-        memberRepository.save(member);
-    }
+	@Test
+	@Rollback(value = false)
+	public void createMember() {
+		String password = new SecurityConfig().getPasswordEncoder().encode("1234");
+		Member member = new Member();
+		member.createMember("phg","박형근", password, "", Role.USER);
+		memberRepository.save(member);
+	}
 
-    public void findAll(){
-        List<Member> list = memberService.findAll();
+	public void findAll() {
+		List<Member> list = memberService.findAll();
 
-        for (Member mem : list) {
-            System.out.println(mem.getMemberId());
-        }
-    }
+		for (Member mem : list) {
+			System.out.println(mem.getMemberId());
+		}
+	}
 
 }

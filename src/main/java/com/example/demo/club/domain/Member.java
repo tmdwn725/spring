@@ -29,6 +29,9 @@ public class Member extends BaseEntity {
 
     @Column(name = "member_id")
     private String memberId;
+    
+    @Column(name = "member_nm")
+    private String memberNm;
 
     @Column(name = "password")
     private String password;
@@ -43,8 +46,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-    public void createMember(String memberId, String password, String authority, Role role){
+    public void createMember(String memberId, String memberNm, String password, String authority, Role role){
         this.memberId = memberId;
+        this.memberNm = memberNm;
         this.password = password;
         this.authority = authority;
         this.role = role;

@@ -2,6 +2,9 @@ package com.example.demo.club.service;
 
 import java.util.List;
 
+import com.example.demo.club.common.ModelMapperUtil;
+import com.example.demo.club.domain.File;
+import com.example.demo.club.dto.FileDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +24,16 @@ public class ClubService {
     
     private final ModelMapper modelMapper;
 
-	public List<Club> selectClubList(){
-		return clubRepository.findAll();
+
+	public List<ClubDTO> selectClubList(){
+		List<Club> list = clubRepository.findNewClub();
+		//modelMapper.createTypeMap(Club.class, ClubDTO.class)
+		//		.addMapping(Club::getFile, ClubDTO::setFile);
+		List<ClubDTO> selectClubList = ModelMapperUtil.mapAll(list, ClubDTO.class);
+
+		return selectClubList;
 	}
-	
+
 	public ClubDTO selectClub(Long clubSeq) {
 		ClubDTO dto = modelMapper.map(clubRepository.findByClub(clubSeq), ClubDTO.class);
 		return dto;

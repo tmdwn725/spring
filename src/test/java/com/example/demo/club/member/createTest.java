@@ -50,7 +50,7 @@ public class createTest {
     void onlyMemberCreate() {
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         Member member = new Member();
-        member.createMember("phg", password, "", Role.USER);
+        member.createMember("phg","박형근", password, "", Role.USER);
         memberRepository.save(member);
     }
 
@@ -79,7 +79,7 @@ public class createTest {
 
 
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        mem.createMember("sjmoon", password, "", Role.USER);
+        mem.createMember("sjmoon","문승주", password, "", Role.USER);
        
     	fl.createFile("soccer.jpg","/images/club/soccer.jpg", "jpg");
     	files.add(fl);
