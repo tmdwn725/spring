@@ -1,12 +1,6 @@
 package com.example.demo.club.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +25,7 @@ public class File {
 	@Column(name = "file_ext")
 	private String fileExt;
 	
-	@OneToOne(mappedBy = "file")
+	@OneToOne(mappedBy = "file", fetch = FetchType.LAZY)
 	private Club club;
 	
 	

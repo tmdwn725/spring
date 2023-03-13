@@ -1,14 +1,15 @@
-$(".button-div").click(function(){
-  
-  $(this).toggleClass("div-close");
-  
-  if ($(this).hasClass("div-close")) {
-    $(".slide-div").animate({ left: "-130px"}, 800);  
-    $(".button-div").animate({ left: "-10px"}, 800);
-    $(this).find(".button-open").attr("class", "button-close");
-  } else {
-    $(".slide-div").animate({ left: "0px"}, 800);  
-    $(".button-div").animate({ left: "120px"}, 800);
-    $(this).find(".button-close").attr("class", "button-open");
-  }
+$(function(){
+    var duration = 300;
+ 
+    var $sidebar = $('.sidebar');
+    var $sidebarButton = $sidebar.find('button').on('click', function(){
+        $sidebar.toggleClass('open');
+        if($sidebar.hasClass('open')){
+            $sidebar.stop(true).animate({left: '0px'}, duration, 'easeOutBack');
+            $sidebarButton.find('span').text('<<');
+        }else{
+            $sidebar.stop(true).animate({left: '-270px'}, duration, 'easeInBack');
+            $sidebarButton.find('span').text('>>');
+        };
+    });
 });

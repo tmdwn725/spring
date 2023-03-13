@@ -1,5 +1,6 @@
 HELP.md
 SpringProJect/.gradle
+SpringProJect/.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -35,3 +36,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Query DSL ###
+**/src/main/generated/querydsl/
+

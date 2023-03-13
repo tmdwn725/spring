@@ -1,22 +1,18 @@
 package com.example.demo.club.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.example.demo.club.common.ModelMapperUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.club.common.ModelMapperUtil;
 import com.example.demo.club.domain.Club;
-import com.example.demo.club.domain.Member;
 import com.example.demo.club.dto.ClubDTO;
 import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.repository.ClubInfoRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

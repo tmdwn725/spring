@@ -41,6 +41,8 @@
  <link th:href="@{/css/calendar/core/main.css}" rel="stylesheet">
  <link th:href="@{/css/calendar/daygrid/main.css}" rel="stylesheet">
  <link th:href="@{/css/calendar/list/main.css}" rel="stylesheet">
+ 
+ <link th:href="@{/css/common/side.css}" rel="stylesheet">
 
  <script type="text/javascript" th:src="@{/js/calendar/core/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
@@ -48,6 +50,8 @@
  <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/google-calendar/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
 
@@ -90,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
   });
-
+  
 </script>
 <style>
 
@@ -150,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	margin-top: 5%;
 	margin-left: 5;
   }
-
+  
 </style>
 
 </head>
@@ -161,6 +165,11 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
+  	<!--<div class="slide-div">
+	</div>
+	<div class="button-div div-close" onclick="div_click()">
+	  <div class="button-open"></div>
+	</div>-->
     <th:block th:replace="common/side :: sideFragment"></th:block>
   <!-- End Sidebar-->
 
@@ -231,8 +240,25 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- End Left side columns -->
         
         <!-- Right side columns -->
-        <div class="col-lg-4">
+        <div class="row col-lg-4">
+         <!-- 일정관리 -->
+		  <div class="card">
+		  	<div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
 
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">공지사항 <span>| Today</span></h5>
+            </div>
+          </div>
           <!-- Recent Activity -->
           <div class="card">
             <div class="filter">
@@ -249,64 +275,16 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-
-              <div class="activity">
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">1 day</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
-
+              <h5 class="card-title">동아리원 <span>| 4/5</span></h5>
+              <div class="activity" th:each="clubInfoList : ${club.clubInfoList}">
+				<p><span th:text="${clubInfoList.member.member}님"></span></p>
               </div>
 
             </div>
-          </div><!-- End Recent Activity -->
-          
+          </div>
       </div>
+       <!-- 동아리원 -->
+      
     </div>
     </section>
 
