@@ -26,11 +26,7 @@ public class ClubService {
 
 
 	public List<ClubDTO> selectClubList(){
-		List<Club> list = clubRepository.findNewClub();
-		//modelMapper.createTypeMap(Club.class, ClubDTO.class)
-		//		.addMapping(Club::getFile, ClubDTO::setFile);
-		List<ClubDTO> selectClubList = ModelMapperUtil.mapAll(list, ClubDTO.class);
-
+		List<ClubDTO> selectClubList = ModelMapperUtil.mapAll(clubRepository.findNewClub(), ClubDTO.class);
 		return selectClubList;
 	}
 

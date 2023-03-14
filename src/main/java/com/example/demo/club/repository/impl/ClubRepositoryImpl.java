@@ -15,17 +15,19 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
 	
 	private final JPAQueryFactory queryFactory;
 
+	QClub club = QClub.club;
+	QFile file = QFile.file;
+
 	@Override
 	public Club findByClub(Long clubSeq) {
-		return queryFactory.selectFrom(QClub.club)
-				.where(QClub.club.clubSeq.eq(clubSeq))
+		return queryFactory.selectFrom(club)
+				.where(club.clubSeq.eq(clubSeq))
 				.fetchOne();
 	}
 	@Override
 	public List<Club> findNewClub(){
-		return queryFactory.select(QClub.club)
-				.from(QClub.club)
-				.leftJoin(QClub.club.file, QFile.file).fetchJoin()
+		return queryFactory.selectFrom(club)
+				.leftJoin(club.file,file).fetchJoin()
 				.fetch();
 	}
 
