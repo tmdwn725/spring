@@ -1,6 +1,8 @@
 package com.example.demo.club.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +17,8 @@ import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +47,17 @@ public class MemberService implements UserDetailsService {
     public Member findOne(String memberId) {
         return memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("아이디를 확인해주세요."));
+    }
+
+    /* 패스워드 변경, 유효성 체크 */
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
     }
 
 
