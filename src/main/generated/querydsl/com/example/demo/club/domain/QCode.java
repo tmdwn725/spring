@@ -26,10 +26,10 @@ public class QCode extends EntityPathBase<Code> {
     public final StringPath codeNm = createString("codeNm");
 
     //inherited
-    public final StringPath modDt = _super.modDt;
+    public final DateTimePath<java.time.LocalDateTime> modDt = _super.modDt;
 
     //inherited
-    public final StringPath regDt = _super.regDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     public QCode(String variable) {
         super(Code.class, forVariable(variable));
