@@ -256,7 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
               </ul>
             </div>
             <div class="card-body">
-              <h5 class="card-title">공지사항 <span>| Today</span></h5>
+                  <h5 class="card-title">채팅방 <span>| Today</span></h5>
+              <div class="activity">
+                <th:block th:replace="chat/chatRoom :: chatFragment"></th:block>
+              </div>
             </div>
           </div>
           <!-- Recent Activity -->
