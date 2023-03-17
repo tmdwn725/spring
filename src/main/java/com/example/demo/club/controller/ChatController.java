@@ -1,25 +1,60 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
 import com.example.demo.club.service.ChatService;
+import com.example.demo.club.service.MsgChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
 
+    // 아래에서 사용되는 convertAndSend 를 사용하기 위해서 서언
+    // convertAndSend 는 객체를 인자로 넘겨주면 자동으로 Message 객체로 변환 후 도착지로 전송한다.
+    private final SimpMessageSendingOperations template;
     private  final ChatService chatService;
+    private  final MsgChatService msgChatService;
+
+    @MessageMapping("/chat/enterUser")
+    public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
+
+        // 채팅방 유저+1
+        chatService.plusUserCnt(chat.getRoomId());
+
+        // 채팅방에 유저 추가 및 UserUUID 반환
+        String userUUID = msgChatService.addUser(ChatRoomMap.getInstance().getChatRooms(), chat.getRoomId(), chat.getSender());
+
+        // 반환 결과를 socket session 에 userUUID 로 저장
+        headerAccessor.getSessionAttributes().put("userUUID", userUUID);
+        headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
+
+        chat.setMessage(chat.getSender() + " 님 입장!!");
+        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+
+    }
+
+    // 해당 유저
+    @MessageMapping("/chat/sendMessage")
+    public void sendMessage(@Payload ChatDTO chat) {
+        log.info("CHAT {}", chat);
+        chat.setMessage(chat.getMessage());
+        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+
+    }
 
     // 채팅방 생성
     // 채팅방 생성 후 다시 / 로 return

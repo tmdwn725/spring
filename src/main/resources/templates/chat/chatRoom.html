@@ -66,7 +66,7 @@
 </div>-->
 
 
-<div id="chat-page" ><!--class="hidden"-->
+<div id="chat-page"><!--class="hidden"-->
     <div class="btn-group dropend">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="showUserListButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -76,16 +76,18 @@
 
         </div>
     </div>
-    <div class="chat-container">
+    <div class="activity">
         <div class="chat-header">
             <h4>[[<!--${room.roomName}-->101호]]</h4>
         </div>
       <!--  <div class="connecting">
             Connecting...
         </div>-->
+        <div class="chat-body">
         <ul id="messageArea">
 
         </ul>
+
         <form id="messageForm" name="messageForm" nameForm="messageForm">
             <div class="form-group">
                 <div class="input-group clearfix">
@@ -95,6 +97,7 @@
                 </div>
             </div>
         </form>
+        </div>
 
        <!-- <div class="btn-group dropend">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="showMenu" data-toggle="dropdown"
@@ -113,5 +116,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<!--<script src="/js/chat/socket.js"></script>-->
+<script src="/js/chat/socket.js"></script>
 </body>
+</th:block>
+</html>

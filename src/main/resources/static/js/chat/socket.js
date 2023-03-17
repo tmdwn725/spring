@@ -15,7 +15,10 @@ var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
 
-var stompClient = null;
+var socket = new SockJS('/ws-stomp');
+var stompClient = Stomp.over(socket);
+stompClient.connect({}, onConnected, onError);
+//var stompClient = null;
 var username = null;
 
 var colors = [
@@ -25,10 +28,10 @@ var colors = [
 
 // roomId 파라미터 가져오기
 const url = new URL(location.href).searchParams;
-const roomId = url.get('roomId');
-
+const roomId = url.get('clubSeq');
+username = url.get('memberSeq');
 function connect(event) {
-    username = document.querySelector('#name').value.trim();
+    //username = document.querySelector('#name').value.trim();
 
     // username 중복 확인
     isDuplicateName();
@@ -213,7 +216,7 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-usernameForm.addEventListener('submit', connect, true)
+//usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
 
 /// 파일 업로드 부분 ////

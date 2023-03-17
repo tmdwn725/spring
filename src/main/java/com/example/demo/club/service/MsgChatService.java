@@ -4,6 +4,7 @@ import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,5 +28,21 @@ public class MsgChatService {
         ChatRoomMap.getInstance().getChatRooms().put(room.getRoomId(), room);
 
         return room;
+    }
+
+    // 채팅방 유저 리스트에 유저 추가
+    public String addUser(Map<String, ChatRoomDTO> chatRoomMap, String roomId, String userName){
+        ChatRoomDTO room = chatRoomMap.get(roomId);
+        String userUUID = UUID.randomUUID().toString();
+
+        // 아이디 중복 확인 후 userList 에 추가
+        //room.getUserList().put(userUUID, userName);
+
+        // hashmap 에서 concurrentHashMap 으로 변경
+        ConcurrentHashMap<String, String> userList = (ConcurrentHashMap<String, String>)room.getUserList();
+        userList.put(userUUID, userName);
+
+
+        return userUUID;
     }
 }
