@@ -39,7 +39,7 @@ public class Club extends BaseEntity {
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="rpt_img_fl_seq")
+	@JoinColumn(name="rpt_img_fl_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private File file;
 
 	/*@OneToOne(fetch = FetchType.LAZY)
