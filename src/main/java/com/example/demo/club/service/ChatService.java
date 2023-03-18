@@ -33,7 +33,7 @@ public class ChatService {
 
     // 채팅방 인원+1
     public void plusUserCnt(String roomId){
-        log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
+        //log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
         ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
         room.setUserCount(room.getUserCount()+1);
     }

@@ -42,6 +42,10 @@ public class Club extends BaseEntity {
 	@JoinColumn(name="rpt_img_fl_seq")
 	private File file;
 
+	/*@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="club_seq")
+	private ChatRoom chatRoom;*/
+
 	@Builder
     public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm,String introduce, File file){
         this.schoolCd = schoolCd;

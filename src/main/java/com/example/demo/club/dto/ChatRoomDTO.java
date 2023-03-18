@@ -24,6 +24,7 @@ public class ChatRoomDTO {
     private ChatType chatType; //  채팅 타입 여부
 
     // ChatRoomDto 클래스는 하나로 가되 서비스를 나누었음
-    public ConcurrentMap<String, ?> userList = new ConcurrentHashMap<>();
+    @Builder.Default
+    public ConcurrentMap<String, String> userList = new ConcurrentHashMap<>();
 
 }

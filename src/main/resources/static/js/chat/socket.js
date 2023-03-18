@@ -1,10 +1,10 @@
 'use strict';
 
 // document.write("<script src='jquery-3.6.1.js'></script>")
-document.write("<script\n" +
+/*document.write("<script\n" +
     "  src=\"https://code.jquery.com/jquery-3.6.1.min.js\"\n" +
     "  integrity=\"sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=\"\n" +
-    "  crossorigin=\"anonymous\"></script>")
+    "  crossorigin=\"anonymous\"></script>")*/
 
 
 var usernamePage = document.querySelector('#username-page');
@@ -30,28 +30,25 @@ var colors = [
 const url = new URL(location.href).searchParams;
 const roomId = url.get('clubSeq');
 username = url.get('memberSeq');
-function connect(event) {
-    //username = document.querySelector('#name').value.trim();
+var memberNm = document.getElementById("sender").value;
 
-    // username 중복 확인
-    isDuplicateName();
+$(document).ready(function(){
+  // username 중복 확인
+  //isDuplicateName();
 
-    // usernamePage 에 hidden 속성 추가해서 가리고
-    // chatPage 를 등장시킴
-    usernamePage.classList.add('hidden');
-    chatPage.classList.remove('hidden');
+  // usernamePage 에 hidden 속성 추가해서 가리고
+  // chatPage 를 등장시킴
+  //usernamePage.classList.add('hidden');
+  //chatPage.classList.remove('hidden');
 
-    // 연결하고자하는 Socket 의 endPoint
-    var socket = new SockJS('/ws-stomp');
-    stompClient = Stomp.over(socket);
+  // 연결하고자하는 Socket 의 endPoint
+  var socket = new SockJS('/ws-stomp');
+  stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, onConnected, onError);
+  stompClient.connect({}, onConnected, onError);
 
-
-    event.preventDefault();
-
-
-}
+  //event.preventDefault();
+});
 
 function onConnected() {
 
@@ -64,13 +61,10 @@ function onConnected() {
         {},
         JSON.stringify({
             "roomId": roomId,
-            sender: username,
+            sender: memberNm,
             type: 'ENTER'
         })
     )
-
-    connectingElement.classList.add('hidden');
-
 }
 
 // 유저 닉네임 중복 확인
@@ -127,7 +121,7 @@ function sendMessage(event) {
     if (messageContent && stompClient) {
         var chatMessage = {
             "roomId": roomId,
-            sender: username,
+            sender: memberNm,
             message: messageInput.value,
             type: 'TALK'
         };
