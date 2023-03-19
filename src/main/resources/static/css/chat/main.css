@@ -194,12 +194,20 @@ button.accent {
     position: relative;
 }
 
+/*#chat-page .my-chat {
+    padding-left: 18%;
+}
+
+#chat-page .other-chat {
+    padding-left: 68%;
+}*/
+
 #chat-page .chat-message i {
     position: absolute;
     width: 42px;
     height: 42px;
     overflow: hidden;
-    left: 10px;
+    /*left: 10px;*/
     display: inline-block;
     vertical-align: middle;
     font-size: 18px;

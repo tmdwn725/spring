@@ -3,6 +3,7 @@ package com.example.demo.club.controller;
 import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
+import com.example.demo.club.repository.ChatRoomRepository;
 import com.example.demo.club.service.ChatService;
 import com.example.demo.club.service.MsgChatService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -33,16 +35,18 @@ public class ChatController {
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
         // 채팅방 유저+1
-        chatService.plusUserCnt(chat.getRoomId());
+        chatService.plusUserCnt(chat.getRoomId(), chat.getSenderId(), chat.getSender());
 
         // 채팅방에 유저 추가 및 UserUUID 반환
-        String userUUID = msgChatService.addUser(ChatRoomMap.getInstance().getChatRooms(), chat.getRoomId(), chat.getSender());
+        //String userUUID = msgChatService.addUser(ChatRoomMap.getInstance().getChatRooms(), chat.getRoomId(), chat.getSender());
 
         // 반환 결과를 socket session 에 userUUID 로 저장
-        headerAccessor.getSessionAttributes().put("userUUID", userUUID);
+        headerAccessor.getSessionAttributes().put("userUUID", chat.getSenderId());
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
+        // 메시지 중복되는 현상 제거를 위한 코드 추가
+        chat.setMessageId(UUID.randomUUID().toString());
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
 
     }
@@ -52,32 +56,12 @@ public class ChatController {
     public void sendMessage(@Payload ChatDTO chat) {
         log.info("CHAT {}", chat);
         chat.setMessage(chat.getMessage());
+
+        //chatService.insertChat(chat);
+        // 메시지 중복되는 현상 제거를 위한 코드 추가
+        chat.setMessageId(UUID.randomUUID().toString());
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
 
-    }
-
-    // 채팅방 생성
-    // 채팅방 생성 후 다시 / 로 return
-    @PostMapping("/chat/createroom")
-    public String createRoom(@RequestParam("roomName") String name,
-                             @RequestParam("roomPwd") String roomPwd,
-                             @RequestParam("secretChk") String secretChk,
-                             @RequestParam(value = "maxUserCnt", defaultValue = "2") String maxUserCnt,
-                             @RequestParam("chatType") String chatType,
-                             RedirectAttributes rttr) {
-
-        // log.info("chk {}", secretChk);
-
-        // 매개변수 : 방 이름, 패스워드, 방 잠금 여부, 방 인원수
-        ChatRoomDTO room;
-
-        room = chatService.createChatRoom(name, roomPwd, Boolean.parseBoolean(secretChk), Integer.parseInt(maxUserCnt), chatType);
-
-
-        log.info("CREATE Chat Room [{}]", room);
-
-        rttr.addFlashAttribute("roomName", room);
-        return "redirect:/";
     }
 
     // 채팅방 입장 화면
@@ -99,18 +83,6 @@ public class ChatController {
         model.addAttribute("room", room);
 
         return "chatroom";
-        /*
-        if (ChatRoomDTO.ChatType.MSG.equals(room.getChatType())) {
-            return "chatroom";
-        }else {
-            String uuid = UUID.randomUUID().toString().split("-")[0];
-            model.addAttribute("uuid", uuid);
-            model.addAttribute("roomId", room.getRoomId());
-            model.addAttribute("roomName", room.getRoomName());
-//            return "rtcroom";
-
-            return "kurentoroom";
-        }*/
     }
 
     // 유저 카운트
@@ -119,5 +91,13 @@ public class ChatController {
     public boolean chUserCnt(@PathVariable String roomId){
 
         return chatService.chkRoomUserCnt(roomId);
+    }
+
+    // 채팅에 참여한 유저 리스트 반환
+    @GetMapping("/chat/userlist")
+    @ResponseBody
+    public ArrayList<String> userList(String roomId) {
+
+        return msgChatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), roomId);
     }
 }

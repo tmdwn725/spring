@@ -30,7 +30,8 @@ var colors = [
 const url = new URL(location.href).searchParams;
 const roomId = url.get('clubSeq');
 username = url.get('memberSeq');
-var memberNm = document.getElementById("sender").value;
+var senderId = document.getElementById("senderId").value;
+var senderNm = document.getElementById("senderNm").value;
 
 $(document).ready(function(){
   // username 중복 확인
@@ -61,7 +62,8 @@ function onConnected() {
         {},
         JSON.stringify({
             "roomId": roomId,
-            sender: memberNm,
+            sender: senderNm,
+            senderId: senderId,
             type: 'ENTER'
         })
     )
@@ -89,6 +91,7 @@ function isDuplicateName() {
 // 유저 리스트 받기
 // ajax 로 유저 리스를 받으며 클라이언트가 입장/퇴장 했다는 문구가 나왔을 때마다 실행된다.
 function getUserList() {
+/*
     const $list = $("#list");
 
     $.ajax({
@@ -106,6 +109,7 @@ function getUserList() {
             $list.html(users);
         }
     })
+    */
 }
 
 
@@ -121,12 +125,13 @@ function sendMessage(event) {
     if (messageContent && stompClient) {
         var chatMessage = {
             "roomId": roomId,
-            sender: memberNm,
+            sender: senderNm,
             message: messageInput.value,
             type: 'TALK'
         };
-
-        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
+        if (stompClient.connected === true) {
+            stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
+        }
         messageInput.value = '';
     }
     event.preventDefault();
@@ -137,6 +142,13 @@ function sendMessage(event) {
 function onMessageReceived(payload) {
     //console.log("payload 들어오냐? :"+payload);
     var chat = JSON.parse(payload.body);
+
+    // 이전에 전송한 메시지와 같은 경우, 중복 호출 방지
+     if (chat.messageId == $('#messageId').val()) {
+       return;
+     }else{
+       $('#messageId').val(chat.messageId);
+     }
 
     var messageElement = document.createElement('li');
 
@@ -151,12 +163,22 @@ function onMessageReceived(payload) {
         getUserList();
 
     } else { // chatType 이 talk 라면 아래 내용
-        messageElement.classList.add('chat-message');
+        if(senderNm == chat.sender){
+            messageElement.classList.add('chat-message','my-chat');
+        }else{
+            messageElement.classList.add('chat-message','other-chat');
+        }
 
         var avatarElement = document.createElement('i');
         var avatarText = document.createTextNode(chat.sender[0]);
         avatarElement.appendChild(avatarText);
         avatarElement.style['background-color'] = getAvatarColor(chat.sender);
+        // 이름으로 채팅 프로필 위치 비교 다음에 seq로 바꿀예정
+        if(senderNm == chat.sender){
+            avatarElement.style['left'] = "3%";
+        }else{
+            avatarElement.style['right'] = "3%";
+        }
 
         messageElement.appendChild(avatarElement);
 

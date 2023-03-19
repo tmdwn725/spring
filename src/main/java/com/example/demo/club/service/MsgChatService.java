@@ -4,6 +4,7 @@ import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +43,24 @@ public class MsgChatService {
         ConcurrentHashMap<String, String> userList = (ConcurrentHashMap<String, String>)room.getUserList();
         userList.put(userUUID, userName);
 
-
         return userUUID;
+    }
+
+    // 채팅방 전체 userlist 조회
+    public ArrayList<String> getUserList(Map<String, ChatRoomDTO> chatRoomMap, String roomId){
+        ArrayList<String> list = new ArrayList<>();
+
+        ChatRoomDTO room = chatRoomMap.get(roomId);
+
+        // hashmap 을 for 문을 돌린 후
+        // value 값만 뽑아내서 list 에 저장 후 reutrn
+        room.getUserList().forEach((key, value) -> list.add((String) value));
+        return list;
+    }
+
+    // 채팅방 특정 유저 삭제
+    public void delUser(Map<String, ChatRoomDTO> chatRoomMap, String roomId, String userUUID){
+        ChatRoomDTO room = chatRoomMap.get(roomId);
+        room.getUserList().remove(userUUID);
     }
 }

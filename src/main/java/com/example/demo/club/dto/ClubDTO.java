@@ -18,4 +18,6 @@ public class ClubDTO {
 	private String filePth;
 	private List<ClubInfoDTO> clubInfoList;
 	private FileDTO file;
-}
+
+	private ChatRoomDTO chatRoom;
+ }

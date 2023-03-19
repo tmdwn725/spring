@@ -13,9 +13,11 @@ import java.util.concurrent.ConcurrentMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomDTO {
+    private Long chatRoomSeq;
     private String roomId;
     private String roomName;
-    private int userCount;
+    @Builder.Default
+    private int userCount = 0;
     private int maxUserCnt;
 
     public enum ChatType{  // 화상 채팅, 문자 채팅
@@ -25,6 +27,6 @@ public class ChatRoomDTO {
 
     // ChatRoomDto 클래스는 하나로 가되 서비스를 나누었음
     @Builder.Default
-    public ConcurrentMap<String, String> userList = new ConcurrentHashMap<>();
+    public ConcurrentMap<String, String> userList = new ConcurrentHashMap<String,String>();
 
 }

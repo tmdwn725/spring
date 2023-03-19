@@ -17,10 +17,16 @@ public class ChatDTO {
     public enum MessageType{
         ENTER, TALK, LEAVE;
     }
-
+    private Long chatRoomSeq;
     private MessageType type; // 메시지 타입
     private String roomId; // 방 번호
     private String sender; // 채팅을 보낸 사람
+    private String senderId;
+    private Long memberSeq;
+    private Long clubSeq;
+    private MemberDTO memberDTO;
+    private ClubDTO clubDTO;
     private String message; // 메시지
     private String time; // 채팅 발송 시간
+    private String messageId;
 }

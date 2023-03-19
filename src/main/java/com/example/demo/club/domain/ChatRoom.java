@@ -1,6 +1,8 @@
 package com.example.demo.club.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "chat_room")
 public class ChatRoom {
@@ -18,11 +21,11 @@ public class ChatRoom {
     private Long chatRoomSeq;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "club_seq")
     private Club club;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "member_seq")
     private Member member;
 
     @Column(name = "send_dt")
@@ -30,4 +33,11 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom")
     private List<Chat>  list = new ArrayList<>();
+
+    @Builder
+    public void createChatRoom(Club club, Member member,LocalDateTime sendDt){
+        this.club = club;
+        this.member = member;
+        this.sendDt = sendDt;
+    }
 }

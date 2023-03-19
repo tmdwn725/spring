@@ -79,6 +79,7 @@
     <div class="activity">
         <div class="chat-header">
             <h4>[[${club.clubNm}]]</h4>
+            <input type="hidden" id="chatRoomSeq" th:value="${club.chatRoom.chatRoomSeq}">
         </div>
       <!--  <div class="connecting">
             Connecting...
@@ -93,7 +94,9 @@
                 <div class="input-group clearfix">
                     <input type="text" id="message" placeholder="Type a message..." autocomplete="off"
                            class="form-control"/>
-                    <input type="hidden" id="sender" th:value="${member.memberNm}">
+                    <input type="hidden" id="senderId" th:value="${member.memberId}">
+                    <input type="hidden" id="senderNm" th:value="${member.memberNm}">
+                    <input type="hidden" id="messageId" value="">
                     <button type="submit" class="primary">Send</button>
                 </div>
             </div>

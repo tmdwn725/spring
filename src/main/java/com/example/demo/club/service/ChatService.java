@@ -1,12 +1,19 @@
 package com.example.demo.club.service;
 
+import com.example.demo.club.domain.Chat;
+import com.example.demo.club.domain.ChatRoom;
+import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
+import com.example.demo.club.repository.ChatRepository;
+import com.example.demo.club.repository.ChatRoomRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +23,10 @@ import org.springframework.stereotype.Service;
 public class ChatService {
 
     private final MsgChatService msgChatService;
+
+    private final ChatRoomRepository chatRoomRepository;
+
+    private final ChatRepository chatRepository;
 
     // roomID 기준으로 채팅방 찾기
     public ChatRoomDTO findRoomById(String roomId){
@@ -32,10 +43,16 @@ public class ChatService {
     }
 
     // 채팅방 인원+1
-    public void plusUserCnt(String roomId){
+    public void plusUserCnt(String roomId,String senderId,String sender){
         //log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
-        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+
+        ChatRoom chatRoom = chatRoomRepository.selectChatRoomByClubSeq(Long.parseLong(roomId));
+        ChatRoomDTO room = new ChatRoomDTO();
+        //ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+        room.setRoomId(roomId);
+        room.setRoomName(chatRoom.getClub().getClubNm());
         room.setUserCount(room.getUserCount()+1);
+        room.getUserList().put(senderId, sender);
     }
 
     // 채팅방 인원-1
@@ -51,8 +68,15 @@ public class ChatService {
         if (room.getUserCount() + 1 > room.getMaxUserCnt()) {
             return false;
         }
-
         return true;
+    }
+
+    public void insertChat(ChatDTO chatDTO){
+        Chat chat = new Chat();
+        chat.getMember().setMemberSeq(chatDTO.getMemberSeq());
+        chat.getChatRoom().setChatRoomSeq(chatDTO.getChatRoomSeq());
+        chat.setMessage(chatDTO.getMessage());
+        chatRepository.insertChat(chat);
     }
 
 }
