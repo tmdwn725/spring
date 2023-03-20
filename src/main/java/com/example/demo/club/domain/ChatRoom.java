@@ -28,16 +28,12 @@ public class ChatRoom {
     @JoinColumn(name = "member_seq")
     private Member member;
 
-    @Column(name = "send_dt")
-    private LocalDateTime sendDt;
-
     @OneToMany(mappedBy = "chatRoom")
-    private List<Chat>  list = new ArrayList<>();
+    private List<Chat> chatList;
 
     @Builder
-    public void createChatRoom(Club club, Member member,LocalDateTime sendDt){
+    public void createChatRoom(Club club, Member member){
         this.club = club;
         this.member = member;
-        this.sendDt = sendDt;
     }
 }

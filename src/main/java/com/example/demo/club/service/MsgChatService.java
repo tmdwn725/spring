@@ -15,7 +15,7 @@ public class MsgChatService {
         // roomName 와 roomPwd 로 chatRoom 빌드 후 return
         ChatRoomDTO room = ChatRoomDTO.builder()
                 .roomId(UUID.randomUUID().toString())
-                .roomName(roomName)
+                //.roomName(roomName)
                 .userCount(0) // 채팅방 참여 인원수
                 .maxUserCnt(maxUserCnt) // 최대 인원수 제한
                 .build();

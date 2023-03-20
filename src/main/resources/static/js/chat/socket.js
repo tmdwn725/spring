@@ -19,17 +19,18 @@ var socket = new SockJS('/ws-stomp');
 var stompClient = Stomp.over(socket);
 stompClient.connect({}, onConnected, onError);
 //var stompClient = null;
-var username = null;
+var memberSeq = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-// roomId 파라미터 가져오기
+// chatRoomSeq 파라미터 가져오기
 const url = new URL(location.href).searchParams;
-const roomId = url.get('clubSeq');
-username = url.get('memberSeq');
+const clubSeq = url.get('clubSeq');
+memberSeq = url.get('memberSeq');
+var chatRoomSeq = document.getElementById("chatRoomSeq").value;
 var senderId = document.getElementById("senderId").value;
 var senderNm = document.getElementById("senderNm").value;
 
@@ -53,15 +54,15 @@ $(document).ready(function(){
 
 function onConnected() {
 
-    // sub 할 url => /sub/chat/room/roomId 로 구독한다
-    stompClient.subscribe('/sub/chat/room/' + roomId, onMessageReceived);
+    // sub 할 url => /sub/chat/room/chatRoomSeq 로 구독한다
+    stompClient.subscribe('/sub/chat/room/' + chatRoomSeq, onMessageReceived);
 
     // 서버에 username 을 가진 유저가 들어왔다는 것을 알림
     // /pub/chat/enterUser 로 메시지를 보냄
     stompClient.send("/pub/chat/enterUser",
         {},
         JSON.stringify({
-            "roomId": roomId,
+            "chatRoomSeq": chatRoomSeq,
             sender: senderNm,
             senderId: senderId,
             type: 'ENTER'
@@ -77,7 +78,7 @@ function isDuplicateName() {
         url: "/chat/duplicateName",
         data: {
             "username": username,
-            "roomId": roomId
+            "chatRoomSeq": chatRoomSeq
         },
         success: function (data) {
             console.log("함수 동작 확인 : " + data);
@@ -124,7 +125,8 @@ function sendMessage(event) {
 
     if (messageContent && stompClient) {
         var chatMessage = {
-            "roomId": roomId,
+            "chatRoomSeq": chatRoomSeq,
+            "memberSeq": memberSeq,
             sender: senderNm,
             message: messageInput.value,
             type: 'TALK'
@@ -155,12 +157,12 @@ function onMessageReceived(payload) {
     if (chat.type === 'ENTER') {  // chatType 이 enter 라면 아래 내용
         messageElement.classList.add('event-message');
         chat.content = chat.sender + chat.message;
-        getUserList();
+        //getUserList();
 
     } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
         messageElement.classList.add('event-message');
         chat.content = chat.sender + chat.message;
-        getUserList();
+        //getUserList();
 
     } else { // chatType 이 talk 라면 아래 내용
         if(senderNm == chat.sender){
@@ -190,9 +192,11 @@ function onMessageReceived(payload) {
 
     var contentElement = document.createElement('p');
 
+    var messageText = document.createTextNode(chat.message);
+    contentElement.appendChild(messageText);
     // 만약 s3DataUrl 의 값이 null 이 아니라면 => chat 내용이 파일 업로드와 관련된 내용이라면
     // img 를 채팅에 보여주는 작업
-    if(chat.s3DataUrl != null){
+    /*if(chat.s3DataUrl != null){
         var imgElement = document.createElement('img');
         imgElement.setAttribute("src", chat.s3DataUrl);
         imgElement.setAttribute("width", "300");
@@ -213,7 +217,7 @@ function onMessageReceived(payload) {
         // 이전에 넘어온 채팅 내용 보여주기기
        var messageText = document.createTextNode(chat.message);
         contentElement.appendChild(messageText);
-    }
+    }*/
 
     messageElement.appendChild(contentElement);
 

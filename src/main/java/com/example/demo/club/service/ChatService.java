@@ -1,18 +1,24 @@
 package com.example.demo.club.service;
 
+import com.example.demo.club.common.ModelMapperUtil;
 import com.example.demo.club.domain.Chat;
 import com.example.demo.club.domain.ChatRoom;
+import com.example.demo.club.domain.Member;
 import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
+import com.example.demo.club.dto.ClubDTO;
 import com.example.demo.club.repository.ChatRepository;
 import com.example.demo.club.repository.ChatRoomRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -27,6 +33,8 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
 
     private final ChatRepository chatRepository;
+
+    private final ModelMapper modelMapper;
 
     // roomID 기준으로 채팅방 찾기
     public ChatRoomDTO findRoomById(String roomId){
@@ -43,14 +51,14 @@ public class ChatService {
     }
 
     // 채팅방 인원+1
-    public void plusUserCnt(String roomId,String senderId,String sender){
+    public void plusUserCnt(Long chatRoomSeq,String senderId,String sender){
         //log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
 
-        ChatRoom chatRoom = chatRoomRepository.selectChatRoomByClubSeq(Long.parseLong(roomId));
+        ChatRoom chatRoom = chatRoomRepository.selectChatRoomByClubSeq(chatRoomSeq);
         ChatRoomDTO room = new ChatRoomDTO();
         //ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
-        room.setRoomId(roomId);
-        room.setRoomName(chatRoom.getClub().getClubNm());
+        room.setChatRoomSeq(chatRoomSeq);
+        //room.setRoomName(chatRoom.getClub().getClubNm());
         room.setUserCount(room.getUserCount()+1);
         room.getUserList().put(senderId, sender);
     }
@@ -71,12 +79,32 @@ public class ChatService {
         return true;
     }
 
-    public void insertChat(ChatDTO chatDTO){
+    public ChatRoomDTO findChatRoom(Long chatRoomSeq) {
+        ChatRoom room = chatRoomRepository.selectChatRoomByClubSeq(chatRoomSeq);
+        ChatRoomDTO chat =  new ChatRoomDTO();
+        chat.setChatRoomSeq(room.getChatRoomSeq());
+        //room.setRoomName(chatRoom.getClub().getClubNm());
+        //ChatRoomDTO chat = modelMapper.map(room,ChatRoomDTO.class);
+        return  chat;
+    }
+
+    public List<ChatDTO> findChatList(Long chatRoomSeq) {
+        List<ChatDTO> selectChatList = ModelMapperUtil.mapAll(chatRoomRepository.selectChatListByChatRoomSeq(chatRoomSeq), ChatDTO.class);
+        return  selectChatList;
+    }
+
+    public void saveChat(ChatDTO chatDTO){
+        LocalDateTime currentDate = LocalDateTime.now();
         Chat chat = new Chat();
-        chat.getMember().setMemberSeq(chatDTO.getMemberSeq());
-        chat.getChatRoom().setChatRoomSeq(chatDTO.getChatRoomSeq());
+        Member member = new Member();
+        ChatRoom chatRoom = new ChatRoom();
+        member.setMemberSeq(chatDTO.getMemberSeq());
+        chatRoom.setChatRoomSeq(chatDTO.getChatRoomSeq());
+        chat.setMember(member);
+        chat.setChatRoom(chatRoom);
         chat.setMessage(chatDTO.getMessage());
-        chatRepository.insertChat(chat);
+        chat.setSendDt(currentDate);
+        chatRepository.save(chat);
     }
 
 }

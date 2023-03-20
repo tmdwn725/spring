@@ -1,10 +1,12 @@
 package com.example.demo.club.dto;
 
+import com.example.demo.club.domain.Club;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -14,12 +16,14 @@ import java.util.concurrent.ConcurrentMap;
 @NoArgsConstructor
 public class ChatRoomDTO {
     private Long chatRoomSeq;
+    private ClubDTO club;
+    private MemberDTO member;
+    private List<ChatDTO> chatList;
+
     private String roomId;
-    private String roomName;
     @Builder.Default
     private int userCount = 0;
     private int maxUserCnt;
-
     public enum ChatType{  // 화상 채팅, 문자 채팅
         MSG, RTC
     }

@@ -27,6 +27,6 @@ public class ChatDTO {
     private MemberDTO memberDTO;
     private ClubDTO clubDTO;
     private String message; // 메시지
-    private String time; // 채팅 발송 시간
+    private String sendDt; // 채팅 발송 시간
     private String messageId;
 }

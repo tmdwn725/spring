@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,20 +36,23 @@ public class ChatController {
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
         // 채팅방 유저+1
-        chatService.plusUserCnt(chat.getRoomId(), chat.getSenderId(), chat.getSender());
+        chatService.plusUserCnt(chat.getChatRoomSeq(), chat.getSenderId(), chat.getSender());
+
+        ChatRoomDTO room = chatService.findChatRoom(chat.getChatRoomSeq());
+        List<ChatDTO> chatList = chatService.findChatList(chat.getChatRoomSeq());
+        room.setChatList(chatList);
 
         // 채팅방에 유저 추가 및 UserUUID 반환
         //String userUUID = msgChatService.addUser(ChatRoomMap.getInstance().getChatRooms(), chat.getRoomId(), chat.getSender());
 
         // 반환 결과를 socket session 에 userUUID 로 저장
         headerAccessor.getSessionAttributes().put("userUUID", chat.getSenderId());
-        headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
+        headerAccessor.getSessionAttributes().put("chatRoomSeq", room.getChatRoomSeq());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
-
+        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getChatRoomSeq()), chat);
     }
 
     // 해당 유저
@@ -57,20 +61,19 @@ public class ChatController {
         log.info("CHAT {}", chat);
         chat.setMessage(chat.getMessage());
 
-        //chatService.insertChat(chat);
+        chatService.saveChat(chat);
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
-
+        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getChatRoomSeq()), chat);
     }
 
     // 채팅방 입장 화면
-    // 파라미터로 넘어오는 roomId 를 확인후 해당 roomId 를 기준으로
+    // 파라미터로 넘어오는 chatRoomSeq 를 확인후 해당 chatRoomSeq 를 기준으로
     // 채팅방을 찾아서 클라이언트를 chatroom 으로 보낸다.
     @GetMapping("/chat/room")
-    public String roomDetail(Model model, String roomId){
+    public String roomDetail(Model model, String chatRoomSeq){
 
-        log.info("roomId {}", roomId);
+        log.info("chatRoomSeq {}", chatRoomSeq);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         // principalDetails 가 null 이 아니라면 로그인 된 상태!!
         if (userName != null) {
@@ -78,7 +81,7 @@ public class ChatController {
             model.addAttribute("user", userName);
         }
 
-        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+        ChatRoomDTO room = chatService.findChatRoom(Long.parseLong(chatRoomSeq));
 
         model.addAttribute("room", room);
 
@@ -86,18 +89,18 @@ public class ChatController {
     }
 
     // 유저 카운트
-    @GetMapping("/chat/chkUserCnt/{roomId}")
+    @GetMapping("/chat/chkUserCnt/{chatRoomSeq}")
     @ResponseBody
-    public boolean chUserCnt(@PathVariable String roomId){
+    public boolean chUserCnt(@PathVariable String chatRoomSeq){
 
-        return chatService.chkRoomUserCnt(roomId);
+        return chatService.chkRoomUserCnt(chatRoomSeq);
     }
 
     // 채팅에 참여한 유저 리스트 반환
     @GetMapping("/chat/userlist")
     @ResponseBody
-    public ArrayList<String> userList(String roomId) {
+    public ArrayList<String> userList(String chatRoomSeq) {
 
-        return msgChatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), roomId);
+        return msgChatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), chatRoomSeq);
     }
 }
