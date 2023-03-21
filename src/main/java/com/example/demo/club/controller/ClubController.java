@@ -1,5 +1,6 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.dto.ClubInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,14 @@ public class ClubController {
 	@GetMapping("/myClub")
 	public String getClub(Model model,ClubDTO cDTO,MemberDTO mDTO) {
 		ClubDTO club = clubService.selectClub(cDTO.getClubSeq());
+		ClubInfoDTO myClubInfo =club.getClubInfoList().stream()
+				.filter(p -> p.getMember().getMemberSeq()==mDTO.getMemberSeq())
+				.findFirst()
+				.orElse(null);
 		model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("member",  memberService.selectMemberBySeq(mDTO.getMemberSeq()));
 		model.addAttribute("myClubList",clubInfoService.selectMyClubList(mDTO));
+		model.addAttribute("myClubInfo",myClubInfo);
 		model.addAttribute("club",club);
 		return "club/club";
 	}

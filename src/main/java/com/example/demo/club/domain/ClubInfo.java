@@ -1,9 +1,12 @@
 package com.example.demo.club.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Builder;
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "club_info")
 @NoArgsConstructor
 public class ClubInfo {
@@ -38,6 +42,9 @@ public class ClubInfo {
 	@CreatedDate
     @Column(name = "withdraw_date")
 	private LocalDateTime withdrawDate;
+
+	@OneToMany(mappedBy = "clubInfo")
+	List<Chat> chatList = new ArrayList<>();
 	
 	@Builder
 	public void createClubInfo(Club club, Member member,LocalDateTime joinDate) {

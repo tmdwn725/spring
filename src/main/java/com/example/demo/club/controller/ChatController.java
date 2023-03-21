@@ -36,23 +36,23 @@ public class ChatController {
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
         // 채팅방 유저+1
-        chatService.plusUserCnt(chat.getChatRoomSeq(), chat.getSenderId(), chat.getSender());
+        //chatService.plusUserCnt(chat.getChatRoomSeq(), chat.getSenderId(), chat.getSender());
 
-        ChatRoomDTO room = chatService.findChatRoom(chat.getChatRoomSeq());
-        List<ChatDTO> chatList = chatService.findChatList(chat.getChatRoomSeq());
-        room.setChatList(chatList);
+        //ChatRoomDTO room = chatService.findChatRoom(chat.getChatRoomSeq());
+        List<ChatDTO> chatList = chatService.findChatList(chat.getClubSeq());
+        //room.setChatList(chatList);
 
         // 채팅방에 유저 추가 및 UserUUID 반환
         //String userUUID = msgChatService.addUser(ChatRoomMap.getInstance().getChatRooms(), chat.getRoomId(), chat.getSender());
 
         // 반환 결과를 socket session 에 userUUID 로 저장
-        headerAccessor.getSessionAttributes().put("userUUID", chat.getSenderId());
-        headerAccessor.getSessionAttributes().put("chatRoomSeq", room.getChatRoomSeq());
+        //headerAccessor.getSessionAttributes().put("userUUID", chat.getClubInfoSeq());
+        headerAccessor.getSessionAttributes().put("chatRoomSeq", chat.getClubSeq());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
-        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getChatRoomSeq()), chat);
+        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getClubSeq()), chat);
     }
 
     // 해당 유저
@@ -64,16 +64,16 @@ public class ChatController {
         chatService.saveChat(chat);
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
-        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getChatRoomSeq()), chat);
+        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getClubSeq()), chat);
     }
 
     // 채팅방 입장 화면
-    // 파라미터로 넘어오는 chatRoomSeq 를 확인후 해당 chatRoomSeq 를 기준으로
+    // 파라미터로 넘어오는 clubInfoSeq 를 확인후 해당 clubInfoSeq 를 기준으로
     // 채팅방을 찾아서 클라이언트를 chatroom 으로 보낸다.
     @GetMapping("/chat/room")
-    public String roomDetail(Model model, String chatRoomSeq){
+    public String roomDetail(Model model, String clubInfoSeq){
 
-        log.info("chatRoomSeq {}", chatRoomSeq);
+        log.info("chatRoomSeq {}", clubInfoSeq);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         // principalDetails 가 null 이 아니라면 로그인 된 상태!!
         if (userName != null) {
@@ -81,7 +81,7 @@ public class ChatController {
             model.addAttribute("user", userName);
         }
 
-        ChatRoomDTO room = chatService.findChatRoom(Long.parseLong(chatRoomSeq));
+        ChatRoomDTO room = chatService.findChatRoom(Long.parseLong(clubInfoSeq));
 
         model.addAttribute("room", room);
 

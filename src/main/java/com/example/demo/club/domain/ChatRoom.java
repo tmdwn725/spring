@@ -28,9 +28,6 @@ public class ChatRoom {
     @JoinColumn(name = "member_seq")
     private Member member;
 
-    @OneToMany(mappedBy = "chatRoom")
-    private List<Chat> chatList;
-
     @Builder
     public void createChatRoom(Club club, Member member){
         this.club = club;

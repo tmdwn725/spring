@@ -13,7 +13,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
     QChatRoom qChatRoom = QChatRoom.chatRoom;
     QChat qChat = QChat.chat;
     QClub qClub = QClub.club;
-    QMember qMember = QMember.member;
+    QClubInfo qClubInfo = QClubInfo.clubInfo;
 
     @Override
     public ChatRoom selectChatRoomByClubSeq(Long clubSeq){
@@ -26,8 +26,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     public List<Chat> selectChatListByChatRoomSeq(Long chatRoomSeq){
         List<Chat> chatList = queryFactory.selectFrom(qChat)
-                .leftJoin(qChat.member,qMember).fetchJoin()
-                .where(qChat.chatRoom.chatRoomSeq.eq(chatRoomSeq))
+                .where(qChat.clubInfo.clubInfoSeq.eq(chatRoomSeq))
                 .orderBy(qChat.sendDt.asc())
                 .fetch();
         return chatList;

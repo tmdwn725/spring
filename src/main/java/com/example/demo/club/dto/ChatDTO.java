@@ -1,5 +1,6 @@
 package com.example.demo.club.dto;
 
+import com.example.demo.club.domain.ClubInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,15 +18,12 @@ public class ChatDTO {
     public enum MessageType{
         ENTER, TALK, LEAVE;
     }
-    private Long chatRoomSeq;
-    private MessageType type; // 메시지 타입
-    private String roomId; // 방 번호
-    private String sender; // 채팅을 보낸 사람
-    private String senderId;
-    private Long memberSeq;
     private Long clubSeq;
-    private MemberDTO memberDTO;
-    private ClubDTO clubDTO;
+    private Long clubInfoSeq;
+    private MessageType type; // 메시지 타입
+    private String sender; // 채팅을 보낸 사람
+    private Long memberSeq;
+    private ClubInfoDTO clubInfo;
     private String message; // 메시지
     private String sendDt; // 채팅 발송 시간
     private String messageId;

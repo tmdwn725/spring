@@ -20,15 +20,12 @@ public class Chat {
 
     @Column(name = "message")
     private String message;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_seq")
-    private ChatRoom chatRoom;
 
     @CreatedDate
     @Column(name = "send_dt")
     private LocalDateTime sendDt;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_info_seq")
+    private ClubInfo clubInfo;
 }
