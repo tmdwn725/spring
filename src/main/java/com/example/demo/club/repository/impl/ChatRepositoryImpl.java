@@ -4,9 +4,13 @@ import com.example.demo.club.domain.Chat;
 import com.example.demo.club.domain.QChat;
 import com.example.demo.club.domain.QClub;
 import com.example.demo.club.domain.QClubInfo;
+import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.repository.custom.ChatRepositoryCustom;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Projection;
 
 import java.util.List;
 
@@ -17,11 +21,13 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     QClub qClub = QClub.club;
     QClubInfo qClubInfo = QClubInfo.clubInfo;
 
-    public List<Chat> selectChatListByClubSeq(Long clubSeq){
-        List<Chat> selectChatList = queryFactory.select(qChat)
+    public List selectChatListByClubSeq(Long clubSeq){
+        List<ChatDTO> selectChatList = queryFactory.select(Projections.fields(ChatDTO.class
+                        , qChat.chatSeq, qChat.message, qChat.sendDt
+                        , qClubInfo.member.memberNm.as("sender"), qClubInfo.clubInfoSeq))
                                                 .from(qClub)
-                                                .leftJoin(qClub.clubInfoList, qClubInfo)
-                                                .leftJoin(qClubInfo.chatList, qChat)
+                                                .innerJoin(qClub.clubInfoList, qClubInfo)
+                                                .innerJoin(qClubInfo.chatList, qChat)
                                                 .where(qClub.clubSeq.eq(clubSeq))
                                                 .orderBy(qChat.sendDt.asc())
                                                 .fetch();

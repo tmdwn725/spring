@@ -6,11 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatDTO {
+    private Long chatSeq;
+    private String message; // 메시지
+    private LocalDateTime sendDt; // 채팅 발송 시간
+    private ClubInfoDTO clubInfo;
     // 메시지  타입 : 입장, 채팅
     // 메시지 타입에 따라서 동작하는 구조가 달라진다.
     // 입장과 퇴장 ENTER 과 LEAVE 의 경우 입장/퇴장 이벤트 처리가 실행되고,
@@ -18,13 +23,11 @@ public class ChatDTO {
     public enum MessageType{
         ENTER, TALK, LEAVE;
     }
+
     private Long clubSeq;
     private Long clubInfoSeq;
     private MessageType type; // 메시지 타입
     private String sender; // 채팅을 보낸 사람
     private Long memberSeq;
-    private ClubInfoDTO clubInfo;
-    private String message; // 메시지
-    private String sendDt; // 채팅 발송 시간
     private String messageId;
 }

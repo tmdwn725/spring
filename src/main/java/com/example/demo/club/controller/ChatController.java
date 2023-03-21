@@ -3,9 +3,7 @@ package com.example.demo.club.controller;
 import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
-import com.example.demo.club.repository.ChatRoomRepository;
 import com.example.demo.club.service.ChatService;
-import com.example.demo.club.service.MsgChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,7 +13,6 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,6 @@ public class ChatController {
     // convertAndSend 는 객체를 인자로 넘겨주면 자동으로 Message 객체로 변환 후 도착지로 전송한다.
     private final SimpMessageSendingOperations template;
     private  final ChatService chatService;
-    private  final MsgChatService msgChatService;
 
     @MessageMapping("/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
@@ -47,12 +43,13 @@ public class ChatController {
 
         // 반환 결과를 socket session 에 userUUID 로 저장
         //headerAccessor.getSessionAttributes().put("userUUID", chat.getClubInfoSeq());
-        headerAccessor.getSessionAttributes().put("chatRoomSeq", chat.getClubSeq());
+        headerAccessor.getSessionAttributes().put("clubSeq", chat.getClubSeq());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
-        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getClubSeq()), chat);
+        chatList.add(chat);
+        template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getClubSeq()), chatList);
     }
 
     // 해당 유저
@@ -64,6 +61,7 @@ public class ChatController {
         chatService.saveChat(chat);
         // 메시지 중복되는 현상 제거를 위한 코드 추가
         chat.setMessageId(UUID.randomUUID().toString());
+        chat.setChatSeq(Long.valueOf(0));
         template.convertAndSend("/sub/chat/room/" + Long.toString(chat.getClubSeq()), chat);
     }
 
@@ -81,13 +79,13 @@ public class ChatController {
             model.addAttribute("user", userName);
         }
 
-        ChatRoomDTO room = chatService.findChatRoom(Long.parseLong(clubInfoSeq));
+        ChatRoomDTO room = new ChatRoomDTO();
 
         model.addAttribute("room", room);
 
         return "chatroom";
     }
-
+/*
     // 유저 카운트
     @GetMapping("/chat/chkUserCnt/{chatRoomSeq}")
     @ResponseBody
@@ -101,6 +99,6 @@ public class ChatController {
     @ResponseBody
     public ArrayList<String> userList(String chatRoomSeq) {
 
-        return msgChatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), chatRoomSeq);
-    }
+        return chatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), chatRoomSeq);
+    }*/
 }

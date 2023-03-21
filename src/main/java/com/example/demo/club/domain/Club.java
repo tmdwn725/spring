@@ -42,9 +42,6 @@ public class Club extends BaseEntity {
 	@JoinColumn(name="rpt_img_fl_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private File file;
 
-	@OneToOne(mappedBy = "club",fetch = FetchType.LAZY)
-	private ChatRoom chatRoom;
-
 	@Builder
     public void createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm,String introduce, File file){
         this.schoolCd = schoolCd;

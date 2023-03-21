@@ -145,72 +145,83 @@ function sendMessage(event) {
 // 넘어온 JSON 형식의 메시지를 parse 해서 사용한다.
 function onMessageReceived(payload) {
     //console.log("payload 들어오냐? :"+payload);
-    var chat = JSON.parse(payload.body);
 
-    // 이전에 전송한 메시지와 같은 경우, 중복 호출 방지
-     if (chat.messageId == $('#messageId').val()) {
-       return;
-     }else{
-       $('#messageId').val(chat.messageId);
-     }
-
-    var messageElement = document.createElement('li');
-
-    if (chat.type === 'ENTER') {  // chatType 이 enter 라면 아래 내용
-        messageElement.classList.add('event-message');
-        chat.content = chat.sender + chat.message;
-        //getUserList();
-
-    } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
-        messageElement.classList.add('event-message');
-        chat.content = chat.sender + chat.message;
-        //getUserList();
-
-    } else { // chatType 이 talk 라면 아래 내용
-        if(senderNm == chat.sender){
-            messageElement.classList.add('chat-message','my-chat');
+    var chatList = JSON.parse(payload.body);
+    for (var i in chatList){
+        var chat = "";
+        // 단건
+        if(i == 'chatSeq'){
+            chat = chatList
         }else{
-            messageElement.classList.add('chat-message','other-chat');
+            var chat = chatList[i];
         }
 
-        var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(chat.sender[0]);
-        avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(chat.sender);
-        // 이름으로 채팅 프로필 위치 비교 다음에 seq로 바꿀예정
-        if(senderNm == chat.sender){
-            avatarElement.style['left'] = "3%";
-        }else{
-            avatarElement.style['right'] = "3%";
+        // 이전에 전송한 메시지와 같은 경우, 중복 호출 방지
+         if (chat.messageId == $('#messageId').val() || chat.message == null) {
+           return;
+         }else{
+           $('#messageId').val(chat.messageId);
+         }
+
+        var messageElement = document.createElement('li');
+
+        if (chat.type === 'ENTER') {  // chatType 이 enter 라면 아래 내용
+            messageElement.classList.add('event-message');
+            chat.content = chat.sender + chat.message;
+            //getUserList();
+
+        } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
+            messageElement.classList.add('event-message');
+            chat.content = chat.sender + chat.message;
+            //getUserList();
+
+        } else { // chatType 이 talk 라면 아래 내용
+            if(senderNm == chat.sender){
+                messageElement.classList.add('chat-message','my-chat');
+            }else{
+                messageElement.classList.add('chat-message','other-chat');
+            }
+
+            var avatarElement = document.createElement('i');
+            var avatarText = document.createTextNode(chat.sender);
+            avatarElement.appendChild(avatarText);
+            avatarElement.style['background-color'] = getAvatarColor(chat.sender);
+            // 이름으로 채팅 프로필 위치 비교 다음에 seq로 바꿀예정
+            if(senderNm == chat.sender){
+                avatarElement.style['left'] = "3%";
+            }else{
+                avatarElement.style['right'] = "3%";
+            }
+
+            messageElement.appendChild(avatarElement);
+
+            var usernameElement = document.createElement('span');
+            var usernameText = document.createTextNode(chat.sender);
+            usernameElement.appendChild(usernameText);
+            messageElement.appendChild(usernameElement);
         }
 
-        messageElement.appendChild(avatarElement);
+        var contentElement = document.createElement('p');
 
-        var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(chat.sender);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
+        var messageText = document.createTextNode(chat.message);
+
+        contentElement.appendChild(messageText);
+
+        messageElement.appendChild(contentElement);
+
+        messageArea.appendChild(messageElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
     }
-
-    var contentElement = document.createElement('p');
-
-    var messageText = document.createTextNode(chat.message);
-
-    contentElement.appendChild(messageText);
-
-    messageElement.appendChild(contentElement);
-
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 
 function getAvatarColor(messageSender) {
     var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash + messageSender.charCodeAt(i);
+    if (messageSender != null){
+        for (var i = 0; i < messageSender.length; i++) {
+            hash = 31 * hash + messageSender.charCodeAt(i);
+        }
     }
-
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }

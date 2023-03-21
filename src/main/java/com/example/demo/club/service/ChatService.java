@@ -1,13 +1,9 @@
 package com.example.demo.club.service;
 
-import com.example.demo.club.common.ModelMapperUtil;
 import com.example.demo.club.domain.Chat;
-import com.example.demo.club.domain.ChatRoom;
 import com.example.demo.club.domain.ClubInfo;
-import com.example.demo.club.domain.Member;
 import com.example.demo.club.dto.*;
 import com.example.demo.club.repository.ChatRepository;
-import com.example.demo.club.repository.ChatRoomRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,40 +14,25 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Getter
-@Setter
 @Slf4j
 public class ChatService {
 
-    private final MsgChatService msgChatService;
-
-    private final ChatRoomRepository chatRoomRepository;
-
     private final ChatRepository chatRepository;
 
-    private final ModelMapper modelMapper;
+    //private final ModelMapper modelMapper;
 
     // roomID 기준으로 채팅방 찾기
-    public ChatRoomDTO findRoomById(String roomId){
+     /*public ChatRoomDTO findRoomById(String roomId){
         return ChatRoomMap.getInstance().getChatRooms().get(roomId);
-    }
-
-    // roomName 로 채팅방 만들기
-    public ChatRoomDTO createChatRoom(String roomName, String roomPwd, boolean secretChk, int maxUserCnt, String chatType){
-
-        ChatRoomDTO room;
-        room = msgChatService.createChatRoom(roomName, maxUserCnt);
-
-        return room;
     }
 
     // 채팅방 인원+1
     public void plusUserCnt(String roomId,String senderId,String sender){
-        /*log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
+       log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
 
         ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
         room.setChatRoomSeq(chatRoomSeq);
@@ -59,7 +40,7 @@ public class ChatService {
         room.setUserCount(room.getUserCount()+1);
         room.getUserList().put(senderId, sender);
 
-         */
+
     }
 
     // 채팅방 인원-1
@@ -76,24 +57,10 @@ public class ChatService {
             return false;
         }
         return true;
-    }
-
-    public ChatRoomDTO findChatRoom(Long chatRoomSeq) {
-        ChatRoom room = chatRoomRepository.selectChatRoomByClubSeq(chatRoomSeq);
-        ChatRoomDTO chat =  new ChatRoomDTO();
-        chat.setChatRoomSeq(room.getChatRoomSeq());
-        //room.setRoomName(chatRoom.getClub().getClubNm());
-        //ChatRoomDTO chat = modelMapper.map(room,ChatRoomDTO.class);
-        return  chat;
-    }
+    }*/
 
     public List<ChatDTO> findChatList(Long clubSeq) {
-        List<Chat> list = chatRepository.selectChatListByClubSeq(clubSeq);
-        List<ChatDTO> selectChatList = new ArrayList<ChatDTO>();
-        /*if (list != null){
-            selectChatList= ModelMapperUtil.mapAll(list, ChatDTO.class);
-        }*/
-
+        List<ChatDTO> selectChatList = chatRepository.selectChatListByClubSeq(clubSeq);
         return  selectChatList;
     }
 
@@ -107,5 +74,16 @@ public class ChatService {
         chat.setClubInfo(clubInfo);
         chatRepository.save(chat);
     }
+/*
+    public ArrayList<String> getUserList(Map<String, ChatRoomDTO> chatRoomMap, String roomId){
+        ArrayList<String> list = new ArrayList<>();
+
+        ChatRoomDTO room = chatRoomMap.get(roomId);
+
+        // hashmap 을 for 문을 돌린 후
+        // value 값만 뽑아내서 list 에 저장 후 reutrn
+        room.getUserList().forEach((key, value) -> list.add((String) value));
+        return list;
+    }*/
 
 }

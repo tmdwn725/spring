@@ -3,7 +3,6 @@ package com.example.demo.club.repository.impl;
 import java.util.List;
 
 import com.example.demo.club.domain.Club;
-import com.example.demo.club.domain.QChatRoom;
 import com.example.demo.club.domain.QClubInfo;
 import com.example.demo.club.repository.custom.ClubInfoRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
