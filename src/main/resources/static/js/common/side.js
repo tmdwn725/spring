@@ -16,11 +16,11 @@ $(function(){
 });
 
 function openModal() {
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("applyClubModal");
     modal.style.display = "block";
 }
 
 function closeModal() {
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("applyClubModal");
     modal.style.display = "none";
 }

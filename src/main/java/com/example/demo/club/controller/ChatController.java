@@ -3,7 +3,7 @@ package com.example.demo.club.controller;
 import com.example.demo.club.dto.ChatDTO;
 import com.example.demo.club.dto.ChatRoomDTO;
 import com.example.demo.club.dto.ChatRoomMap;
-import com.example.demo.club.service.ChatService;
+import com.example.demo.club.service.vice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,7 +26,7 @@ public class ChatController {
     // 아래에서 사용되는 convertAndSend 를 사용하기 위해서 서언
     // convertAndSend 는 객체를 인자로 넘겨주면 자동으로 Message 객체로 변환 후 도착지로 전송한다.
     private final SimpMessageSendingOperations template;
-    private  final ChatService chatService;
+    private  final vice chatService;
 
     @MessageMapping("/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {

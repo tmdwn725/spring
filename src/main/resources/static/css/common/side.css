@@ -36,23 +36,16 @@ button .sidebar-btn {
 
 .modal-content {
     background-color: #fefefe;
-    height: 90%;
-    margin: 15% auto;
+    height: 80%;
+    margin-top: 5%;
     margin-left: 30%;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 60%;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
+.btn-club-cancle:hover,
+.btn-club-cancle:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
