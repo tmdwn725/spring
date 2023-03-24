@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 public class createTest {
-
     @Autowired
     private MemberRepository memberRepository;
 
@@ -37,7 +36,10 @@ public class createTest {
     private FileRepository fileRepository;
 
     @Autowired
-    private ChatRoomRepository chatRoomRepository;
+    private CdGrpRepository cdGrpRepository;
+
+    @Autowired
+    private CdRepository cdRepository;
 
      /*@Test
     @Rollback(value = false)
@@ -67,8 +69,6 @@ public class createTest {
         List<Member>members = new ArrayList<>();
     	List<Club>clubs = new ArrayList<>();
     	ClubInfo clubInfo = new ClubInfo();
-        ChatRoom chatRoom = new ChatRoom();
-        List<ChatRoom> chatRooms = new ArrayList<>();
     	List<ClubInfo> clubInfos = new ArrayList<>();
     	LocalDateTime currentDate = LocalDateTime.now();
     	List<File> files = new ArrayList<>();
@@ -105,12 +105,6 @@ public class createTest {
                 clubInfo.createClubInfo(club, mem2, currentDate);
                 clubInfos.add(clubInfo);
             }
-            /*chatRoom = new ChatRoom();
-            chatRoom.createChatRoom(club,mem);
-            chatRooms.add(chatRoom);
-            chatRoom = new ChatRoom();
-            chatRoom.createChatRoom(club,mem2);
-            chatRooms.add(chatRoom);*/
         }
 
         memberRepository.saveAll(members);
@@ -118,7 +112,6 @@ public class createTest {
     	memberRepository.save(mem);
         clubRepository.saveAll(clubs);
         clubinfoRepository.saveAll(clubInfos);
-        //chatRoomRepository.saveAll(chatRooms);
     }
 
     File createFile(String fileNm, String filePth, String fileExt){
@@ -137,5 +130,23 @@ public class createTest {
     	School sc = new School();
     	sc.createSchool("100101","서울대학교", "서울특별시 관악구", "02-1111-1111");
     	schoolRepository.save(sc);
+    }
+
+    @Test
+    public void createCode() {
+        CdGrp cdGrp = new CdGrp();
+        Cd cd = new Cd();
+        List<Cd> list = new ArrayList<>();
+        cdGrp.createCdGrp("0101","동아리종류");
+        cd.createCd("200101","2001","운동");
+        list.add(cd);
+        cd = new Cd();
+        cd.createCd("200102","2001","미술");
+        list.add(cd);
+        cd = new Cd();
+        cd.createCd("200103","2001","음악");
+        list.add(cd);
+        cdGrpRepository.save(cdGrp);
+        cdRepository.saveAll(list);
     }
 }

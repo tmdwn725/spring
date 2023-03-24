@@ -165,12 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  	<!--<div class="slide-div">
-	</div>
-	<div class="button-div div-close" onclick="div_click()">
-	  <div class="button-open"></div>
-	</div>-->
-    <th:block th:replace="common/side :: sideFragment"></th:block>
+  <th:block th:replace="common/side :: sideFragment"></th:block>
+  <th:block th:replace="common/clubApplica :: clubAppFragment"></th:block>
   <!-- End Sidebar-->
 
   <main id="main" class="main">
@@ -200,10 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="club-body">
               <h5 class="club-title">동아리 소개 </h5>
 			  <div class="introduce">
-        		<div class="left"><img class="clubImg" th:src="${club.file.filePth}" alt=""></div>
-        		<div class="right">
-        			<h4 th:text="${club.clubNm}"></h4>
-                  	<textarea th:text="${club.introduce}" style="width:50%;text-align:5center;"></textarea>
+                  <div class="left">
+                      <img class="clubImg" th:src="${club.file == null ? '' : club.file.filePth}" alt="">
+                  </div>
+                <div class="right">
+                    <h4 th:text="${club.clubNm}"></h4>
+                    <textarea th:text="${club.introduce}" style="width:50%;text-align:5center;"></textarea>
                  </div>
     		  </div>
             </div>

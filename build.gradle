@@ -36,8 +36,6 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
 
 	// 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -53,6 +51,9 @@ dependencies {
 	implementation 'org.webjars:sockjs-client:1.5.1'
 	// stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
+
+	// 캐시 설정
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 	/**
 	 * 테스트 lombok 추가

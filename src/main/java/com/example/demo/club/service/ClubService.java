@@ -1,10 +1,15 @@
 package com.example.demo.club.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.demo.club.common.ModelMapperUtil;
+import com.example.demo.club.domain.ClubInfo;
 import com.example.demo.club.domain.File;
+import com.example.demo.club.domain.Member;
 import com.example.demo.club.dto.FileDTO;
+import com.example.demo.club.dto.MemberDTO;
+import com.example.demo.club.repository.ClubInfoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+
+	private final ClubInfoRepository clubInfoRepository;
     
     private final ModelMapper modelMapper;
 
@@ -37,8 +44,26 @@ public class ClubService {
 	}
 
 	@Transactional
-	public void createClub(Club club) {
-		clubRepository.save(club);
+	public void createClub(ClubDTO dto, MemberDTO dto2) {
+		Club club = new Club();
+		LocalDateTime currentDate = LocalDateTime.now();
+		club.setClubNm(dto.getClubNm());
+		club.setClubClsCd(dto.getClubClsCd());
+		club.setIntroduce(dto.getIntroduce());
+		club.setRoomNm(dto.getRoomNm());
+		club.setSchoolCd("100101");
+		club.setRegDt(currentDate);
+		club = clubRepository.save(club);
+
+		Member member = new Member();
+		member.setMemberSeq(dto2.getMemberSeq());
+
+		ClubInfo clubInfo = new ClubInfo();
+		clubInfo.setMember(member);
+		clubInfo.setClub(club);
+		clubInfo.setPosition("동아리장");
+		clubInfo.setJoinDate(currentDate);
+		clubInfoRepository.save(clubInfo);
 	}
 
 }

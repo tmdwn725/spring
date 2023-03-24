@@ -19,7 +19,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class vice {
+public class ChatService {
 
     private final ChatRepository chatRepository;
 

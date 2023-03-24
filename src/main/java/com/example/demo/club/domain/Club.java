@@ -7,9 +7,11 @@ import javax.persistence.*;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club")
 public class Club extends BaseEntity {

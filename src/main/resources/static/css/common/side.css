@@ -37,11 +37,11 @@ button .sidebar-btn {
 .modal-content {
     background-color: #fefefe;
     height: 80%;
-    margin-top: 5%;
+    margin-top: 15%;
     margin-left: 30%;
     padding: 20px;
     border: 1px solid #888;
-    width: 60%;
+    width: 100%;
 }
 
 .btn-club-cancle:hover,
