@@ -154,6 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	margin-top: 5%;
 	margin-left: 5;
   }
+
+  div.club-member{
+    margin-top: 23%;
+  }
   
 </style>
 
@@ -241,18 +245,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="row col-lg-4">
          <!-- 동아리 채팅방 -->
             <th:block th:replace="chat/chatRoom :: chatFragment"></th:block>
-            <!--<div class="card">
-
-                <div class="card-body">
-
-                     <h5 class="card-title">채팅방 <span>| Today</span></h5>
-                  <div class="activity">
-                    <th:block th:replace="chat/chatRoom :: chatFragment"></th:block>
-                  </div>
-              </div>
-            </div>-->
           <!-- Recent Activity -->
-          <div class="card">
+          <div class="card club-member">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -297,8 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
   <script type="text/javascript" th:src="@{/js/main/vendor/simple-datatables/simple-datatables.js}"></script>
   <script type="text/javascript" th:src="@{/js/main/vendor/tinymce/tinymce.min.js}"></script>
   <script type="text/javascript" th:src="@{/js/main/vendor/php-email-form/validate.js}"></script>
-  <!-- Template Main JS File -->
-  <!--  <script type="text/javascript" th:src="@{/bootstrap/js/main.js}"></script>-->   
 </body>
 
 </html>

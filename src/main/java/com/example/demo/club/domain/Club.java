@@ -37,7 +37,7 @@ public class Club extends BaseEntity {
 	@Transient
 	private String filePth;
 
-	@OneToMany(mappedBy = "club")
+	@OneToMany(mappedBy = "club", cascade = CascadeType.PERSIST)
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.LAZY)

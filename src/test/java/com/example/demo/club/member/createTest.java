@@ -69,7 +69,6 @@ public class createTest {
         List<Member>members = new ArrayList<>();
     	List<Club>clubs = new ArrayList<>();
     	ClubInfo clubInfo = new ClubInfo();
-    	List<ClubInfo> clubInfos = new ArrayList<>();
     	LocalDateTime currentDate = LocalDateTime.now();
     	List<File> files = new ArrayList<>();
 
@@ -96,22 +95,20 @@ public class createTest {
             }
 
             Club club = createClub(clubAtb[i][0], clubAtb[i][1], clubAtb[i][2],clubAtb[i][3],clubAtb[i][4],file);
-            clubs.add(club);
             if (i < 2){
                 clubInfo = new ClubInfo();
                 clubInfo.createClubInfo(club, mem, currentDate);
-                clubInfos.add(clubInfo);
+                club.getClubInfoList().add(clubInfo);
                 clubInfo = new ClubInfo();
                 clubInfo.createClubInfo(club, mem2, currentDate);
-                clubInfos.add(clubInfo);
+                club.getClubInfoList().add(clubInfo);
             }
+            clubs.add(club);
         }
 
         memberRepository.saveAll(members);
     	fileRepository.saveAll(files);
-    	memberRepository.save(mem);
         clubRepository.saveAll(clubs);
-        clubinfoRepository.saveAll(clubInfos);
     }
 
     File createFile(String fileNm, String filePth, String fileExt){

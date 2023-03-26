@@ -23,7 +23,7 @@
                             <label for="club-category" class="form-label">동아리 분야</label>
                             <select class="form-select" aria-label="Default select example" id="club-category">
                                 <option selected>분야를 선택하세요</option>
-                                <option th:each="clubCd : ${clubCd}" th:value="${clubCd.cd}" th:text="${clubCd.cdNm}"></option>
+                                <option th:each="clubCd : ${clubCdList}" th:value="${clubCd.cd}" th:text="${clubCd.cdNm}"></option>
                             </select>
                         </div>
                         <div class="mb-3">

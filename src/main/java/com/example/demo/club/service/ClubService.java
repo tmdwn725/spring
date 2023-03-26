@@ -45,25 +45,29 @@ public class ClubService {
 
 	@Transactional
 	public void createClub(ClubDTO dto, MemberDTO dto2) {
+		// 동아리 등록
 		Club club = new Club();
+		Member member = new Member();
+		ClubInfo clubInfo = new ClubInfo();
 		LocalDateTime currentDate = LocalDateTime.now();
+
+		member.setMemberSeq(dto2.getMemberSeq());
+
 		club.setClubNm(dto.getClubNm());
 		club.setClubClsCd(dto.getClubClsCd());
 		club.setIntroduce(dto.getIntroduce());
 		club.setRoomNm(dto.getRoomNm());
 		club.setSchoolCd("100101");
 		club.setRegDt(currentDate);
-		club = clubRepository.save(club);
 
-		Member member = new Member();
-		member.setMemberSeq(dto2.getMemberSeq());
-
-		ClubInfo clubInfo = new ClubInfo();
 		clubInfo.setMember(member);
 		clubInfo.setClub(club);
 		clubInfo.setPosition("동아리장");
 		clubInfo.setJoinDate(currentDate);
-		clubInfoRepository.save(clubInfo);
+
+		club.getClubInfoList().add(clubInfo);
+
+		clubRepository.save(club);
 	}
 
 }

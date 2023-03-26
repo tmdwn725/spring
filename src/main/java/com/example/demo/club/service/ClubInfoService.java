@@ -28,7 +28,6 @@ public class ClubInfoService {
 	public List<ClubDTO> selectMyClubList(MemberDTO dto){
 		List<Club> findMyClubList = clubInfoRepository.selectMyClubList(dto.getMemberSeq());
 		List<ClubDTO> selectMyClubList = ModelMapperUtil.mapAll(findMyClubList, ClubDTO.class);
-
 		return selectMyClubList;
 	}
 }

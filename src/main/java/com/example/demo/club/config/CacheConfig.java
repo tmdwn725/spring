@@ -1,5 +1,6 @@
 package com.example.demo.club.config;
 
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -15,6 +16,10 @@ import java.util.Arrays;
 public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("clubCd");
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        // clubCd 캐시 설정
+        Cache clubCdCache = new ConcurrentMapCache("clubCd");
+        cacheManager.setCaches(Arrays.asList(clubCdCache));
+        return cacheManager;
     }
 }

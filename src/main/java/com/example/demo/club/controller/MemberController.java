@@ -2,6 +2,7 @@ package com.example.demo.club.controller;
 
 import com.example.demo.club.dto.CdDTO;
 import com.example.demo.club.service.CdService;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class MemberController {
     public String main(Model model) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("userName", userId);
-        model.addAttribute("clubList",clubService.selectClubList());
+         model.addAttribute("clubList",clubService.selectClubList());
         MemberDTO member = memberService.selectMemberById(userId);
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
