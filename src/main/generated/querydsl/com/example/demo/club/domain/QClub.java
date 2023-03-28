@@ -32,13 +32,15 @@ public class QClub extends EntityPathBase<Club> {
 
     public final NumberPath<Long> clubSeq = createNumber("clubSeq", Long.class);
 
-    public final QMember member;
+    public final QFile file;
+
+    public final StringPath introduce = createString("introduce");
 
     //inherited
-    public final StringPath modDt = _super.modDt;
+    public final DateTimePath<java.time.LocalDateTime> modDt = _super.modDt;
 
     //inherited
-    public final StringPath regDt = _super.regDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     public final StringPath roomNm = createString("roomNm");
 
@@ -62,7 +64,7 @@ public class QClub extends EntityPathBase<Club> {
 
     public QClub(Class<? extends Club> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
+        this.file = inits.isInitialized("file") ? new QFile(forProperty("file")) : null;
     }
 
 }

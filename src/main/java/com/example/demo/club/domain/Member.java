@@ -1,17 +1,11 @@
 package com.example.demo.club.domain;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +24,9 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private String memberId;
 
+    @Column(name = "member_nm")
+    private String memberNm;
+
     @Column(name = "password")
     private String password;
 
@@ -39,12 +36,22 @@ public class Member extends BaseEntity {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
-    
+
+    public List<String> getRoleList() {
+        if (this.role != null) {
+            return Arrays.asList(this.role.toString().split(","));
+        }
+        return new ArrayList<>();
+    }
+
+
+
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
-    public void createMember(String memberId, String password, String authority, Role role){
+    public void createMember(String memberId, String memberNm, String password, String authority, Role role){
         this.memberId = memberId;
+        this.memberNm = memberNm;
         this.password = password;
         this.authority = authority;
         this.role = role;

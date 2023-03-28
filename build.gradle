@@ -38,7 +38,6 @@ dependencies {
 	implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
-
 	// 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
@@ -46,6 +45,16 @@ dependencies {
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	// sockjs
+	implementation 'org.webjars:sockjs-client:1.5.1'
+	// stomp
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+
+	// 캐시 설정
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 	/**
 	 * 테스트 lombok 추가

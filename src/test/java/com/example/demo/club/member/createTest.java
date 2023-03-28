@@ -6,22 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.club.domain.*;
+import com.example.demo.club.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.example.demo.club.domain.Club;
-import com.example.demo.club.domain.ClubInfo;
-import com.example.demo.club.domain.File;
-import com.example.demo.club.domain.Member;
-import com.example.demo.club.domain.Role;
-import com.example.demo.club.domain.School;
-import com.example.demo.club.repository.ClubInfoRepository;
-import com.example.demo.club.repository.ClubRepository;
-import com.example.demo.club.repository.FileRepository;
-import com.example.demo.club.repository.MemberRepository;
-import com.example.demo.club.repository.SchoolRepository;
 import com.example.demo.club.security.SecurityConfig;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 public class createTest {
-
     @Autowired
     private MemberRepository memberRepository;
 
@@ -45,18 +35,24 @@ public class createTest {
     @Autowired
     private FileRepository fileRepository;
 
-    @Test
+    @Autowired
+    private CdGrpRepository cdGrpRepository;
+
+    @Autowired
+    private CdRepository cdRepository;
+
+     /*@Test
     @Rollback(value = false)
-    void onlyMemberCreate() {
-        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
+    public void onlyMemberCreate() {
+       String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         Member member = new Member();
-        member.createMember("phg", password, "", Role.USER);
+        member.createMember("phg","박형근", password, "", Role.USER);
         memberRepository.save(member);
     }
 
     @Test
     @Rollback(value = false)
-    void onlyClubCreate() {
+    public void onlyClubCreate() {
         Optional<Member> member = memberRepository.findByMemberId("phg");
         Club club = clubRepository.findByClubNm("축구동아리");
         member.ifPresentOrElse(value -> {
@@ -64,54 +60,66 @@ public class createTest {
             clubInfo.createClubInfo(club,value,LocalDateTime.now());
             clubinfoRepository.save(clubInfo);
         }, () -> log.error("존재하지 않는 계정!"));
-    }
+    }*/
 
     @Test
     public void createMember(){
         Member mem = new Member();
-        Club club = new Club();
-        File fl = new File();
+        Member mem2 = new Member();
+        List<Member>members = new ArrayList<>();
     	List<Club>clubs = new ArrayList<>();
     	ClubInfo clubInfo = new ClubInfo();
-    	List<ClubInfo>clubInfos = new ArrayList<>();
     	LocalDateTime currentDate = LocalDateTime.now();
     	List<File> files = new ArrayList<>();
 
+        String [][] fileAtb = {{"soccer.jpg","/images/club/soccer.jpg", "jpg"}
+                            ,{"baseball.jpg","/images/club/baseball.jpg", "jpg"}
+                            ,{null,null,null}};
+        String [][] clubAtb = {{"100101", "200101", "축구동아리","101","저희는 서울대학교를 대표하는 축구동아리 사커스입니다."}
+                            ,{"100101", "200101", "농구동아리","102","저희는 서울대학교의 대표 농구동아리 비스킷입니다."}
+                            ,{"100101", "200102", "공예동아리","103","저희는 예술을 좋아하는 동아리입니다."}};
 
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        mem.createMember("sjmoon", password, "", Role.USER);
-       
-    	fl.createFile("soccer.jpg","/images/club/soccer.jpg", "jpg");
-    	files.add(fl);
+        String password2 = new SecurityConfig().getPasswordEncoder().encode("1234");
+        mem.createMember("sjmoon","문승주", password, "", Role.USER);
+        members.add(mem);
+        mem2.createMember("phg","박형근", password2, "", Role.USER);
+        members.add(mem2);
 
-        club.createClub("100101", "200101", "축구동아리","101","저희는 서울대학교를 대표하는 축구동아리 사커스입니다.",fl);
-    	clubs.add(club);
+        for(int i = 0; i < 3; i++){
+            File file = createFile(fileAtb[i][0], fileAtb[i][1], fileAtb[i][2]);
+            if (i < 2) {
+                files.add(file);
+            }else{
+                file = null;
+            }
 
-    	clubInfo.createClubInfo(club, mem, currentDate);
-    	clubInfos.add(clubInfo);
+            Club club = createClub(clubAtb[i][0], clubAtb[i][1], clubAtb[i][2],clubAtb[i][3],clubAtb[i][4],file);
+            if (i < 2){
+                clubInfo = new ClubInfo();
+                clubInfo.createClubInfo(club, mem, currentDate);
+                club.getClubInfoList().add(clubInfo);
+                clubInfo = new ClubInfo();
+                clubInfo.createClubInfo(club, mem2, currentDate);
+                club.getClubInfoList().add(clubInfo);
+            }
+            clubs.add(club);
+        }
 
-    	fl = new File();
-    	fl.createFile("baseball.jpg","/images/club/baseball.jpg", "jpg");
-    	files.add(fl);
-    	
-    	club = new Club();
-    	club.createClub("100101", "200101", "농구동아리","102","저희는 서울대학교의 대표 농구동아리 비스킷입니다.",fl);
-    	clubs.add(club);
-
-    	clubInfo = new ClubInfo();
-    	clubInfo.createClubInfo(club, mem, currentDate);
-    	clubInfos.add(clubInfo);
-
-    	club = new Club();
-    	club.createClub("100101", "200102", "공예동아리","103","저희는 예술을 좋아하는 동아리입니다.",null);
-    	clubs.add(club);
-
+        memberRepository.saveAll(members);
     	fileRepository.saveAll(files);
-    	memberRepository.save(mem);
         clubRepository.saveAll(clubs);
-        clubinfoRepository.saveAll(clubInfos);
+    }
 
-
+    File createFile(String fileNm, String filePth, String fileExt){
+        File file = new File();
+        file.createFile(fileNm,filePth, fileExt);
+        return file;
+    }
+    Club createClub(String schoolCd, String clubClsCd, String clubNm, String roomNm,String introduce,File file)  {
+        Club club = new Club();
+        club.createClub(schoolCd, clubClsCd, clubNm,roomNm,introduce,file);
+        return club;
     }
 
     @Test
@@ -119,5 +127,23 @@ public class createTest {
     	School sc = new School();
     	sc.createSchool("100101","서울대학교", "서울특별시 관악구", "02-1111-1111");
     	schoolRepository.save(sc);
+    }
+
+    @Test
+    public void createCode() {
+        CdGrp cdGrp = new CdGrp();
+        Cd cd = new Cd();
+        List<Cd> list = new ArrayList<>();
+        cdGrp.createCdGrp("0101","동아리종류");
+        cd.createCd("200101","2001","운동");
+        list.add(cd);
+        cd = new Cd();
+        cd.createCd("200102","2001","미술");
+        list.add(cd);
+        cd = new Cd();
+        cd.createCd("200103","2001","음악");
+        list.add(cd);
+        cdGrpRepository.save(cdGrp);
+        cdRepository.saveAll(list);
     }
 }

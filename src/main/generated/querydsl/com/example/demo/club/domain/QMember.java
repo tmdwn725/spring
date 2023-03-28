@@ -18,43 +18,40 @@ public class QMember extends EntityPathBase<Member> {
 
     private static final long serialVersionUID = 1108241638L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QMember member = new QMember("member1");
 
-    public final StringPath authority = createString("authority");
+    public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final QClub club;
+    public final StringPath authority = createString("authority");
 
     public final ListPath<ClubInfo, QClubInfo> clubInfoList = this.<ClubInfo, QClubInfo>createList("clubInfoList", ClubInfo.class, QClubInfo.class, PathInits.DIRECT2);
 
     public final StringPath memberId = createString("memberId");
 
+    public final StringPath memberNm = createString("memberNm");
+
     public final NumberPath<Long> memberSeq = createNumber("memberSeq", Long.class);
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDt = _super.modDt;
+
     public final StringPath password = createString("password");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
     public QMember(String variable) {
-        this(Member.class, forVariable(variable), INITS);
+        super(Member.class, forVariable(variable));
     }
 
     public QMember(Path<? extends Member> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QMember(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QMember(PathMetadata metadata, PathInits inits) {
-        this(Member.class, metadata, inits);
-    }
-
-    public QMember(Class<? extends Member> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.club = inits.isInitialized("club") ? new QClub(forProperty("club"), inits.get("club")) : null;
+        super(Member.class, metadata);
     }
 
 }

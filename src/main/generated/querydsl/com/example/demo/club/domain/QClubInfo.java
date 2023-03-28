@@ -26,13 +26,13 @@ public class QClubInfo extends EntityPathBase<ClubInfo> {
 
     public final NumberPath<Long> clubInfoSeq = createNumber("clubInfoSeq", Long.class);
 
-    public final DatePath<java.time.LocalDate> joinDate = createDate("joinDate", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> joinDate = createDateTime("joinDate", java.time.LocalDateTime.class);
 
     public final QMember member;
 
     public final StringPath position = createString("position");
 
-    public final DatePath<java.time.LocalDate> withdrawDate = createDate("withdrawDate", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> withdrawDate = createDateTime("withdrawDate", java.time.LocalDateTime.class);
 
     public QClubInfo(String variable) {
         this(ClubInfo.class, forVariable(variable), INITS);
@@ -53,7 +53,7 @@ public class QClubInfo extends EntityPathBase<ClubInfo> {
     public QClubInfo(Class<? extends ClubInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.club = inits.isInitialized("club") ? new QClub(forProperty("club"), inits.get("club")) : null;
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
     }
 
 }

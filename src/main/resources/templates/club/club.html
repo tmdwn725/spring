@@ -154,6 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	margin-top: 5%;
 	margin-left: 5;
   }
+
+  div.club-member{
+    margin-top: 23%;
+  }
   
 </style>
 
@@ -165,12 +169,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  	<!--<div class="slide-div">
-	</div>
-	<div class="button-div div-close" onclick="div_click()">
-	  <div class="button-open"></div>
-	</div>-->
-    <th:block th:replace="common/side :: sideFragment"></th:block>
+  <th:block th:replace="common/side :: sideFragment"></th:block>
+  <th:block th:replace="common/clubApplica :: clubAppFragment"></th:block>
   <!-- End Sidebar-->
 
   <main id="main" class="main">
@@ -200,10 +200,12 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="club-body">
               <h5 class="club-title">동아리 소개 </h5>
 			  <div class="introduce">
-        		<div class="left"><img class="clubImg" th:src="${club.filePth}" alt=""></div>
-        		<div class="right">
-        			<h4 th:text="${club.clubNm}"></h4>
-                  	<textarea th:text="${club.introduce}" style="width:50%;text-align:5center;"></textarea>
+                  <div class="left">
+                      <img class="clubImg" th:src="${club.file == null ? '' : club.file.filePth}" alt="">
+                  </div>
+                <div class="right">
+                    <h4 th:text="${club.clubNm}"></h4>
+                    <textarea th:text="${club.introduce}" style="width:50%;text-align:5center;"></textarea>
                  </div>
     		  </div>
             </div>
@@ -241,26 +243,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <!-- Right side columns -->
         <div class="row col-lg-4">
-         <!-- 일정관리 -->
-		  <div class="card">
-		  	<div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">공지사항 <span>| Today</span></h5>
-            </div>
-          </div>
+         <!-- 동아리 채팅방 -->
+            <th:block th:replace="chat/chatRoom :: chatFragment"></th:block>
           <!-- Recent Activity -->
-          <div class="card">
+          <div class="card club-member">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -277,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="card-body">
               <h5 class="card-title">동아리원 <span>| 4/5</span></h5>
               <div class="activity" th:each="clubInfoList : ${club.clubInfoList}">
-				<p><span th:text="${clubInfoList.member.member}님"></span></p>
+                  <p><span th:text="${clubInfoList.member.memberNm}"></span></p>
               </div>
 
             </div>
@@ -305,8 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
   <script type="text/javascript" th:src="@{/js/main/vendor/simple-datatables/simple-datatables.js}"></script>
   <script type="text/javascript" th:src="@{/js/main/vendor/tinymce/tinymce.min.js}"></script>
   <script type="text/javascript" th:src="@{/js/main/vendor/php-email-form/validate.js}"></script>
-  <!-- Template Main JS File -->
-  <!--  <script type="text/javascript" th:src="@{/bootstrap/js/main.js}"></script>-->   
 </body>
 
 </html>

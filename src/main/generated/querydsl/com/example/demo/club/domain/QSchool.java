@@ -24,10 +24,10 @@ public class QSchool extends EntityPathBase<School> {
     public final StringPath address = createString("address");
 
     //inherited
-    public final StringPath modDt = _super.modDt;
+    public final DateTimePath<java.time.LocalDateTime> modDt = _super.modDt;
 
     //inherited
-    public final StringPath regDt = _super.regDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     public final StringPath schoolCd = createString("schoolCd");
 

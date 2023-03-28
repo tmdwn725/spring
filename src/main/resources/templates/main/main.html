@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
   });
 
+  function newClubClick(memberSeq, clubSeq) {
+    window.location.href = 'http://localhost:8080/club/myClub?memberSeq='+ memberSeq + '&clubSeq=' + clubSeq;
+  }
 </script>
 <style>
 
@@ -128,12 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <!-- ======= Sidebar ======= -->
     <th:block th:replace="common/side :: sideFragment"></th:block>
+    <th:block th:replace="common/clubApplica :: clubAppFragment"></th:block>
   <!-- End Sidebar-->
 
   <main id="main" class="main">
     <section class="section dashboard">
       <div class="row">
-
         <!-- Left side columns -->
         <div class="col-lg-8">
           <div class="row">
@@ -213,7 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 <div class="card-body pb-0">
                   <h5 class="card-title">최근개설동아리<span>| Today</span></h5>
-
                   <table class="table table-borderless">
                     <thead>
                       <tr>
@@ -225,18 +227,18 @@ document.addEventListener('DOMContentLoaded', function() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="clubList : ${clubList}">
-                        <th scope="row"><img th:src="@{/images/main/product-1.jpg}" alt=""></th>
-                        <td th:text="${clubList.clubNm}"></td>
-                        <td th:text="${clubList.roomNm}"></td>
-                        <td th:text="${#temporals.format(clubList.regDt, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${#temporals.format(clubList.modDt, 'yyyy-MM-dd')}"></td>
+                    <tr th:each="club : ${clubList}" th:data-id="${club.clubSeq}" th:onclick="'newClubClick(' + ${member.memberSeq} + ',' + ${club.clubSeq} + ')'" style="cursor: pointer;">
+                        <td>
+                          <img th:src="${club.file != null} ? ${club.file.filePth} : ''" alt=""/>
+                        </td>
+                        <td th:text="${club.clubNm}"></td>
+                        <td th:text="${club.roomNm}"></td>
+                        <td th:text="${#temporals.format(club.regDt, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#temporals.format(club.modDt, 'yyyy-MM-dd')}"></td>
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
-
               </div>
             </div><!-- 최신동아리 목록 조회 -->
           </div>

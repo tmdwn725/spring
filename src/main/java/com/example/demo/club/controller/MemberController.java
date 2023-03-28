@@ -1,9 +1,11 @@
 package com.example.demo.club.controller;
 
-import com.example.demo.club.dto.PasswordDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -19,25 +21,27 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
     private final ClubService clubService;
     private final ClubInfoService clubInfoService;
+    private final CdService cdService;
 
     @GetMapping("/main")
     public String main(Model model) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("userName", userId);
-        model.addAttribute("clubList",clubService.selectClubList());
+         model.addAttribute("clubList",clubService.selectClubList());
         MemberDTO member = memberService.selectMemberById(userId);
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
+        model.addAttribute("clubCdList", cdService.getClubCd());
         return "main/main";
     }
 

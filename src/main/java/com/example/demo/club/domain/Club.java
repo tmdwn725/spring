@@ -7,9 +7,11 @@ import javax.persistence.*;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "club")
 public class Club extends BaseEntity {
@@ -30,15 +32,16 @@ public class Club extends BaseEntity {
 
 	@Column(name = "room_nm")
 	private String roomNm;
-	
 	@Column(name = "introduce")
 	private String introduce;
+	@Transient
+	private String filePth;
 
-	@OneToMany(mappedBy = "club")
+	@OneToMany(mappedBy = "club", cascade = CascadeType.PERSIST)
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="rpt_img_fl_seq")
+	@JoinColumn(name="rpt_img_fl_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private File file;
 
 	@Builder
@@ -48,7 +51,7 @@ public class Club extends BaseEntity {
         this.clubNm = clubNm;
         this.roomNm = roomNm;
         this.introduce = introduce;
-        this.file = file;
+		this.file =  file;
     }
 
 }

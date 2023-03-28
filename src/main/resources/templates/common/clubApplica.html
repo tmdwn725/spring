@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="clubAppFragment">
+<!-- 모달 내용 -->
+    <div class="modal" id="applyClubModal" tabindex="-1" aria-labelledby="applyClubModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="applyClubModalLabel">신규 동아리 신청</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="club-name" class="form-label">동아리 이름</label>
+                            <input type="text" class="form-control" id="club-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="club-intro" class="form-label">동아리 소개</label>
+                            <textarea class="form-control" id="club-intro" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3" th:cache="clubCd">
+                            <label for="club-category" class="form-label">동아리 분야</label>
+                            <select class="form-select" aria-label="Default select example" id="club-category">
+                                <option selected>분야를 선택하세요</option>
+                                <option th:each="clubCd : ${clubCdList}" th:value="${clubCd.cd}" th:text="${clubCd.cdNm}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="club-room" class="form-label">방번호</label>
+                            <input type="text" class="form-control" id="club-room-nm">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-club-cancle" data-bs-dismiss="modal" onclick="closeModal();">취소</button>
+                    <button type="button" class="btn btn-club-applica" onclick="applicaClub();">신청하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>
