@@ -12,7 +12,7 @@ spring:
  jpa:
   hibernate:
    ddl-auto: update
-  # ddl-auto: create
+   #ddl-auto: create-drop
   properties:
    hibernate:
     show_sql: true
@@ -31,6 +31,7 @@ logging:
      descriptor:
       #sql: trace #sql 파라미터 확인
 jwt:
- secretKey: "test123"
+ secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
 
 

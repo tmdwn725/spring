@@ -1,5 +1,6 @@
 package com.example.demo.club.security;
 
+import com.example.demo.club.component.JwtTokenProvider;
 import com.example.demo.club.domain.Role;
 import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,9 @@ public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
