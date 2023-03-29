@@ -37,15 +37,6 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public List<String> getRoleList() {
-        if (this.role != null) {
-            return Arrays.asList(this.role.toString().split(","));
-        }
-        return new ArrayList<>();
-    }
-
-
-
     @OneToMany(mappedBy = "member")
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
