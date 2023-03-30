@@ -23,7 +23,7 @@ import org.springframework.validation.FieldError;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberService implements UserDetailsService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
@@ -49,7 +49,7 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("아이디를 확인해주세요."));
     }
 
-    /* 패스워드 변경, 유효성 체크 */
+/*    *//* 패스워드 변경, 유효성 체크 *//*
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
@@ -58,21 +58,7 @@ public class MemberService implements UserDetailsService {
             validatorResult.put(validKeyName, error.getDefaultMessage());
         }
         return validatorResult;
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByMemberId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("등록되지 않은 사용자 입니다."));
-
-        return User.builder()
-                .username(member.getMemberId())
-                .password(member.getPassword())
-                .roles(member.getRole().name())
-                .build();
-    }
-
+    }*/
 
     public MemberDTO selectMemberById(String id) {
     	MemberDTO dto = modelMapper.map(memberRepository.fingByMemberId(id), MemberDTO.class);

@@ -41,12 +41,12 @@ public class createTest {
     @Autowired
     private CdRepository cdRepository;
 
-     /*@Test
+     @Test
     @Rollback(value = false)
     public void onlyMemberCreate() {
        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         Member member = new Member();
-        member.createMember("phg","박형근", password, "", Role.USER);
+        member.createMember("phg","박형근", password, "", Role.ROLE_USER);
         memberRepository.save(member);
     }
 
@@ -60,7 +60,7 @@ public class createTest {
             clubInfo.createClubInfo(club,value,LocalDateTime.now());
             clubinfoRepository.save(clubInfo);
         }, () -> log.error("존재하지 않는 계정!"));
-    }*/
+    }
 
     @Test
     public void createMember(){
@@ -81,9 +81,9 @@ public class createTest {
 
         String password = new SecurityConfig().getPasswordEncoder().encode("1234");
         String password2 = new SecurityConfig().getPasswordEncoder().encode("1234");
-        mem.createMember("sjmoon","문승주", password, "", Role.USER);
+//        mem.createMember("sjmoon","문승주", password, "", Role.USER);
         members.add(mem);
-        mem2.createMember("phg","박형근", password2, "", Role.USER);
+//        mem2.createMember("phg","박형근", password2, "", Role.USER);
         members.add(mem2);
 
         for(int i = 0; i < 3; i++){

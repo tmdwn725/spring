@@ -12,6 +12,7 @@ import java.util.Collection;
 public class PrincipalDetails implements UserDetails {
     private Member member;
 
+    public PrincipalDetails(){}
     public PrincipalDetails(Member member){
         this.member = member;
     }
@@ -19,7 +20,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        member.getRoleList().forEach(r -> {
+        this.member.getRoleList().forEach(r -> {
             authorities.add(() -> r);
         });
         return authorities;

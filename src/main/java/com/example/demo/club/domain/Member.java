@@ -1,5 +1,6 @@
 package com.example.demo.club.domain;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "member")
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements Serializable {
 
     @Id
     @Column(name ="member_seq")

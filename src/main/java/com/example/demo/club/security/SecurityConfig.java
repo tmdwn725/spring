@@ -25,6 +25,8 @@ public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
+    @Autowired
+    private AuthProvider authProvider;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
@@ -46,14 +48,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(customUserDetailService);
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable();
         http.authorizeHttpRequests()
@@ -72,6 +66,8 @@ public class SecurityConfig {
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("/login");
+        http.userDetailsService(customUserDetailService);
+        http.authenticationProvider(authProvider);
         http.httpBasic();
 
         return http.build();

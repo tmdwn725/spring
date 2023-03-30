@@ -1,5 +1,12 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.common.ModelMapperUtil;
+import com.example.demo.club.domain.Member;
+import com.example.demo.club.dto.PasswordDTO;
+import com.example.demo.club.dto.PrincipalDetails;
+import com.example.demo.club.service.CdService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +25,10 @@ import com.example.demo.club.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Map;
 import java.util.List;
 
@@ -34,13 +43,13 @@ public class MemberController {
     private final CdService cdService;
 
     @GetMapping("/main")
-    public String main(Model model) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("userName", userId);
-         model.addAttribute("clubList",clubService.selectClubList());
-        MemberDTO member = memberService.selectMemberById(userId);
-        model.addAttribute("member", member);
-        model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
+    public String main(Model model, @AuthenticationPrincipal PrincipalDetails principal) {
+        model.addAttribute("userName", principal.getMember().getMemberId());
+        model.addAttribute("clubList",clubService.selectClubList());
+        model.addAttribute("member", principal.getMember());
+
+        MemberDTO modelDTO = ModelMapperUtil.map(principal.getMember(), MemberDTO.class);
+        model.addAttribute("myClubList",clubInfoService.selectMyClubList(modelDTO));
         model.addAttribute("clubCdList", cdService.getClubCd());
         return "main/main";
     }
@@ -60,6 +69,7 @@ public class MemberController {
     @GetMapping("/mypage/updatePassword/{memberSeq}")
     public String updatePasswordForm(@PathVariable(required = false) Long memberSeq, Model model) {
         MemberDTO member = memberService.selectMemberBySeq(memberSeq);
+        model.addAttribute("passwordDTO", new PasswordDTO());
         model.addAttribute("member",member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "member/updatePassword";
@@ -68,22 +78,17 @@ public class MemberController {
     /* 패스워드 변경 로직 */
     @PostMapping("/mypage/updatePassword/{memberSeq}")
     public String updatePassword(@PathVariable(required = false) Long memberSeq, Model model,
-                                 @Validated @ModelAttribute PasswordDTO passwordDTO, Errors errors) {
-        if (errors.hasErrors()) {
-            Map<String, String> validatorResult = memberService.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
+                                 @Validated @ModelAttribute PasswordDTO passwordDTO, BindingResult result, Authentication authentication) {
+
+
+        System.out.println(result.getAllErrors());
+        if(result.hasErrors()) {
             MemberDTO member = memberService.selectMemberBySeq(memberSeq);
             model.addAttribute("member",member);
-//            model.addAttribute("memberSeq", memberSeq);
             return "member/updatePassword";
-        } else {
-            MemberDTO member = memberService.selectMemberBySeq(memberSeq);
-            model.addAttribute("member",member);
-            model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
-            return "member/main";
         }
+
+        return "member/updatePassword";
     }
 
 }
