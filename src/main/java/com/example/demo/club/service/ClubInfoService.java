@@ -21,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class ClubInfoService {
-	
-	@Autowired
-	private ClubInfoRepository clubInfoRepository;
+	private final ClubInfoRepository clubInfoRepository;
 	
 	public List<ClubDTO> selectMyClubList(MemberDTO dto){
 		List<Club> findMyClubList = clubInfoRepository.selectMyClubList(dto.getMemberSeq());
