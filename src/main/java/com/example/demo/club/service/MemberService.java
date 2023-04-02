@@ -2,12 +2,18 @@ package com.example.demo.club.service;
 
 import java.util.List;
 
-import com.example.demo.club.component.JwtTokenProvider;
-import com.example.demo.club.dto.TokenInfo;
+import com.example.demo.club.dto.TokenDto;
+import com.example.demo.club.exception.CustomException;
+import com.example.demo.club.security.jwt.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +36,8 @@ public class MemberService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
+
 
     /** 생성 **/
 
@@ -52,7 +60,6 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("아이디를 확인해주세요."));
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByMemberId(username)
@@ -65,23 +72,6 @@ public class MemberService implements UserDetailsService {
                 .build();
     }
 
-    @Transactional
-    public TokenInfo login(String memberId, String password) {
-        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
-
-        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-        return tokenInfo;
-    }
-
-
     public MemberDTO selectMemberById(String id) {
     	MemberDTO dto = modelMapper.map(memberRepository.fingByMemberId(id), MemberDTO.class);
 		return dto;
@@ -90,6 +80,25 @@ public class MemberService implements UserDetailsService {
     public MemberDTO selectMemberBySeq(Long memberSeq) {
     	MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq).orElse(null), MemberDTO.class);
     	return dto;
+    }
+
+    public ResponseEntity<TokenDto> signIn(MemberDTO member) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            member.getMemberId(),
+                            member.getPassword()
+                    )
+            );
+            TokenDto tokenDto = new TokenDto(jwtTokenProvider.generateToken(authentication));
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());
+
+            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid credentials supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
 }

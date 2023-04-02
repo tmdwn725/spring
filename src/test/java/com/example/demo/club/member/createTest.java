@@ -1,66 +1,42 @@
 package com.example.demo.club.member;
-
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.example.demo.club.domain.*;
 import com.example.demo.club.repository.*;
+import com.example.demo.club.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-
-import com.example.demo.club.security.SecurityConfig;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 @Slf4j
+@WebAppConfiguration
 @SpringBootTest
 public class createTest {
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private ClubRepository clubRepository;
-
-    @Autowired
-    private ClubInfoRepository clubinfoRepository;
-
     @Autowired
     private SchoolRepository schoolRepository;
-    
     @Autowired
     private FileRepository fileRepository;
-
     @Autowired
     private CdGrpRepository cdGrpRepository;
-
     @Autowired
     private CdRepository cdRepository;
-
-     /*@Test
-    @Rollback(value = false)
-    public void onlyMemberCreate() {
-       String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        Member member = new Member();
-        member.createMember("phg","박형근", password, "", Role.USER);
-        memberRepository.save(member);
-    }
-
-    @Test
-    @Rollback(value = false)
-    public void onlyClubCreate() {
-        Optional<Member> member = memberRepository.findByMemberId("phg");
-        Club club = clubRepository.findByClubNm("축구동아리");
-        member.ifPresentOrElse(value -> {
-            ClubInfo clubInfo = new ClubInfo();
-            clubInfo.createClubInfo(club,value,LocalDateTime.now());
-            clubinfoRepository.save(clubInfo);
-        }, () -> log.error("존재하지 않는 계정!"));
-    }*/
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MemberService memberService;
 
     @Test
     public void createMember(){
@@ -79,8 +55,8 @@ public class createTest {
                             ,{"100101", "200101", "농구동아리","102","저희는 서울대학교의 대표 농구동아리 비스킷입니다."}
                             ,{"100101", "200102", "공예동아리","103","저희는 예술을 좋아하는 동아리입니다."}};
 
-        String password = new SecurityConfig().getPasswordEncoder().encode("1234");
-        String password2 = new SecurityConfig().getPasswordEncoder().encode("1234");
+        String password = passwordEncoder.encode("1234");
+        String password2 = passwordEncoder.encode("1234");
         mem.createMember("sjmoon","문승주", password, "", Role.USER);
         members.add(mem);
         mem2.createMember("phg","박형근", password2, "", Role.USER);

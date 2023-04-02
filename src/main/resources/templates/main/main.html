@@ -53,8 +53,17 @@
  <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
+$(document).ready(function() {
+    const token = getCookie('accessToken');
 
-document.addEventListener('DOMContentLoaded', function() {
+    // 헤더에 JWT 토큰 추가
+    if (token) {
+      $.ajaxSetup({
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+    }
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -97,6 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
   function newClubClick(memberSeq, clubSeq) {
     window.location.href = 'http://localhost:8080/club/myClub?memberSeq='+ memberSeq + '&clubSeq=' + clubSeq;
   }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
 </script>
 <style>
 
@@ -135,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End Sidebar-->
 
   <main id="main" class="main">
+    <!--<p th:text="'JWT Token: ' + ${#httpServletRequest.cookies.accessToken.value}"></p>-->
     <section class="section dashboard">
       <div class="row">
         <!-- Left side columns -->

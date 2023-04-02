@@ -4,7 +4,9 @@ import com.example.demo.club.dto.CdDTO;
 import com.example.demo.club.service.CdService;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +34,10 @@ public class MemberController {
     private final CdService cdService;
 
     @GetMapping("/main")
-    public String main(Model model) {
+    public String main(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("userName", userId);
-         model.addAttribute("clubList",clubService.selectClubList());
+        model.addAttribute("clubList",clubService.selectClubList());
         MemberDTO member = memberService.selectMemberById(userId);
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));

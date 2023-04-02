@@ -1,6 +1,6 @@
 package com.example.demo.club.common.jwt;
 
-import com.example.demo.club.component.JwtTokenProvider;
+import com.example.demo.club.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
