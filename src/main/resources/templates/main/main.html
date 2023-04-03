@@ -56,14 +56,12 @@
 $(document).ready(function() {
     const token = getCookie('accessToken');
 
-    // 헤더에 JWT 토큰 추가
-    if (token) {
-      $.ajaxSetup({
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      });
-    }
+    // JWT 토큰이 있다면, HTML header에 Authorization 헤더를 추가합니다.
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', '/api/data', true);
+    xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhttp.send();
+
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
