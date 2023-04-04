@@ -58,7 +58,7 @@ $(document).ready(function() {
 
     // JWT 토큰이 있다면, HTML header에 Authorization 헤더를 추가합니다.
     const xhttp = new XMLHttpRequest();
-    xhttp.open('GET', '/api/data', true);
+    xhttp.open('POST', '/member/main', true);
     xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send();
 

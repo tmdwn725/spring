@@ -58,7 +58,7 @@ public class LoginController {
 		model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
 		model.addAttribute("clubCdList", cdService.getClubCd());
 
-		return "main/main";
+		return "redirect:/member/main";
 	}
 
 	@RequestMapping("/join")
