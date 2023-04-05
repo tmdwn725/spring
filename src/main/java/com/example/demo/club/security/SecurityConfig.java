@@ -40,14 +40,14 @@ public class SecurityConfig {
        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
-   @Bean
+   /*@Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler =
                 new SavedRequestAwareAuthenticationSuccessHandler();
         authenticationSuccessHandler.setDefaultTargetUrl("/member/main");
 
         return authenticationSuccessHandler;
-    }
+    }*/
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {

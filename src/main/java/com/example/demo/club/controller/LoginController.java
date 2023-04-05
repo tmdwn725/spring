@@ -3,6 +3,7 @@ package com.example.demo.club.controller;
 import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.dto.TokenDto;
 import com.example.demo.club.service.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -39,8 +40,9 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(@Validated MemberDTO member, HttpServletResponse res, ModelMap model) throws Exception {
+	public ResponseEntity<String> login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
 		ResponseEntity<TokenDto> tokenDtoResponseEntity = memberService.signIn(member);
+		/*
 		Cookie cookie = new Cookie(
 				"accessToken",
 				tokenDtoResponseEntity.getBody().getAccessToken()
@@ -48,17 +50,29 @@ public class LoginController {
 
 		cookie.setPath("/");
 		cookie.setMaxAge(Integer.MAX_VALUE);
+		response.addCookie(cookie);*/
 
-		res.addCookie(cookie);
+		// Return the JWT token in the response body
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", tokenDtoResponseEntity.getBody().getAccessToken());
+		return ResponseEntity.ok().headers(headers).body("You are logged in!");
 
-		model.addAttribute("userName", member.getMemberId());
+
+		/*model.addAttribute("userName", member.getMemberId());
 		model.addAttribute("clubList",clubService.selectClubList());
 		member = memberService.selectMemberById(member.getMemberId());
 		model.addAttribute("member", member);
 		model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
-		model.addAttribute("clubCdList", cdService.getClubCd());
+		model.addAttribute("clubCdList", cdService.getClubCd());*/
 
-		return "redirect:/member/main";
+		// JWT를 HTTP Header에 추가
+		//response.setHeader("Authorization", tokenDtoResponseEntity.getHeaders().getFirst("Authorization") );
+
+		// 다른 URL로 Redirect
+		//response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+		//response.setHeader("Location", "/member/main");
+
+		//return "redirect:/member/main";
 	}
 
 	@RequestMapping("/join")
