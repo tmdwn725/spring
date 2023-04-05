@@ -5,7 +5,7 @@
 <link th:href="@{css/login.css}" rel="stylesheet" />
 <body class="text-center">
 <main class="form-signin">
-	<form action="login" method="post" id="login-form">
+	<!--<form action="login" method="post" id="login-form">-->
        <img class="mb-4" th:src="@{images/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인 페이지</h1>
 
@@ -23,8 +23,8 @@
                 <input type="checkbox" value="remember-me"> 아이디 저장
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
-    </form>
+        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="login()">로그인</button>
+    <!--</form>-->
 </main>
 </body>
 </html>

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#login-form").submit(function(event) {
+    /*$("#login-form").submit(function(event) {
         // Prevent the form from submitting normally
         event.preventDefault();
 
@@ -38,5 +38,26 @@ $(document).ready(function(){
             // Display an error message
             $("#error-message").text(xhr.responseJSON.message);
         });
-    });
+    });*/
 });
+
+function login(){
+    var memberId = $("#memberId").val();
+    var password = $("#password").val();
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        data: JSON.stringify({"memberId": memberId, "password": password}),
+        contentType: "application/json",
+        success: function(response) {
+            // Save the JWT token in local storage
+            localStorage.setItem("token", response.token);
+
+            // Redirect to another page
+            window.location.href = "/member/main";
+        },
+        error: function() {
+            console.log("Error: authentication failed.");
+        }
+    });
+}
