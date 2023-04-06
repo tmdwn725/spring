@@ -53,8 +53,24 @@ function login(){
             // Save the JWT token in local storage
             const token = xhr.getResponseHeader("Authorization");
             localStorage.setItem("token", token);
-            window.location.href = "/member/main";
+            //window.location.href = "/member/main";
             // Redirect to another page
+            $.ajax({
+                type: "GET",
+                url: "/member/main",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                success: function(data) {
+                    // Display the main page
+                    window.history.pushState({"html": data}, "", "/member/main");
+                    $("body").html(data);
+                },
+                error: function() {
+                    console.log("Error: unable to load main page.");
+                }
+            });
+
         },
         error: function() {
             console.log("Error: authentication failed.");

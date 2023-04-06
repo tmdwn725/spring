@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -90,5 +91,17 @@ public class JwtTokenProvider {
             //MalformedJwtException | ExpiredJwtException | IllegalArgumentException
             throw new CustomException("Error on Token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public String getJwtTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("jwtToken")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }
