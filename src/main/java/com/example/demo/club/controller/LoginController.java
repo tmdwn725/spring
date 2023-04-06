@@ -40,7 +40,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
+	public ResponseEntity<String> login(@RequestBody MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
 		ResponseEntity<TokenDto> tokenDtoResponseEntity = memberService.signIn(member);
 		/*
 		Cookie cookie = new Cookie(
@@ -57,13 +57,6 @@ public class LoginController {
 		headers.set("Authorization", tokenDtoResponseEntity.getBody().getAccessToken());
 		return ResponseEntity.ok().headers(headers).body("You are logged in!");
 
-
-		/*model.addAttribute("userName", member.getMemberId());
-		model.addAttribute("clubList",clubService.selectClubList());
-		member = memberService.selectMemberById(member.getMemberId());
-		model.addAttribute("member", member);
-		model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
-		model.addAttribute("clubCdList", cdService.getClubCd());*/
 
 		// JWT를 HTTP Header에 추가
 		//response.setHeader("Authorization", tokenDtoResponseEntity.getHeaders().getFirst("Authorization") );

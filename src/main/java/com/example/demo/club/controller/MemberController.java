@@ -42,7 +42,7 @@ public class MemberController {
         model.addAttribute("member", member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         model.addAttribute("clubCdList", cdService.getClubCd());
-        return "main/main";
+        return "redirect:main/main";
     }
 
     /** 마이페이지 **/

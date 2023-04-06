@@ -49,12 +49,12 @@ function login(){
         url: "/login",
         data: JSON.stringify({"memberId": memberId, "password": password}),
         contentType: "application/json",
-        success: function(response) {
+        success: function(data,status,xhr) {
             // Save the JWT token in local storage
-            localStorage.setItem("token", response.token);
-
-            // Redirect to another page
+            const token = xhr.getResponseHeader("Authorization");
+            localStorage.setItem("token", token);
             window.location.href = "/member/main";
+            // Redirect to another page
         },
         error: function() {
             console.log("Error: authentication failed.");
