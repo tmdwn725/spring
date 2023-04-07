@@ -40,9 +40,9 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
+	public String login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
 		ResponseEntity<TokenDto> tokenDtoResponseEntity = memberService.signIn(member);
-		/*
+
 		Cookie cookie = new Cookie(
 				"accessToken",
 				tokenDtoResponseEntity.getBody().getAccessToken()
@@ -50,22 +50,12 @@ public class LoginController {
 
 		cookie.setPath("/");
 		cookie.setMaxAge(Integer.MAX_VALUE);
-		response.addCookie(cookie);*/
+		cookie.setHttpOnly(true);
+		//cookie.setSecure(true); //https
+		response.addCookie(cookie);
 
-		// Return the JWT token in the response body
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", tokenDtoResponseEntity.getBody().getAccessToken());
-		return ResponseEntity.ok().headers(headers).body("You are logged in!");
+		return "redirect:/member/main";
 
-
-		// JWT를 HTTP Header에 추가
-		//response.setHeader("Authorization", tokenDtoResponseEntity.getHeaders().getFirst("Authorization") );
-
-		// 다른 URL로 Redirect
-		//response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-		//response.setHeader("Location", "/member/main");
-
-		//return "redirect:/member/main";
 	}
 
 	@RequestMapping("/join")

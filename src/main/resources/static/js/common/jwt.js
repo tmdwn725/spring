@@ -11,18 +11,18 @@ $(document).ready(function(){
 
     $(document).ajaxStart(function() {
         // Show a loading spinner
-        alert("ajax 시작");
+        //alert("ajax 시작");
     });
 
     $(document).ajaxSend(function(event, xhr, options) {
-        alert("ajax 전송");
+        /*alert("ajax 전송");
         var token = localStorage.getItem('token');
         if (token) {
             xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        }
+        }*/
     });
     $(document).ajaxStop(function(event, xhr, options) {
         // Hide the loading spinner
-        alert("ajax 끝");
+        //alert("ajax 끝");
     });
 });
