@@ -1,11 +1,9 @@
 package com.example.demo.club.controller;
 
 import com.example.demo.club.dto.MemberDTO;
-import com.example.demo.club.dto.TokenDto;
+import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.service.*;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -41,12 +38,15 @@ public class LoginController {
 
 	@PostMapping("/login")
 	public String login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
-		ResponseEntity<TokenDto> tokenDtoResponseEntity = memberService.signIn(member);
+		ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member);
 
 		Cookie cookie = new Cookie(
 				"accessToken",
 				tokenDtoResponseEntity.getBody().getAccessToken()
 		);
+
+		TokenDTO refreshToken = new TokenDTO();
+		refreshToken.setRefreshToken("Bearer " + tokenDtoResponseEntity.getBody().getRefreshToken());
 
 		cookie.setPath("/");
 		cookie.setMaxAge(Integer.MAX_VALUE);

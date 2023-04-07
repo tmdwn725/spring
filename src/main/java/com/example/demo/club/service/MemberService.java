@@ -2,7 +2,7 @@ package com.example.demo.club.service;
 
 import java.util.List;
 
-import com.example.demo.club.dto.TokenDto;
+import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
 import com.example.demo.club.security.jwt.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
@@ -82,7 +82,7 @@ public class MemberService implements UserDetailsService {
     	return dto;
     }
 
-    public ResponseEntity<TokenDto> signIn(MemberDTO member) {
+    public ResponseEntity<TokenDTO> signIn(MemberDTO member) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -90,7 +90,7 @@ public class MemberService implements UserDetailsService {
                             member.getPassword()
                     )
             );
-            TokenDto tokenDto = new TokenDto(jwtTokenProvider.generateToken(authentication));
+            TokenDTO tokenDto = jwtTokenProvider.generateToken(authentication);
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());
