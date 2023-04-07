@@ -91,6 +91,9 @@ public class MemberService implements UserDetailsService {
                     )
             );
             TokenDTO tokenDto = jwtTokenProvider.generateToken(authentication);
+            if(tokenDto != null){
+                tokenDto.setRefreshToken(jwtTokenProvider.reGenerateRefreshToken(member.getMemberId()));
+            }
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());

@@ -33,7 +33,7 @@ logging:
 jwt:
  accessSecretKey: aG91Mjctc2ltcGxlLXNwcmluZy1ib290LWFwaS1qd3QK
  refreshSecretKey: bG91Kjctc2lasG23LXNwcmliZy138lGhLWFwaS1qd3QN
- accessTokenExpireTime: 300000
+ accessTokenExpireTime: 60000
  refreshTokenExpireTime: 1209600000
 
 

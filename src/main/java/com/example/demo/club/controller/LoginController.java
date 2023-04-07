@@ -45,17 +45,23 @@ public class LoginController {
 				tokenDtoResponseEntity.getBody().getAccessToken()
 		);
 
-		TokenDTO refreshToken = new TokenDTO();
-		refreshToken.setRefreshToken("Bearer " + tokenDtoResponseEntity.getBody().getRefreshToken());
-
 		cookie.setPath("/");
 		cookie.setMaxAge(Integer.MAX_VALUE);
 		cookie.setHttpOnly(true);
 		//cookie.setSecure(true); //https
 		response.addCookie(cookie);
 
-		return "redirect:/member/main";
+		Cookie refreshCookie = new Cookie(
+				"refreshToken",
+				tokenDtoResponseEntity.getBody().getRefreshToken()
+		);
 
+		refreshCookie.setPath("/");
+		refreshCookie.setMaxAge(Integer.MAX_VALUE);
+		refreshCookie.setHttpOnly(true);
+		response.addCookie(refreshCookie);
+
+		return "redirect:/member/main";
 	}
 
 	@RequestMapping("/join")
