@@ -37,7 +37,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (token != null) {
                 Authentication auth = null;
                 Date now = new Date();
-                String memberId = jwtTokenProvider.getMemberIdFromToken(token);
+                String memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
                 if (jwtTokenProvider.validateToken(token,true)){
                     auth = jwtTokenProvider.getAuthentication(token);
                 } else if(jwtTokenProvider.validateToken(refreshToken,false)){

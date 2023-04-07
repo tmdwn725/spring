@@ -99,7 +99,7 @@ public class JwtTokenProvider {
      * @return
      */
     public Authentication getAuthentication(String token) {
-        String username = getMemberIdFromToken(token);
+        String username = Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -190,7 +190,7 @@ public class JwtTokenProvider {
 
     // token으로 사용자 id 조회
     public String getMemberIdFromToken(String token) {
-        return Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String getJwtTokenFromCookie(HttpServletRequest request, String type) {
