@@ -23,6 +23,9 @@ spring:
   suffix: .html
   cache: false
   check-template-location: true
+ redis:
+  host: 3.112.49.158
+  port: 6379
 logging:
  level:
   org:
