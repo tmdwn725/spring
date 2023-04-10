@@ -3,6 +3,7 @@ package com.example.demo.club.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "refresh_token")
+@RedisHash(value = "refreshToken", timeToLive = 60)
 @NoArgsConstructor
 public class RefreshToken {
     @Id
