@@ -4,6 +4,8 @@ import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.service.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,7 +30,6 @@ public class LoginController {
 	private final ClubService clubService;
 	private final ClubInfoService clubInfoService;
 	private final CdService cdService;
-
 
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "fail", required = false) String flag, Model model) {
@@ -62,6 +63,11 @@ public class LoginController {
 		response.addCookie(refreshCookie);
 
 		return "redirect:/member/main";
+	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<String> logout(@AuthenticationPrincipal MemberDTO member, @RequestBody TokenDTO tokenDTO) {
+		return ResponseEntity.ok(memberService.logout(tokenDTO.getAccessToken(), member));
 	}
 
 	@RequestMapping("/join")

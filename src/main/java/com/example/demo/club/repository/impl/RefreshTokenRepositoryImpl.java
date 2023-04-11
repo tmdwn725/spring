@@ -24,4 +24,9 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepositoryCustom 
     private BooleanExpression useYnEq(String useYn){
         return Objects.nonNull(useYn) ? refreshToken.useYn.eq(useYn) : null;
     }
+    public long deleteTokenByMemberId(String memberId){
+        return  queryFactory.delete(refreshToken)
+                .where(refreshToken.memberId.eq(memberId))
+                .execute();
+    }
 }

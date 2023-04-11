@@ -1,11 +1,16 @@
 package com.example.demo.club.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
+import com.example.demo.club.repository.RefreshTokenRepository;
 import com.example.demo.club.security.jwt.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +42,10 @@ public class MemberService implements UserDetailsService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
-
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     /** 생성 **/
-
     /* 회원 생성 */
     @Transactional
     public void createMember(Member member) {
@@ -90,10 +95,15 @@ public class MemberService implements UserDetailsService {
                             member.getPassword()
                     )
             );
+
             TokenDTO tokenDto = jwtTokenProvider.generateToken(authentication);
-            if(tokenDto != null){
-                tokenDto.setRefreshToken(jwtTokenProvider.reGenerateRefreshToken(member.getMemberId()));
-            }
+
+            redisTemplate.opsForValue().set(
+                    authentication.getName(),
+                    tokenDto.getRefreshToken(),
+                    tokenDto.getExpireTime(),
+                    TimeUnit.MILLISECONDS
+            );
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());
@@ -102,6 +112,15 @@ public class MemberService implements UserDetailsService {
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid credentials supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    public String logout(String accessToken, MemberDTO member) {
+
+        // refreshToken 테이블의 refreshToken 삭제
+        refreshTokenRepository.deleteTokenByMemberId(member.getMemberId());
+        //jwtTokenProvider.setBla
+
+        return "로그아웃 완료";
     }
 
 }

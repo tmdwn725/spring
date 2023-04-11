@@ -36,16 +36,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             if (token != null) {
                 Authentication auth = null;
-                Date now = new Date();
                 String memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
                 if (jwtTokenProvider.validateToken(token,true)){
                     auth = jwtTokenProvider.getAuthentication(token);
                 } else if(jwtTokenProvider.validateToken(refreshToken,false)){
-                    token = jwtTokenProvider.doGenerateAccessToken(memberId,now);
+                    token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
                 }else{
                     refreshToken = jwtTokenProvider.reGenerateRefreshToken(memberId);
-                    token = jwtTokenProvider.doGenerateAccessToken(memberId,now);
+                    token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
                 }
 

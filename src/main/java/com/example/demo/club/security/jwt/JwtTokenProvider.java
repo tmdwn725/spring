@@ -1,17 +1,23 @@
 package com.example.demo.club.security.jwt;
 
+import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.domain.RefreshToken;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
 import com.example.demo.club.repository.RefreshTokenRepository;
 import com.example.demo.club.security.CustomUserDetailService;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.token.Token;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -23,10 +29,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
     @Value("${jwt.accessSecretKey}")
     private String accessSecretKey;
@@ -40,6 +48,10 @@ public class JwtTokenProvider {
     @Value("${jwt.refreshTokenExpireTime}")
     private long refreshTokenExpireTime;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private final RedisUtil redisUtil;
+
     @Autowired
     private CustomUserDetailService userDetailService;
 
@@ -52,23 +64,23 @@ public class JwtTokenProvider {
      * @return
      */
     public TokenDTO generateToken(Authentication authentication) {
-        TokenDTO token = new TokenDTO();
         Date now = new Date();
-
-        //Access Token
-        String accessToken = doGenerateAccessToken(authentication.getName(),now);
 
         //Refresh Token
         String refreshToken = reGenerateRefreshToken(authentication.getName());
+        //Access Token
+        String accessToken = doGenerateAccessToken(authentication.getName());
 
+        TokenDTO token = new TokenDTO(accessToken,refreshToken);
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
-
+        token.setExpireTime(now.getTime() + accessTokenExpireTime);
         return token;
     }
 
     // JWT accessToken 생성
-    public String doGenerateAccessToken(String memberId, Date now) {
+    public String doGenerateAccessToken(String memberId) {
+        Date now =  new Date();
         Claims claims = Jwts.claims().setSubject(memberId);
         //Access Token
         return Jwts.builder()
@@ -81,7 +93,8 @@ public class JwtTokenProvider {
     }
 
     // JWT refreshToken 생성
-    public String doGenerateRefreshToken(String memberId, Date now) {
+    public String doGenerateRefreshToken(String memberId) {
+        Date now =  new Date();
         Claims claims = Jwts.claims().setSubject(memberId);
         return  Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -126,20 +139,55 @@ public class JwtTokenProvider {
         String secretKey = accessSecretKey;
         if(!accessYn){
             secretKey = refreshSecretKey;
+            /*if (redisUtil.hasKeyBlackList(token)){
+                // TODO 에러 발생시키는 부분 수정
+                throw new RuntimeException("로그아웃 했지롱~~");
+            }*/
         }
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
-            //MalformedJwtException | ExpiredJwtException | IllegalArgumentException
-            return false;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
         }
+        return false;
     }
 
 
     // DB에서 JWT refreshToken 발급
     public String reGenerateRefreshToken(String memberId){
-        
+        try {
+            /*String refreshToken = redisUtil.get(memberId);
+            // Refresh Token 검증
+            if (!validateToken(refreshToken,false) {
+                throw new CustomException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
+            }*/
+            // 토큰 생성
+            String refreshToken = doGenerateRefreshToken(memberId);
+            TokenDTO tokenDto = new TokenDTO(doGenerateAccessToken(memberId), refreshToken);
+
+            // RefreshToken Redis에 업데이트
+            redisTemplate.opsForValue().set(
+                    memberId,
+                    refreshToken,
+                    tokenDto.getExpireTime(),
+                    TimeUnit.MILLISECONDS
+            );
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+
+            return refreshToken;
+    } catch (AuthenticationException e) {
+        throw new CustomException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
+    }
+
+        /*
         log.info("refreshToken DB 조회");
         // DB에서 refreshToken 정보 조회
         RefreshToken token = refreshTokenRepository.findTokenByMemberIdId(memberId);
@@ -150,7 +198,7 @@ public class JwtTokenProvider {
             return saveRefreshToken(memberId);
         }
 
-        try {
+       try {
             String refreshToken = token.getToken().substring(7);
             Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(refreshToken);
             log.info("[reGenerateRefreshToken] refreshToken이 만료되지 않았습니다.");
@@ -164,7 +212,7 @@ public class JwtTokenProvider {
             // 그 외 예외처리
             log.error("[reGenerateRefreshToken] refreshToken 재발급 중 문제 발생 : {}", e.getMessage());
             return null;
-        }
+        }*/
     }
     
     // refresh 토큰 삭제
@@ -178,7 +226,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         LocalDateTime expiryTime = LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault())
                 .plus(Duration.ofMillis(refreshTokenExpireTime));
-        String refreshToken =  doGenerateRefreshToken(memberId,now);
+        String refreshToken =  doGenerateRefreshToken(memberId);
         token.setUseYn("Y");
         token.setMemberId(memberId);
         token.setExpireTime(expiryTime);
