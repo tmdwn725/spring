@@ -1,5 +1,6 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.common.CookieUtil;
 import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.service.*;
@@ -30,6 +31,7 @@ public class LoginController {
 	private final ClubService clubService;
 	private final ClubInfoService clubInfoService;
 	private final CdService cdService;
+	private final CookieUtil cookieUtil;
 
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "fail", required = false) String flag, Model model) {
@@ -40,28 +42,8 @@ public class LoginController {
 	@PostMapping("/login")
 	public String login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
 		ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member);
-
-		Cookie cookie = new Cookie(
-				"accessToken",
-				tokenDtoResponseEntity.getBody().getAccessToken()
-		);
-
-		cookie.setPath("/");
-		cookie.setMaxAge(Integer.MAX_VALUE);
-		cookie.setHttpOnly(true);
-		//cookie.setSecure(true); //https
+		Cookie cookie = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
 		response.addCookie(cookie);
-
-		Cookie refreshCookie = new Cookie(
-				"refreshToken",
-				tokenDtoResponseEntity.getBody().getRefreshToken()
-		);
-
-		refreshCookie.setPath("/");
-		refreshCookie.setMaxAge(Integer.MAX_VALUE);
-		refreshCookie.setHttpOnly(true);
-		response.addCookie(refreshCookie);
-
 		return "redirect:/member/main";
 	}
 

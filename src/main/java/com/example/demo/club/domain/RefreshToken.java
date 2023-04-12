@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-//@RedisHash(value = "refreshToken", timeToLive = 60)
+@RedisHash(value = "jwtToken", timeToLive = 60*60*24*3)
 @NoArgsConstructor
 public class RefreshToken {
     @Id

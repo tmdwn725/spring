@@ -36,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService implements UserDetailsService {
-
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;

@@ -38,23 +38,16 @@ import java.util.function.Function;
 public class JwtTokenProvider {
     @Value("${jwt.accessSecretKey}")
     private String accessSecretKey;
-
     @Value("${jwt.refreshSecretKey}")
     private String refreshSecretKey;
-
     @Value("${jwt.accessTokenExpireTime}")
     private long accessTokenExpireTime;
-
     @Value("${jwt.refreshTokenExpireTime}")
     private long refreshTokenExpireTime;
-
     private final RedisTemplate<String, String> redisTemplate;
-
     private final RedisUtil redisUtil;
-
     @Autowired
     private CustomUserDetailService userDetailService;
-
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
@@ -247,5 +240,10 @@ public class JwtTokenProvider {
                 .findFirst() .map(Cookie::getValue)
                 .orElse(null);
         return token;
+    }
+
+    public String getRefreshToken(String memberId) {
+        String refreshToken = redisUtil.getValues(memberId);
+        return refreshToken;
     }
 }

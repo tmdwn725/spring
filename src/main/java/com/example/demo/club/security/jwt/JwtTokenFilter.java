@@ -1,7 +1,9 @@
 package com.example.demo.club.security.jwt;
 
+import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,7 +20,6 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
     private JwtTokenProvider jwtTokenProvider;
-
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -43,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
                 }else{
-                    refreshToken = jwtTokenProvider.reGenerateRefreshToken(memberId);
+                    refreshToken = jwtTokenProvider.getRefreshToken(memberId);
                     token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
                 }
