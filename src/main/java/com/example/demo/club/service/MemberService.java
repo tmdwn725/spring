@@ -41,7 +41,7 @@ public class MemberService implements UserDetailsService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
-    private final RefreshTokenRepository refreshTokenRepository;
+    //private final RefreshTokenRepository refreshTokenRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
     /** 생성 **/
@@ -115,9 +115,16 @@ public class MemberService implements UserDetailsService {
 
     public String logout(String accessToken, MemberDTO member) {
 
-        // refreshToken 테이블의 refreshToken 삭제
-        refreshTokenRepository.deleteTokenByMemberId(member.getMemberId());
-        //jwtTokenProvider.setBla
+        //Long findUserId = jwtTokenProvider.getUserIdToToken(accessToken);
+
+        //엑세스 토큰 남은 유효시간
+        //Long expiration = jwtTokenProvider.getExpiration(accessToken);
+
+        //Redis Cache에 저장
+        //redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+
+        //리프레쉬 토큰 삭제
+        //refreshTokenRepository.delete(findUserId);
 
         return "로그아웃 완료";
     }

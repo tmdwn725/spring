@@ -9,6 +9,9 @@ spring:
  devtools:
    livereload:
     enabled: true
+ redis:
+  host: 127.0.0.1
+  port: 6379
  jpa:
   hibernate:
    ddl-auto: update
@@ -23,9 +26,6 @@ spring:
   suffix: .html
   cache: false
   check-template-location: true
- redis:
-  host: 3.112.49.158
-  port: 6379
 logging:
  level:
   org:

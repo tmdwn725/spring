@@ -1,6 +1,5 @@
 package com.example.demo.club.repository.impl;
 
-import com.example.demo.club.domain.QRefreshToken;
 import com.example.demo.club.domain.RefreshToken;
 import com.example.demo.club.repository.custom.RefreshTokenRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class RefreshTokenRepositoryImpl implements RefreshTokenRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    QRefreshToken refreshToken = QRefreshToken.refreshToken;
+    /*QRefreshToken refreshToken = QRefreshToken.refreshToken;
     public RefreshToken findTokenByMemberIdId(String memberId){
         return queryFactory.selectFrom(refreshToken)
                 .where(memberIdEq(memberId),useYnEq("Y"))
@@ -28,5 +27,5 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepositoryCustom 
         return  queryFactory.delete(refreshToken)
                 .where(refreshToken.memberId.eq(memberId))
                 .execute();
-    }
+    }*/
 }

@@ -48,8 +48,8 @@ public class JwtTokenProvider {
     private final RedisUtil redisUtil;
     @Autowired
     private CustomUserDetailService userDetailService;
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    //@Autowired
+    //private RefreshTokenRepository refreshTokenRepository;
 
     /**
      * 적절한 설정을 통해 토큰을 생성하여 반환
@@ -60,13 +60,11 @@ public class JwtTokenProvider {
         Date now = new Date();
 
         //Refresh Token
-        String refreshToken = reGenerateRefreshToken(authentication.getName());
+        String refreshToken = doGenerateRefreshToken(authentication.getName());
         //Access Token
         String accessToken = doGenerateAccessToken(authentication.getName());
 
         TokenDTO token = new TokenDTO(accessToken,refreshToken);
-        token.setAccessToken(accessToken);
-        token.setRefreshToken(refreshToken);
         token.setExpireTime(now.getTime() + accessTokenExpireTime);
         return token;
     }
@@ -98,16 +96,25 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-
     /**
      * 토큰으로부터 클레임을 만들고, 이를 통해 User 객체를 생성하여 Authentication 객체를 반환
      * @param token
      * @return
      */
     public Authentication getAuthentication(String token) {
-        String username = Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
+        String username = getSubjectFromToken(token);
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    /**
+     * 토큰으로부터 클레임을 만듬
+     * @param token
+     * @return
+     */
+    public String getSubjectFromToken(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token);
+        return claims.getBody().getSubject();
     }
 
     /**
@@ -209,8 +216,8 @@ public class JwtTokenProvider {
     }
     
     // refresh 토큰 삭제
-    private void removeRefreshToken(RefreshToken token){
-        refreshTokenRepository.delete(token);
+    private void removeRefreshToken(String memberId){
+        redisUtil.deleteValues(memberId);
     }
 
     // refresh 토큰 저장
@@ -224,7 +231,7 @@ public class JwtTokenProvider {
         token.setMemberId(memberId);
         token.setExpireTime(expiryTime);
         token.setToken("Bearer " + refreshToken);
-        refreshTokenRepository.save(token);
+        //refreshTokenRepository.save(token);
         log.info("refreshToken 재발급 완료 : {}", "Bearer " + refreshToken);
         return refreshToken;
     }
@@ -241,7 +248,6 @@ public class JwtTokenProvider {
                 .orElse(null);
         return token;
     }
-
     public String getRefreshToken(String memberId) {
         String refreshToken = redisUtil.getValues(memberId);
         return refreshToken;
