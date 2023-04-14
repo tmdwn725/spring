@@ -33,28 +33,26 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (token == null && !"/login".equals(request.getRequestURI())){
             token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
             if(token != null){
-                memberId = jwtTokenProvider.getSubjectFromToken(token);
-                refreshToken = jwtTokenProvider.getRefreshToken(memberId);
+                //memberId = jwtTokenProvider.getSubjectFromToken(token);
+                refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
             }
         }
 
         try {
-            if (token != null) {
-                Authentication auth = null;
-                if (jwtTokenProvider.validateToken(token,true)){
-                    auth = jwtTokenProvider.getAuthentication(token);
-                } else if(jwtTokenProvider.validateToken(refreshToken,false)){
-                    token = jwtTokenProvider.doGenerateAccessToken(memberId);
-                    auth = jwtTokenProvider.getAuthentication(token);
-                }else{
-                    refreshToken = jwtTokenProvider.getRefreshToken(memberId);
-                    token = jwtTokenProvider.doGenerateAccessToken(memberId);
-                    auth = jwtTokenProvider.getAuthentication(token);
-                }
-
-                // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            Authentication auth = null;
+            if (jwtTokenProvider.validateToken(token,true)){
+                auth = jwtTokenProvider.getAuthentication(token);
+            } else if(jwtTokenProvider.validateToken(refreshToken,false)){
+                token = jwtTokenProvider.doGenerateAccessToken(memberId);
+                auth = jwtTokenProvider.getAuthentication(token);
+            }else{
+                refreshToken = jwtTokenProvider.getRefreshToken(memberId);
+                token = jwtTokenProvider.doGenerateAccessToken(memberId);
+                auth = jwtTokenProvider.getAuthentication(token);
             }
+
+            // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
+            SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (CustomException e) {
             SecurityContextHolder.clearContext();
             response.sendError(e.getHttpStatus().value(), e.getMessage());

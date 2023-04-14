@@ -41,8 +41,7 @@ public class MemberService implements UserDetailsService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
-    //private final RefreshTokenRepository refreshTokenRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisUtil redisUtil;
 
     /** 생성 **/
     /* 회원 생성 */
@@ -96,13 +95,7 @@ public class MemberService implements UserDetailsService {
             );
 
             TokenDTO tokenDto = jwtTokenProvider.generateToken(authentication);
-
-            redisTemplate.opsForValue().set(
-                    authentication.getName(),
-                    tokenDto.getRefreshToken(),
-                    tokenDto.getExpireTime(),
-                    TimeUnit.MILLISECONDS
-            );
+            redisUtil.setValues(authentication.getName(), tokenDto.getRefreshToken(), tokenDto.getExpireTime());
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());
@@ -114,19 +107,23 @@ public class MemberService implements UserDetailsService {
     }
 
     public String logout(String accessToken, MemberDTO member) {
+        if (!jwtTokenProvider.validateToken(accessToken,true)){
+            throw new IllegalArgumentException("로그아웃 : 유효하지 않은 토큰입니다.");
+        }
 
-        //Long findUserId = jwtTokenProvider.getUserIdToToken(accessToken);
+        // Access Token에서 MemberId를 가져온다
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 
-        //엑세스 토큰 남은 유효시간
-        //Long expiration = jwtTokenProvider.getExpiration(accessToken);
+        // Redis에서 해당 User email로 저장된 Refresh Token 이 있는지 여부를 확인 후에 있을 경우 삭제를 한다.
+        if (redisUtil.getValues(authentication.getName())!=null){
+            // Refresh Token을 삭제
+            redisUtil.deleteValues(authentication.getName());
+        }
 
-        //Redis Cache에 저장
-        //redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
-
-        //리프레쉬 토큰 삭제
-        //refreshTokenRepository.delete(findUserId);
-
-        return "로그아웃 완료";
+        // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
+        long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
+        redisUtil.setBlackList(accessToken,"logout",expiration);
+        return "로그아웃";
     }
 
 }

@@ -117,6 +117,12 @@ public class JwtTokenProvider {
         return claims.getBody().getSubject();
     }
 
+    // JWT 토큰에서 expire time 값을 가져오는 메소드
+    public long getExpirationDateFromToken(String token) {
+        final Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
+        return claims.getExpiration().getTime();
+    }
+
     /**
      * http 헤더로부터 bearer 토큰을 가져옴.
      * @param req
@@ -139,10 +145,6 @@ public class JwtTokenProvider {
         String secretKey = accessSecretKey;
         if(!accessYn){
             secretKey = refreshSecretKey;
-            /*if (redisUtil.hasKeyBlackList(token)){
-                // TODO 에러 발생시키는 부분 수정
-                throw new RuntimeException("로그아웃 했지롱~~");
-            }*/
         }
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -183,57 +185,9 @@ public class JwtTokenProvider {
             HttpHeaders httpHeaders = new HttpHeaders();
 
             return refreshToken;
-    } catch (AuthenticationException e) {
-        throw new CustomException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
-    }
-
-        /*
-        log.info("refreshToken DB 조회");
-        // DB에서 refreshToken 정보 조회
-        RefreshToken token = refreshTokenRepository.findTokenByMemberIdId(memberId);
-
-        // 디비에 토큰이 존재하지 않음
-        if(token == null) {
-            log.info("[reGenerateRefreshToken] refreshToken 정보가 존재하지 않습니다.");
-            return saveRefreshToken(memberId);
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
         }
-
-       try {
-            String refreshToken = token.getToken().substring(7);
-            Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(refreshToken);
-            log.info("[reGenerateRefreshToken] refreshToken이 만료되지 않았습니다.");
-            return refreshToken;
-        }catch(ExpiredJwtException e) {
-            log.info("[reGenerateRefreshToken] refreshToken이 만료되었습니다.");
-            // 토큰 삭제 후 저장
-            removeRefreshToken(token);
-            return saveRefreshToken(memberId);
-        } catch(Exception e) {
-            // 그 외 예외처리
-            log.error("[reGenerateRefreshToken] refreshToken 재발급 중 문제 발생 : {}", e.getMessage());
-            return null;
-        }*/
-    }
-    
-    // refresh 토큰 삭제
-    private void removeRefreshToken(String memberId){
-        redisUtil.deleteValues(memberId);
-    }
-
-    // refresh 토큰 저장
-    private String saveRefreshToken(String memberId){
-        RefreshToken token = new RefreshToken();
-        Date now = new Date();
-        LocalDateTime expiryTime = LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault())
-                .plus(Duration.ofMillis(refreshTokenExpireTime));
-        String refreshToken =  doGenerateRefreshToken(memberId);
-        token.setUseYn("Y");
-        token.setMemberId(memberId);
-        token.setExpireTime(expiryTime);
-        token.setToken("Bearer " + refreshToken);
-        //refreshTokenRepository.save(token);
-        log.info("refreshToken 재발급 완료 : {}", "Bearer " + refreshToken);
-        return refreshToken;
     }
 
     // token으로 사용자 id 조회
