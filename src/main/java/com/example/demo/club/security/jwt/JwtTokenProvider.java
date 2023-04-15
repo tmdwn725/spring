@@ -1,36 +1,27 @@
 package com.example.demo.club.security.jwt;
 
 import com.example.demo.club.common.RedisUtil;
-import com.example.demo.club.domain.RefreshToken;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
-import com.example.demo.club.repository.RefreshTokenRepository;
 import com.example.demo.club.security.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.token.Token;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 @Slf4j
 @Component
@@ -46,10 +37,7 @@ public class JwtTokenProvider {
     private long refreshTokenExpireTime;
     private final RedisTemplate<String, String> redisTemplate;
     private final RedisUtil redisUtil;
-    @Autowired
-    private CustomUserDetailService userDetailService;
-    //@Autowired
-    //private RefreshTokenRepository refreshTokenRepository;
+    private final CustomUserDetailService userDetailService;
 
     /**
      * 적절한 설정을 통해 토큰을 생성하여 반환

@@ -1,3 +1,5 @@
 $(document).ready(function(){
-    //validation check
+    if($('#message').val() != ''){
+        alert($('#message').val());
+    }
 });

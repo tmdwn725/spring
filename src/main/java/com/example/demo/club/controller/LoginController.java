@@ -3,7 +3,9 @@ package com.example.demo.club.controller;
 import com.example.demo.club.common.CookieUtil;
 import com.example.demo.club.dto.MemberDTO;
 import com.example.demo.club.dto.TokenDTO;
+import com.example.demo.club.exception.CustomException;
 import com.example.demo.club.service.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,13 +43,18 @@ public class LoginController {
 
 	@PostMapping("/login")
 	public String login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
-		ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member);
-		Cookie cookie = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
-		response.addCookie(cookie);
+		try{
+			ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member);
+			Cookie cookie = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
+			response.addCookie(cookie);
+		}catch (CustomException e){
+			model.addAttribute("message", e.getMessage());
+			return "member/login";
+		}
 		return "redirect:/member/main";
 	}
 
-	@GetMapping("/logout")
+	@RequestMapping("/logout")
 	public ResponseEntity<String> logout(@AuthenticationPrincipal MemberDTO member, @RequestBody TokenDTO tokenDTO) {
 		return ResponseEntity.ok(memberService.logout(tokenDTO.getAccessToken(), member));
 	}

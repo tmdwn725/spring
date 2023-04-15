@@ -63,6 +63,7 @@ public class SecurityConfig {
         //
         http.authorizeRequests()
             .antMatchers("/login").permitAll() // 인증없이 접근을 허용
+            .antMatchers("/logout").permitAll() // 인증없이 접근을 허용
             .anyRequest().authenticated(); // 요청들에 대한 접근제한을 설정
         http.sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션을 사용하지 않음

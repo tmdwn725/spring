@@ -5,10 +5,10 @@
 <link th:href="@{css/login.css}" rel="stylesheet" />
 <body class="text-center">
 <main class="form-signin">
+    <input type="hidden" id="message" name="message" th:value="${message}" />
     <form action="/login" method="post">
         <img class="mb-4" th:src="@{images/bootstrap-logo.svg}" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인 페이지</h1>
-
         <div class="form-floating">
             <input type="text" class="form-control" name="memberId" placeholder="ID">
             <label for="id">아이디</label>

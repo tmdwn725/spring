@@ -1,16 +1,12 @@
 package com.example.demo.club.service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
-import com.example.demo.club.repository.RefreshTokenRepository;
 import com.example.demo.club.security.jwt.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,7 +98,7 @@ public class MemberService implements UserDetailsService {
 
             return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid credentials supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("입력하신 정보와 일치한 사용자가 없습니다", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
