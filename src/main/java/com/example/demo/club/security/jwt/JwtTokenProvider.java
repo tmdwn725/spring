@@ -134,6 +134,7 @@ public class JwtTokenProvider {
         if(!accessYn){
             secretKey = refreshSecretKey;
         }
+
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
@@ -195,7 +196,7 @@ public class JwtTokenProvider {
         return refreshToken;
     }
 
-    public String getAtkBlackList(String accessToken){
-        return redisUtil.getBlackList(accessToken);
+    public boolean getBlackListCheck(String token){
+        return redisUtil.hasKeyBlackList(token);
     }
 }

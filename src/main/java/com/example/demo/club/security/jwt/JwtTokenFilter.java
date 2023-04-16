@@ -2,6 +2,7 @@ package com.example.demo.club.security.jwt;
 
 import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.exception.CustomException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,12 +19,9 @@ import java.util.Date;
 
 // Request 이전에 1회 작동할 필터
 @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
-    private JwtTokenProvider jwtTokenProvider;
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
+    private final JwtTokenProvider jwtTokenProvider;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
@@ -36,26 +34,25 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if(token != null){
                 //memberId = jwtTokenProvider.getSubjectFromToken(token);
                 refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
-                blackToken = jwtTokenProvider.getAtkBlackList(token);
             }
         }
 
         try {
             Authentication auth = null;
             String memberId = null;
-            if (jwtTokenProvider.validateToken(token,true)){ // access 토큰 인증 실패
-                auth = jwtTokenProvider.getAuthentication(token);
-            } else{
-                // refresh 토큰 인증
-                jwtTokenProvider.validateToken(refreshToken,false);
-                
-                memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
-                token = jwtTokenProvider.doGenerateAccessToken(memberId);
-                auth = jwtTokenProvider.getAuthentication(token);
+            if(!jwtTokenProvider.getBlackListCheck(token)){
+                if (jwtTokenProvider.validateToken(token,true)){ // access 토큰 인증 실패
+                    auth = jwtTokenProvider.getAuthentication(token);
+                } else{
+                    // refresh 토큰 인증
+                    jwtTokenProvider.validateToken(refreshToken,false);
+                    memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
+                    token = jwtTokenProvider.doGenerateAccessToken(memberId);
+                    auth = jwtTokenProvider.getAuthentication(token);
+                }
+                // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
-
-            // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
-            SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (CustomException e) {
             SecurityContextHolder.clearContext();
             response.sendError(e.getHttpStatus().value(), e.getMessage());

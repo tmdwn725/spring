@@ -28,20 +28,18 @@ public class RedisUtil {
         return redisTemplate.delete(key);
     }
 
-    public void setBlackList(String key, Object o, int milliSeconds) {
+    public void setBlackList(String key, Object o) {
         redisBlackListTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(o.getClass()));
-        redisBlackListTemplate.opsForValue().set(key, o, milliSeconds, TimeUnit.MILLISECONDS);
+        redisBlackListTemplate.opsForValue().set(key, o);
     }
 
     public String getBlackList(String key) {
         Object value =  redisBlackListTemplate.opsForValue().get(key);
         return value != null ? value.toString() : null;
     }
-
     public boolean deleteBlackList(String key) {
         return redisBlackListTemplate.delete(key);
     }
-
     public boolean hasKeyBlackList(String key) {
         return redisBlackListTemplate.hasKey(key);
     }
