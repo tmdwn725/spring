@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -54,9 +55,11 @@ public class LoginController {
 		return "redirect:/member/main";
 	}
 
-	@RequestMapping("/logout")
-	public ResponseEntity<String> logout(@AuthenticationPrincipal MemberDTO member, @RequestBody TokenDTO tokenDTO) {
-		return ResponseEntity.ok(memberService.logout(tokenDTO.getAccessToken(), member));
+	@GetMapping("/logout/{memberId}")
+	public String logout(@RequestParam(value = "fail", required = false) String memberId, HttpServletRequest request) {
+		//return ResponseEntity.ok(memberService.signout(request, memberId));
+		memberService.signout(request, memberId);
+		return "redirect:/login";
 	}
 
 	@RequestMapping("/join")

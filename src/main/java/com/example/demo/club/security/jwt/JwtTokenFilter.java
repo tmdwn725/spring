@@ -27,26 +27,29 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
-        String memberId = null;
+        String blackToken = null;
+
         String refreshToken = null;
         //if (token == null && "/member/main".equals(request.getRequestURI())){
-        if (token == null && !"/login".equals(request.getRequestURI())){
+        if (token == null && !"/login".equals(request.getRequestURI()) && !"/logout".equals(request.getRequestURI())){
             token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
             if(token != null){
                 //memberId = jwtTokenProvider.getSubjectFromToken(token);
                 refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
+                blackToken = jwtTokenProvider.getAtkBlackList(token);
             }
         }
 
         try {
             Authentication auth = null;
-            if (jwtTokenProvider.validateToken(token,true)){
+            String memberId = null;
+            if (jwtTokenProvider.validateToken(token,true)){ // access 토큰 인증 실패
                 auth = jwtTokenProvider.getAuthentication(token);
-            } else if(jwtTokenProvider.validateToken(refreshToken,false)){
-                token = jwtTokenProvider.doGenerateAccessToken(memberId);
-                auth = jwtTokenProvider.getAuthentication(token);
-            }else{
-                refreshToken = jwtTokenProvider.getRefreshToken(memberId);
+            } else{
+                // refresh 토큰 인증
+                jwtTokenProvider.validateToken(refreshToken,false);
+                
+                memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
                 token = jwtTokenProvider.doGenerateAccessToken(memberId);
                 auth = jwtTokenProvider.getAuthentication(token);
             }

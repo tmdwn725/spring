@@ -206,7 +206,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="@{pages-faq.html">
+              <a class="dropdown-item d-flex align-items-center" href="@{pages-faq.html}">
                 <i class="bi bi-question-circle"></i>
                 <span>???</span>
               </a>
@@ -216,7 +216,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/logout">
+              <a class="dropdown-item d-flex align-items-center" th:href="@{/logout/{memberId}(memberId=${member.memberId})}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>로그아웃</span>
               </a>

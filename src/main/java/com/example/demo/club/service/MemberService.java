@@ -28,6 +28,8 @@ import com.example.demo.club.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -102,7 +104,8 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-    public String logout(String accessToken, MemberDTO member) {
+    public void signout(HttpServletRequest request, String memberId) {
+        String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request, "accessToken");
         if (!jwtTokenProvider.validateToken(accessToken,true)){
             throw new IllegalArgumentException("로그아웃 : 유효하지 않은 토큰입니다.");
         }
@@ -117,9 +120,9 @@ public class MemberService implements UserDetailsService {
         }
 
         // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
-        long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
-        redisUtil.setBlackList(accessToken,"logout",expiration);
-        return "로그아웃";
+        //long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
+        redisUtil.setBlackList(accessToken,"logout",5);
+        //return "로그아웃";
     }
 
 }

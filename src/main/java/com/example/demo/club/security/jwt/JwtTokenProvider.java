@@ -194,4 +194,8 @@ public class JwtTokenProvider {
         String refreshToken = redisUtil.getValues(memberId);
         return refreshToken;
     }
+
+    public String getAtkBlackList(String accessToken){
+        return redisUtil.getBlackList(accessToken);
+    }
 }
