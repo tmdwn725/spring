@@ -120,7 +120,7 @@ public class MemberService implements UserDetailsService {
         }
 
         // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
-        //long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
+        long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
         redisUtil.setBlackList(accessToken,"logout");
         //return "로그아웃";
     }

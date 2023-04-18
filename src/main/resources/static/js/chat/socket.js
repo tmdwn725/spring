@@ -164,27 +164,27 @@ function onMessageReceived(payload) {
          }
 
         var messageElement = document.createElement('li');
+        var sSpaceElement = document.createElement('div');
 
         if (chat.type === 'ENTER') {  // chatType 이 enter 라면 아래 내용
             messageElement.classList.add('event-message');
             chat.content = chat.sender + chat.message;
             //getUserList();
-
         } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
             messageElement.classList.add('event-message');
             chat.content = chat.sender + chat.message;
             //getUserList();
-
         } else { // chatType 이 talk 라면 아래 내용
             if(senderNm == chat.sender){
                 messageElement.classList.add('chat-message','my-chat');
             }else{
                 messageElement.classList.add('chat-message','other-chat');
             }
-
+            var iSpaceElement = document.createElement('div');
             var avatarElement = document.createElement('i');
             var avatarText = document.createTextNode(chat.sender);
             avatarElement.appendChild(avatarText);
+
             avatarElement.style['background-color'] = getAvatarColor(chat.sender);
             // 이름으로 채팅 프로필 위치 비교 다음에 seq로 바꿀예정
             if(senderNm == chat.sender){
@@ -192,13 +192,21 @@ function onMessageReceived(payload) {
             }else{
                 avatarElement.style['right'] = "3%";
             }
+            iSpaceElement.appendChild(avatarElement);
+            messageElement.appendChild(iSpaceElement);
 
-            messageElement.appendChild(avatarElement);
 
             var usernameElement = document.createElement('span');
             var usernameText = document.createTextNode(chat.sender);
+
             usernameElement.appendChild(usernameText);
-            messageElement.appendChild(usernameElement);
+            sSpaceElement.appendChild(usernameElement);
+        }
+
+        // 상대방 대화일 경우 우측 정렬
+        if(senderNm != chat.sender){
+            sSpaceElement.style['text-align'] = "right";
+            sSpaceElement.style['padding-right'] = "50px";
         }
 
         var contentElement = document.createElement('p');
@@ -207,8 +215,8 @@ function onMessageReceived(payload) {
 
         contentElement.appendChild(messageText);
 
-        messageElement.appendChild(contentElement);
-
+        sSpaceElement.appendChild(contentElement);
+        messageElement.appendChild(sSpaceElement);
         messageArea.appendChild(messageElement);
         messageArea.scrollTop = messageArea.scrollHeight;
     }

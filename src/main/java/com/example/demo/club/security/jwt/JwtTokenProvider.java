@@ -107,8 +107,19 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 expire time 값을 가져오는 메소드
     public long getExpirationDateFromToken(String token) {
-        final Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
-        return claims.getExpiration().getTime();
+        try {
+            final Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
+            return claims.getExpiration().getTime();
+        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return 0;
     }
 
     /**
