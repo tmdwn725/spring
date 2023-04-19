@@ -57,7 +57,11 @@ public class JwtTokenProvider {
         return token;
     }
 
-    // JWT accessToken 생성
+    /**
+     * 적절한 설정을 통해 access토큰을 생성하여 반환
+     * @param memberId
+     * @return
+     */
     public String doGenerateAccessToken(String memberId) {
         Date now =  new Date();
         Claims claims = Jwts.claims().setSubject(memberId);
@@ -71,68 +75,30 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // JWT refreshToken 생성
-    public String doGenerateRefreshToken(String memberId) {
-        Date now =  new Date();
-        Claims claims = Jwts.claims().setSubject(memberId);
-        return  Jwts.builder()
-                .setClaims(claims) // 정보 저장
-                .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + refreshTokenExpireTime)) // set Expire Time
-                .signWith(SignatureAlgorithm.HS256, refreshSecretKey)  // 사용할 암호화 알고리즘과
-                // signature 에 들어갈 secret값 세팅
-                .compact();
-    }
-
-    /**
-     * 토큰으로부터 클레임을 만들고, 이를 통해 User 객체를 생성하여 Authentication 객체를 반환
-     * @param token
-     * @return
-     */
-    public Authentication getAuthentication(String token) {
-        String username = getSubjectFromToken(token);
-        UserDetails userDetails = userDetailService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    /**
-     * 토큰으로부터 클레임을 만듬
-     * @param token
-     * @return
-     */
-    public String getSubjectFromToken(String token) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token);
-        return claims.getBody().getSubject();
-    }
-
-    // JWT 토큰에서 expire time 값을 가져오는 메소드
-    public long getExpirationDateFromToken(String token) {
-        try {
-            final Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
-            return claims.getExpiration().getTime();
-        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
-        } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다.");
-        } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
-        }
-        return 0;
-    }
-
     /**
      * http 헤더로부터 bearer 토큰을 가져옴.
-     * @param req
+     * @param request
      * @return
      */
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    /**
+     * 쿠키로 부터 JWT 토큰을 가져옴.
+     * @param request
+     * @return
+     */
+    public String getJwtTokenFromCookie(HttpServletRequest request, String type) {
+        String token = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals(type))
+                .findFirst() .map(Cookie::getValue)
+                .orElse(null);
+        return token;
     }
 
     /**
@@ -159,6 +125,62 @@ public class JwtTokenProvider {
             log.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+    /**
+     * 토큰으로부터 User 객체를 생성하여 Authentication 객체를 반환
+     * @param token
+     * @return
+     */
+    public Authentication getAuthentication(String token) {
+        String username = getSubjectFromToken(token, accessSecretKey);
+        UserDetails userDetails = userDetailService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    /**
+     * 토큰으로부터 클레임을 만들고 sub(memberId)를 반환
+     * @param token
+     * @return
+     */
+    public String getSubjectFromToken(String token, String secretKey) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return claims.getBody().getSubject();
+    }
+
+    // JWT refreshToken 생성
+    public String doGenerateRefreshToken(String memberId) {
+        Date now =  new Date();
+        Claims claims = Jwts.claims().setSubject(memberId);
+        return  Jwts.builder()
+                .setClaims(claims) // 정보 저장
+                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setExpiration(new Date(now.getTime() + refreshTokenExpireTime)) // set Expire Time
+                .signWith(SignatureAlgorithm.HS256, refreshSecretKey)  // 사용할 암호화 알고리즘과
+                // signature 에 들어갈 secret값 세팅
+                .compact();
+    }
+
+    // token으로 사용자 id 조회
+    public String getMemberIdFromToken(String token) {
+        return getSubjectFromToken(token, refreshSecretKey);
+    }
+
+    // JWT 토큰에서 expire time 값을 가져오는 메소드
+    public long getExpirationDateFromToken(String token) {
+        try {
+            final Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
+            return claims.getExpiration().getTime();
+        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return 0;
     }
 
 
@@ -190,18 +212,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // token으로 사용자 id 조회
-    public String getMemberIdFromToken(String token) {
-        return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public String getJwtTokenFromCookie(HttpServletRequest request, String type) {
-        String token = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals(type))
-                .findFirst() .map(Cookie::getValue)
-                .orElse(null);
-        return token;
-    }
     public String getRefreshToken(String memberId) {
         String refreshToken = redisUtil.getValues(memberId);
         return refreshToken;
