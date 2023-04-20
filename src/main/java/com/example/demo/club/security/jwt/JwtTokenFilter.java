@@ -46,7 +46,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 } else{
                     // refresh 토큰 인증
                     jwtTokenProvider.validateToken(refreshToken,false);
-                    memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
+                    memberId = jwtTokenProvider.getSubjectFromRefreshToken(refreshToken);
                     token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
                 }

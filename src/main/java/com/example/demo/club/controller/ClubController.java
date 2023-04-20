@@ -1,6 +1,8 @@
 package com.example.demo.club.controller;
 
+import com.example.demo.club.common.CookieUtil;
 import com.example.demo.club.dto.ClubInfoDTO;
+import com.example.demo.club.security.jwt.JwtTokenProvider;
 import com.example.demo.club.service.CdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import com.example.demo.club.service.ClubInfoService;
 import com.example.demo.club.service.ClubService;
 import com.example.demo.club.service.MemberService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/club")
 @RequiredArgsConstructor
@@ -30,17 +35,23 @@ public class ClubController {
 	private final MemberService memberService;
 
 	private final CdService cdService;
+
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	@GetMapping("/myClub")
-	public String getClub(Model model,ClubDTO cDTO,MemberDTO mDTO) {
+	public String getClub(HttpServletRequest request, Model model, ClubDTO cDTO) {
 		ClubDTO club = clubService.selectClub(cDTO.getClubSeq());
+		String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
+		String memberId = jwtTokenProvider.getSubjectFromAccessToken(accessToken);
+		MemberDTO member = memberService.selectMemberById(memberId);
+
 		ClubInfoDTO myClubInfo =club.getClubInfoList().stream()
-				.filter(p -> p.getMember().getMemberSeq()==mDTO.getMemberSeq())
+				.filter(p -> p.getMember().getMemberSeq()==member.getMemberSeq())
 				.findFirst()
 				.orElse(null);
 		model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("member",  memberService.selectMemberBySeq(mDTO.getMemberSeq()));
-		model.addAttribute("myClubList",clubInfoService.selectMyClubList(mDTO));
+        model.addAttribute("member",  member);
+		model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
 		model.addAttribute("myClubInfo",myClubInfo);
 		model.addAttribute("club",club);
 		model.addAttribute("clubCdList", cdService.getClubCd());

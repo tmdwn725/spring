@@ -22,7 +22,7 @@
         </a>
         <ul th:each="myClubList : ${myClubList}" id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a th:href="@{/club/myClub(clubSeq=${myClubList.clubSeq},memberSeq=${member.memberSeq})}" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <a th:href="@{/club/myClub(clubSeq=${myClubList.clubSeq})}" class="nav-content collapse " data-bs-parent="#sidebar-nav">
               <i class="bi bi-circle"></i><span th:text="${myClubList.clubNm}"></span>
             </a>
           </li>

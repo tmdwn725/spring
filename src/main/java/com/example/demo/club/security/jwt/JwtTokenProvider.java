@@ -133,18 +133,28 @@ public class JwtTokenProvider {
      * @return
      */
     public Authentication getAuthentication(String token) {
-        String username = getSubjectFromToken(token, accessSecretKey);
+        String username = getSubjectFromAccessToken(token);
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     /**
-     * 토큰으로부터 클레임을 만들고 sub(memberId)를 반환
+     * Access토큰으로부터 클레임을 만들고 sub(memberId)를 반환
      * @param token
      * @return
      */
-    public String getSubjectFromToken(String token, String secretKey) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+    public String getSubjectFromAccessToken(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token);
+        return claims.getBody().getSubject();
+    }
+
+    /**
+     * Refresh토큰으로부터 클레임을 만들고 sub(memberId)를 반환
+     * @param token
+     * @return
+     */
+    public String getSubjectFromRefreshToken(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token);
         return claims.getBody().getSubject();
     }
 
@@ -159,11 +169,6 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, refreshSecretKey)  // 사용할 암호화 알고리즘과
                 // signature 에 들어갈 secret값 세팅
                 .compact();
-    }
-
-    // token으로 사용자 id 조회
-    public String getMemberIdFromToken(String token) {
-        return getSubjectFromToken(token, refreshSecretKey);
     }
 
     // JWT 토큰에서 expire time 값을 가져오는 메소드

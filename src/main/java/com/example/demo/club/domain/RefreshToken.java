@@ -14,16 +14,8 @@ import java.time.LocalDateTime;
 @RedisHash(value = "jwtToken", timeToLive = 60*60*24*3)
 @NoArgsConstructor
 public class RefreshToken {
-    //@Id
-    //@Column(name ="refresh_token_seq")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long refreshTokenSeq;
-    //@Column(name = "member_id")
     private String memberId;
-    //@Column(nullable = false)
     private String token;
-    //@Column(name = "expire_time")
     private LocalDateTime  expireTime;
-    //@Column(name = "use_yn")
     private String useYn;
 }

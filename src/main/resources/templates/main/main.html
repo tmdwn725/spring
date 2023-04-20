@@ -94,8 +94,8 @@ $(document).ready(function() {
     calendar.render();
   });
 
-  function newClubClick(memberSeq, clubSeq) {
-    window.location.href = 'http://localhost:8080/club/myClub?memberSeq='+ memberSeq + '&clubSeq=' + clubSeq;
+  function newClubClick(clubSeq) {
+    window.location.href = 'http://localhost:8080/club/myClub?clubSeq='+ clubSeq;
   }
 
   function getCookie(name) {
@@ -234,7 +234,7 @@ $(document).ready(function() {
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="club : ${clubList}" th:data-id="${club.clubSeq}" th:onclick="'newClubClick(' + ${member.memberSeq} + ',' + ${club.clubSeq} + ')'" style="cursor: pointer;">
+                  <tr th:each="club : ${clubList}" th:data-id="${club.clubSeq}" th:onclick="'newClubClick(' + ${club.clubSeq} + ')'" style="cursor: pointer;">
                     <td>
                       <img th:src="${club.file != null} ? ${club.file.filePth} : ''" alt=""/>
                     </td>
