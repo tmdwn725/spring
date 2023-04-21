@@ -20,7 +20,6 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     QChat qChat = QChat.chat;
     QClub qClub = QClub.club;
     QClubInfo qClubInfo = QClubInfo.clubInfo;
-
     public List selectChatListByClubSeq(Long clubSeq){
         List<ChatDTO> selectChatList = queryFactory.select(Projections.fields(ChatDTO.class
                         , qChat.chatSeq, qChat.message, qChat.sendDt

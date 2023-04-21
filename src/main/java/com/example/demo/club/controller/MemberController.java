@@ -50,7 +50,8 @@ public class MemberController {
     /* 내 프로필 */
     @GetMapping("/mypage/{memberSeq}")
     public String mypage(@PathVariable(required = false) Long memberSeq, Model model) {
-        MemberDTO member = memberService.selectMemberBySeq(memberSeq);
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        MemberDTO member =  memberService.selectMemberById(userId);
         model.addAttribute("member",member);
         model.addAttribute("myClubList",clubInfoService.selectMyClubList(member));
         return "member/mypage";
