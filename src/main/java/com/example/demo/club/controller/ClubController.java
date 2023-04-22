@@ -41,10 +41,8 @@ public class ClubController {
 	@GetMapping("/myClub")
 	public String getClub(HttpServletRequest request, Model model, ClubDTO cDTO) {
 		ClubDTO club = clubService.selectClub(cDTO.getClubSeq());
-		String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
-		String memberId = jwtTokenProvider.getSubjectFromAccessToken(accessToken);
+		String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
 		MemberDTO member = memberService.selectMemberById(memberId);
-
 		ClubInfoDTO myClubInfo =club.getClubInfoList().stream()
 				.filter(p -> p.getMember().getMemberSeq()==member.getMemberSeq())
 				.findFirst()

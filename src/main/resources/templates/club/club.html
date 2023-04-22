@@ -48,53 +48,48 @@
  <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
- <script type="text/javascript" th:src="@{/js/calendar/google-calendar/main.js}"></script>
+
  <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
 
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
+ <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
+    $(document).ready(function() {
+      var calendarEl = document.getElementById('calendar');
 
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
+        },
+        selectable: true,
+        select: function(info) {
+          var start = info.startStr;
+          var end = info.endStr;
+          var title = prompt('일정 제목:');
+          if (title) {
+            calendar.addEvent({
+              title: title,
+              start: start,
+              end: end,
+              allDay: info.allDay
+            });
+          }
+          calendar.unselect();
+        },
+        eventClick: function(info) {
+          window.open('ADD_EVENT_URL', 'calendar-event', 'width=700,height=600');
+          info.jsEvent.preventDefault(); // don't navigate in main tab
+        },
+        loading: function(bool) {
+          $('#loading').toggle(bool);
+        }
+      });
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-
-      plugins: [ 'interaction', 'dayGrid', 'list', 'googleCalendar' ],
-
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,listYear'
-      },
-
-      displayEventTime: false, // don't show the time column in list view
-
-      // THIS KEY WON'T WORK IN PRODUCTION!!!
-      // To make your own Google API key, follow the directions here:
-      // http://fullcalendar.io/docs/google_calendar/
-      googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
-
-      // US Holidays
-      events: 'en.usa#holiday@group.v.calendar.google.com',
-
-      eventClick: function(arg) {
-        // opens events in a popup window
-        window.open(arg.event.url, 'google-calendar-event', 'width=700,height=600');
-
-        arg.jsEvent.preventDefault() // don't navigate in main tab
-      },
-
-      loading: function(bool) {
-        document.getElementById('loading').style.display =
-          bool ? 'block' : 'none';
-      }
-
+      calendar.render();
     });
-
-    calendar.render();
-  });
-  
 </script>
 <style>
 
