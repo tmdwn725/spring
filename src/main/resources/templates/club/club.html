@@ -66,22 +66,18 @@
         },
         selectable: true,
         select: function(info) {
-          var start = info.startStr;
-          var end = info.endStr;
-          var title = prompt('일정 제목:');
-          if (title) {
-            calendar.addEvent({
-              title: title,
-              start: start,
-              end: end,
-              allDay: info.allDay
-            });
-          }
-          calendar.unselect();
+          // 날짜를 클릭하면 모달 창을 열어서 새로운 이벤트를 추가합니다.
+          $('#myModal').modal('show'); // 모달 창 열기
+          $('#event-start').val(info.startStr); // 시작 시간 입력란에 선택한 날짜의 시작 시간을 설정
+          $('#event-end').val(info.endStr); // 종료 시간 입력란에 선택한 날짜의 종료 시간을 설정
         },
         eventClick: function(info) {
-          window.open('ADD_EVENT_URL', 'calendar-event', 'width=700,height=600');
-          info.jsEvent.preventDefault(); // don't navigate in main tab
+          // 기존 이벤트를 클릭하면 모달 창을 열어서 이벤트 정보를 편집할 수 있습니다.
+          $('#myModal').modal('show'); // 모달 창 열기
+          $('#event-title').val(info.event.title); // 제목 입력란에 이벤트 제목을 설정
+          $('#event-start').val(info.event.startStr); // 시작 시간 입력란에 이벤트 시작 시간을 설정
+          $('#event-end').val(info.event.endStr); // 종료 시간 입력란에 이벤트 종료 시간을 설정
+          $('#event-description').val(info.event.extendedProps.description); // 설명 입력란에 이벤트 설명을 설정
         },
         loading: function(bool) {
           $('#loading').toggle(bool);
@@ -167,15 +163,13 @@
   <th:block th:replace="common/side :: sideFragment"></th:block>
   <th:block th:replace="common/clubApplica :: clubAppFragment"></th:block>
   <!-- End Sidebar-->
-
+  <!--<th:block th:replace="club/clubSchedule :: clubScheFragment"></th:block>-->
   <main id="main" class="main">
     <section class="section dashboard">
       <div class="row">
-
         <!-- Left side columns -->
         <div class="col-lg-8">
           <div class="row">
-          
           <!-- 동아리 소개 -->
           <div class="col-12">
               <div class="card overflow-auto">

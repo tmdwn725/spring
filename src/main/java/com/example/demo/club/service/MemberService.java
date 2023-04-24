@@ -49,7 +49,6 @@ public class MemberService implements UserDetailsService {
     }
 
     /** 조회 **/
-
     /* 전체 회원 조회 */
     public List<Member> findAll() {
         return memberRepository.findAll();

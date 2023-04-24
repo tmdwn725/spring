@@ -12,12 +12,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom {
-	
 	private final JPAQueryFactory queryFactory;
-
 	QClub club = QClub.club;
 	QFile file = QFile.file;
-
 	@Override
 	public Club findByClub(Long clubSeq) {
 		return queryFactory.selectFrom(club)
