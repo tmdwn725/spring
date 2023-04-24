@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class MemberDTO {
-
 	private long memberSeq;
 	private String memberId;
 	private String memberNm;

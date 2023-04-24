@@ -40,6 +40,9 @@ public class Club extends BaseEntity {
 	@OneToMany(mappedBy = "club", cascade = CascadeType.PERSIST)
 	private List<ClubInfo> clubInfoList = new ArrayList<>();
 
+	@OneToMany(mappedBy = "club", cascade = CascadeType.PERSIST)
+	private List<Schedule> scheduleList = new ArrayList<>();
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="rpt_img_fl_seq", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private File file;
