@@ -48,6 +48,7 @@
  <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
  <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
+ <script type="text/javascript" th:src="@{/js/club/club.js}"></script>
 
  <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
 
@@ -66,18 +67,7 @@
         },
         selectable: true,
         select: function(info) {
-          // 날짜를 클릭하면 모달 창을 열어서 새로운 이벤트를 추가합니다.
-          $('#myModal').modal('show'); // 모달 창 열기
-          $('#event-start').val(info.startStr); // 시작 시간 입력란에 선택한 날짜의 시작 시간을 설정
-          $('#event-end').val(info.endStr); // 종료 시간 입력란에 선택한 날짜의 종료 시간을 설정
-        },
-        eventClick: function(info) {
-          // 기존 이벤트를 클릭하면 모달 창을 열어서 이벤트 정보를 편집할 수 있습니다.
-          $('#myModal').modal('show'); // 모달 창 열기
-          $('#event-title').val(info.event.title); // 제목 입력란에 이벤트 제목을 설정
-          $('#event-start').val(info.event.startStr); // 시작 시간 입력란에 이벤트 시작 시간을 설정
-          $('#event-end').val(info.event.endStr); // 종료 시간 입력란에 이벤트 종료 시간을 설정
-          $('#event-description').val(info.event.extendedProps.description); // 설명 입력란에 이벤트 설명을 설정
+          loadEvents(info.start);
         },
         loading: function(bool) {
           $('#loading').toggle(bool);
