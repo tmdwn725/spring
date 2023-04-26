@@ -24,10 +24,14 @@ function loadEvents(date) {
             listItems += "<li>" + item.scheduleNm + "</li>";
         });
         $("#list").html(listItems); // 리스트를 모달창에 뿌리기
-        $("#my-modal").modal("show"); // 모달창 열기
+        $("#scheduleModal").modal("show"); // 모달창 열기
     },
   error: function(xhr, status, error) {
     alert("데이터를 가져오는데 실패했습니다.");
   }
 });
+}
+
+function closeScheduleModal(){
+    $("#scheduleModal").modal("hide");
 }
