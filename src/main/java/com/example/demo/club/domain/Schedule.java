@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -18,12 +19,14 @@ public class Schedule extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_seq")
     private Club club;
-    @Column(name ="schedule_nm")
-    private String scheduleNm;
-    @Column(name ="st_dt")
-    private LocalDateTime stDt;
-    @Column(name ="ed_dt")
-    private LocalDateTime edDt;
+    @Column(name ="title")
+    private String title;
+    @Column(name ="schedule_date")
+    private String scheduleDate;
+    @Column(name ="start_time")
+    private LocalTime startTime;
+    @Column(name ="end_time")
+    private LocalTime endTime;
     @Column(name ="place")
     private String place;
     @Column(name ="content")

@@ -14,9 +14,16 @@ import java.util.List;
 public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     QSchedule schedule = QSchedule.schedule;
-    public List<Schedule> selectScheduleFromClub(Long clubSeq, LocalDateTime stDt, LocalDateTime edDt){
+    public Schedule selectScheduleFromSeq(Long scheduleSeq){
         return queryFactory.selectFrom(schedule)
-                .where(schedule.club.clubSeq.eq(clubSeq).and(schedule.edDt.goe(stDt).and(schedule.stDt.loe(edDt))))
+                .where(schedule.scheduleSeq.eq(scheduleSeq))
+                .fetchOne();
+    }
+    public List<Schedule> selectScheduleFromClub(Long clubSeq, String stDt, String edDt){
+        return queryFactory.selectFrom(schedule)
+                .where(schedule.club.clubSeq.eq(clubSeq)
+                .and(schedule.scheduleDate.between(stDt,edDt)))
+                .orderBy(schedule.startTime.asc())
                 .fetch();
     }
 }

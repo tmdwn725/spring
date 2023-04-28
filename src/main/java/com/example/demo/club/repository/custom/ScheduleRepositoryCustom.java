@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleRepositoryCustom{
-    List<Schedule> selectScheduleFromClub(Long clubSeq, LocalDateTime stDt, LocalDateTime edDt);
+    Schedule selectScheduleFromSeq(Long scheduleSeq);
+    List<Schedule> selectScheduleFromClub(Long clubSeq, String stDt, String edDt);
 }

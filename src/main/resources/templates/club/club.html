@@ -51,32 +51,10 @@
  <script type="text/javascript" th:src="@{/js/club/club.js}"></script>
 
  <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
  <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-      var calendarEl = document.getElementById('calendar');
-
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
-        },
-        selectable: true,
-        select: function(info) {
-          loadEvents(info.start);
-        },
-        loading: function(bool) {
-          $('#loading').toggle(bool);
-        }
-      });
-
-      calendar.render();
-    });
-</script>
 <style>
 
   body {
@@ -158,6 +136,7 @@
   <main id="main" class="main">
     <section class="section dashboard">
       <div class="row">
+        <input type="hidden" id="clubSeq" th:value="${club.clubSeq}" />
         <!-- Left side columns -->
         <div class="col-lg-8">
           <div class="row">

@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.club.dto.ClubDTO;
 import com.example.demo.club.dto.MemberDTO;
@@ -23,7 +20,9 @@ import com.example.demo.club.dto.MemberDTO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/club")
@@ -63,10 +62,30 @@ public class ClubController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/getClubSchedule/{date}")
-	public ResponseEntity<List<ScheduleDTO>> getClubSchedule(@PathVariable(required = false) String date, Model model){
-		LocalDateTime stDt = LocalDateTime.parse(date + "T00:00:00");
-		List<ScheduleDTO> list = scheduleService.findClubScheduleList(1L,stDt,stDt.plusDays(1));
-		return new ResponseEntity<>(list, HttpStatus.OK);
+	@GetMapping("/getClubSchedule")
+    @ResponseBody
+	public Map<String, Object> getClubSchedule(ScheduleDTO schedule, Model model) {
+		Map<String, Object> result = new HashMap<>();
+		List<ScheduleDTO> list = scheduleService.findClubScheduleList(schedule);
+		result.put("scheduleList", list);
+		result.put("date", schedule.getScheduleDate());
+		return result;
 	}
+
+	@GetMapping("/setSchedule")
+	@ResponseBody
+	public Map<String, Object> setSchedule(ScheduleDTO schedule) {
+		Map<String, Object> result = new HashMap<>();
+		ScheduleDTO Schedule = scheduleService.findClubSchedule(schedule);
+		result.put("schedule", Schedule);
+		return result;
+	}
+
+	@PostMapping("/addSchedule")
+	public ResponseEntity<Void> addSchedule(Model model, ScheduleDTO schedule, ClubDTO club){
+		MemberDTO member = memberService.selectMemberById(SecurityContextHolder.getContext().getAuthentication().getName());
+		scheduleService.createSchedule(schedule, club);
+		return ResponseEntity.ok().build();
+	}
+
 }

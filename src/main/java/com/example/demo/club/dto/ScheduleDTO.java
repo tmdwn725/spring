@@ -1,18 +1,23 @@
 package com.example.demo.club.dto;
 
-import com.example.demo.club.domain.Club;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
+@Data
 public class ScheduleDTO {
     private long scheduleSeq;
-    private String scheduleNm;
-    private LocalDateTime stDt;
-    private LocalDateTime edDt;
+    private long clubSeq;
+    private String title;
+    private String scheduleDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String stTime;
+    private String edTime;
+    private String stDt;
+    private String edDt;
     private String place;
     private String content;
+    private String date;
 }
