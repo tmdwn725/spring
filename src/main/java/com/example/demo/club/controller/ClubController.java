@@ -88,4 +88,16 @@ public class ClubController {
 		return ResponseEntity.ok().build();
 	}
 
+	@PostMapping("/modSchedule")
+	public ResponseEntity<Void> modifySchedule(Model model, ScheduleDTO schedule){
+		scheduleService.modifySchedule(schedule);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/delSchedule")
+	public ResponseEntity<Void> removeSchedule(Model model, ScheduleDTO schedule){
+		scheduleService.removeSchedule(schedule);
+		return ResponseEntity.ok().build();
+	}
+
 }

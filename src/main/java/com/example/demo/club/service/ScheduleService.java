@@ -54,4 +54,25 @@ public class ScheduleService {
 
         scheduleRepository.save(schedule);
     }
+
+    @Transactional
+    public void modifySchedule(ScheduleDTO scheduleDTO) {
+        // 일정 생성
+        Schedule schedule = new Schedule();
+        schedule.setTitle(scheduleDTO.getTitle());
+        schedule.setPlace(scheduleDTO.getPlace());
+        schedule.setContent(scheduleDTO.getContent());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        schedule.setStartTime(LocalTime.parse(scheduleDTO.getStTime(), formatter));
+        schedule.setEndTime(LocalTime.parse(scheduleDTO.getEdTime(), formatter));
+        scheduleRepository.updateSchedule(schedule);
+    }
+
+    @Transactional
+    public void removeSchedule(ScheduleDTO scheduleDTO) {
+        // 일정 삭제
+        Schedule schedule = new Schedule();
+        schedule.setScheduleSeq(scheduleDTO.getScheduleSeq());
+        scheduleRepository.delete(schedule);
+    }
 }

@@ -1,11 +1,10 @@
 package com.example.demo.club.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
+/**
+ * jwt 토큰 관련 DTO
+ */
 @Data
 public class TokenDTO {
     private String accessToken;

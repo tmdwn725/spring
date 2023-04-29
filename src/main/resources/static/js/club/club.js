@@ -160,23 +160,86 @@ function scheduleCheck(obj){
    });
 
    $.ajax({
-           type: "GET",
-           url: "/club/setSchedule",
-           data: {
-               scheduleSeq : obj.value
-           },
-           dataType: "json",
-           success: function (result) {
-               $("#title").val(result.schedule.title);
-               $("#place").val(result.schedule.place);
-               $("#content").val(result.schedule.content);
-               $("#start-time").val(result.schedule.startTime.substring(0,5));
-               $("#end-Time").val(result.schedule.endTime.substring(0,5));
-           },
-           error: function (xhr, status, error) {
-               // 데이터 전달 실패에 대한 처리
-               console.error(error);
-           }
-       });
+       type: "GET",
+       url: "/club/setSchedule",
+       data: {
+           scheduleSeq : obj.value
+       },
+       dataType: "json",
+       success: function (result) {
+           $("#title").val(result.schedule.title);
+           $("#place").val(result.schedule.place);
+           $("#content").val(result.schedule.content);
+           $("#start-time").val(result.schedule.startTime.substring(0,5));
+           $("#end-Time").val(result.schedule.endTime.substring(0,5));
+       },
+       error: function (xhr, status, error) {
+           // 데이터 전달 실패에 대한 처리
+           console.error(error);
+       }
+   });
+}
 
+function modSchedule(){
+    var scheduleSeq = $("input:checked[name=scheduleSeq]");
+    var title = $("#title").val();
+    var place = $("#place").val();
+    var stTime = $("#start-time").val();
+    var edTime = $("#end-time").val();
+    var content = $("#content").val();
+
+    // Ajax를 사용하여 컨트롤러로 데이터 전달
+    $.ajax({
+        type: "POST",
+        url: "/club/modSchedule",
+        data: {
+            scheduleSeq : scheduleSeq,
+            title : title,
+            place : place,
+            stTime: stTime,
+            edTime: edTime,
+            content: content
+        },
+        timeout: 5000, // 타임아웃 시간 설정 (5초)
+        success: function (result) {
+            $("#title").val("");
+            $("#place").val("");
+            $("#content").val("");
+            $("#start-time").val("00:00");
+            $("#end-time").val("23:59");
+            // 성공적으로 데이터를 전달한 경우에 대한 처리
+           window.location.replace(window.location.href); // 현재 페이지를 리다이렉트합니다.
+        },
+        error: function (xhr, status, error) {
+            // 데이터 전달 실패에 대한 처리
+            console.error(error);
+        }
+    });
+}
+
+function delSchedule(){
+    var scheduleSeq = $("input:checked[name=scheduleSeq]");
+
+    // Ajax를 사용하여 컨트롤러로 데이터 전달
+    $.ajax({
+        type: "POST",
+        url: "/club/delSchedule",
+        data: {
+            scheduleSeq : scheduleSeq
+        },
+        timeout: 5000, // 타임아웃 시간 설정 (5초)
+        success: function (result) {
+            $("#title").val("");
+            $("#place").val("");
+            $("#content").val("");
+            $("#start-time").val("00:00");
+            $("#end-time").val("23:59");
+            // 성공적으로 데이터를 전달한 경우에 대한 처리
+           window.location.replace(window.location.href); // 현재 페이지를 리다이렉트합니다.
+        },
+        error: function (xhr, status, error) {
+            // 데이터 전달 실패에 대한 처리
+            console.error(error);
+        }
+    });
 }

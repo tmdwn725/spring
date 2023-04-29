@@ -9,4 +9,5 @@ import java.util.List;
 public interface ScheduleRepositoryCustom{
     Schedule selectScheduleFromSeq(Long scheduleSeq);
     List<Schedule> selectScheduleFromClub(Long clubSeq, String stDt, String edDt);
+    void updateSchedule(Schedule schedule);
 }

@@ -26,4 +26,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
                 .orderBy(schedule.startTime.asc())
                 .fetch();
     }
+    public void updateSchedule(Schedule shdl){
+        queryFactory.update(schedule)
+                .set(schedule.title, shdl.getTitle())
+                .set(schedule.place, shdl.getPlace())
+                .set(schedule.content, shdl.getContent())
+                .set(schedule.startTime, shdl.getStartTime())
+                .set(schedule.endTime, shdl.getEndTime())
+                .where(schedule.scheduleSeq.eq(shdl.getScheduleSeq()));
+    }
 }
