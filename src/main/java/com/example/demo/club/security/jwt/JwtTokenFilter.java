@@ -36,20 +36,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
             }
         }
-
         try {
             Authentication auth = null;
             String memberId = null;
-            if(!jwtTokenProvider.getBlackListCheck(token)){
-                if (jwtTokenProvider.validateToken(token,true)){ // access 토큰 인증 실패
+            if(!jwtTokenProvider.getBlackListCheck(token)){ // access 토큰 BlackList 체크
+                if (jwtTokenProvider.validateToken(token,true)){ // access 토큰 인증
                     auth = jwtTokenProvider.getAuthentication(token);
+                    // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 } else if( jwtTokenProvider.validateToken(refreshToken,false)){  // refresh 토큰 인증
                     memberId = jwtTokenProvider.getSubjectFromRefreshToken(refreshToken);
                     token = jwtTokenProvider.doGenerateAccessToken(memberId);
                     auth = jwtTokenProvider.getAuthentication(token);
+                    // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-                // 정상 토큰이면 토큰을 통해 생성한 Authentication 객체를 SecurityContext에 저장
-                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (CustomException e) {
             SecurityContextHolder.clearContext();

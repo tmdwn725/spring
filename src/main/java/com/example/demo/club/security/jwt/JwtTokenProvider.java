@@ -171,6 +171,10 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public boolean getBlackListCheck(String token){
+        return redisUtil.hasKeyBlackList(token);
+    }
+
     // JWT 토큰에서 expire time 값을 가져오는 메소드
     public long getExpirationDateFromToken(String token) {
         try {
@@ -192,11 +196,6 @@ public class JwtTokenProvider {
     // DB에서 JWT refreshToken 발급
     public String reGenerateRefreshToken(String memberId){
         try {
-            /*String refreshToken = redisUtil.get(memberId);
-            // Refresh Token 검증
-            if (!validateToken(refreshToken,false) {
-                throw new CustomException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
-            }*/
             // 토큰 생성
             String refreshToken = doGenerateRefreshToken(memberId);
             TokenDTO tokenDto = new TokenDTO(doGenerateAccessToken(memberId), refreshToken);
@@ -220,9 +219,5 @@ public class JwtTokenProvider {
     public String getRefreshToken(String memberId) {
         String refreshToken = redisUtil.getValues(memberId);
         return refreshToken;
-    }
-
-    public boolean getBlackListCheck(String token){
-        return redisUtil.hasKeyBlackList(token);
     }
 }

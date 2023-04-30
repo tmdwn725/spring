@@ -69,7 +69,10 @@ public class MemberService {
         MemberDTO dto = modelMapper.map(memberRepository.findById(memberSeq).orElse(null), MemberDTO.class);
         return dto;
     }
-
+    
+    /**  
+     * 로그인
+     */
     public ResponseEntity<TokenDTO> signIn(MemberDTO member) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -90,7 +93,10 @@ public class MemberService {
             throw new CustomException("입력하신 정보와 일치한 사용자가 없습니다", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-
+    
+    /**
+     * 로그아웃
+     */
     public void signout(HttpServletRequest request, String memberId) {
         String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request, "accessToken");
         if (!jwtTokenProvider.validateToken(accessToken,true)){
@@ -108,8 +114,7 @@ public class MemberService {
 
         // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
         long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
-        redisUtil.setBlackList(accessToken,"logout");
-        //return "로그아웃";
+        redisUtil.setBlackList(accessToken,"logout", expiration);
     }
 
 }
