@@ -68,7 +68,6 @@ public class ClubController {
 		Map<String, Object> result = new HashMap<>();
 		List<ScheduleDTO> list = scheduleService.findClubScheduleList(schedule);
 		result.put("scheduleList", list);
-		result.put("date", schedule.getScheduleDate());
 		return result;
 	}
 

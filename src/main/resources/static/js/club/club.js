@@ -68,44 +68,49 @@ function loadEvents(date) {
 
   // 날짜 문자열 생성 (YYYY-MM-DD)
   var dateString = year + "-" + month + "-" + day;
+  getScheduleList(clubSeq, dateString);
 
-  // 서버에 일정 조회 요청
-  $.ajax({
-    type: "GET",
-    url: "/club/getClubSchedule",
-    data: {
-        clubSeq : clubSeq,
-        stDt: dateString,
-        edDt: dateString
-    },
-    dataType: "json",
-    success: function(data) {
-        $("#schedule-date").html(data.date);
-        $("#date").val(data.date);
-        str = ""
-        data.scheduleList.forEach(function(list) {
-            str += "<div class='activity-item d-flex'>"
-            str += "    <div class='activite-label'><input type='checkbox' name='scheduleSeq' style='width:15px; margin:2px;' value='" + list.scheduleSeq + "' onclick='scheduleCheck(this)'></div>"
-            str += "    <div class='activite-label'>" + list.startTime.substring(0,5) + " ~ " + list.endTime.substring(0,5) +  "</div>"
-            str += "    <i class='bi bi-circle-fill activity-badge text-success align-self-start'/>"
-            str += "    <div class='activity-content' style='width:120px;'>" + list.title + "</div>"
-            str += "    <i class='bi bi-circle-fill activity-badge text-primary align-self-start'/>"
-            str += "    <div class='activity-content' style='width:120px;'> 장소 : " + list.place + "</div>"
-            str += "</div>"
-        });
-        $("#title").val("");
-        $("#place").val("");
-        $("#content").val("");
-        $("#start-time").val("00:00");
-        $("#end-time").val("23:59");
-        $("#event-details").html(str); // 리스트를 모달창에 뿌리기*/
-        $("#schedule-modal").modal("show"); // 모달창 열기
-    },
-  error: function(xhr, status, error) {
-    alert("데이터를 가져오는데 실패했습니다.");
-  }
-});
 }
+
+function getScheduleList(clubSeq, dateString){
+    // 서버에 일정 조회 요청
+    $.ajax({
+        type: "GET",
+        url: "/club/getClubSchedule",
+        data: {
+            clubSeq : clubSeq,
+            stDt: dateString,
+            edDt: dateString
+        },
+        dataType: "json",
+        success: function(data) {
+            $("#schedule-date").html(dateString);
+            $("#date").val(dateString);
+            str = ""
+            data.scheduleList.forEach(function(list) {
+                str += "<div class='activity-item d-flex'>"
+                str += "    <div class='activite-label'><input type='checkbox' name='scheduleSeq' style='width:15px; margin:2px;' value='" + list.scheduleSeq + "' onclick='scheduleCheck(this)'></div>"
+                str += "    <div class='activite-label'>" + list.startTime.substring(0,5) + " ~ " + list.endTime.substring(0,5) +  "</div>"
+                str += "    <i class='bi bi-circle-fill activity-badge text-success align-self-start'/>"
+                str += "    <div class='activity-content' style='width:120px;'>" + list.title + "</div>"
+                str += "    <i class='bi bi-circle-fill activity-badge text-primary align-self-start'/>"
+                str += "    <div class='activity-content' style='width:120px;'> 장소 : " + list.place + "</div>"
+                str += "</div>"
+            });
+            $("#title").val("");
+            $("#place").val("");
+            $("#content").val("");
+            $("#start-time").val("00:00");
+            $("#end-time").val("23:59");
+            $("#event-details").html(str); // 리스트를 모달창에 뿌리기*/
+            $("#schedule-modal").modal("show"); // 모달창 열기
+        },
+        error: function(xhr, status, error) {
+        alert("데이터를 가져오는데 실패했습니다.");
+        }
+    });
+}
+
 
 // 일정 추가
 function addSchedule(){
@@ -138,7 +143,7 @@ function addSchedule(){
             $("#start-time").val("00:00");
             $("#end-time").val("23:59");
             // 성공적으로 데이터를 전달한 경우에 대한 처리
-           window.location.replace(window.location.href); // 현재 페이지를 리다이렉트합니다.
+            getScheduleList(clubSeq, scheduleDate);
         },
         error: function (xhr, status, error) {
             // 데이터 전달 실패에 대한 처리
@@ -181,12 +186,14 @@ function scheduleCheck(obj){
 }
 
 function modSchedule(){
-    var scheduleSeq = $("input:checked[name=scheduleSeq]");
+    const scheduleSeq =  $("input[type=checkbox][name=scheduleSeq]:checked").val();
     var title = $("#title").val();
     var place = $("#place").val();
     var stTime = $("#start-time").val();
     var edTime = $("#end-time").val();
     var content = $("#content").val();
+    var scheduleDate = $("#date").val();
+    var clubSeq = $("#clubSeq").val();
 
     // Ajax를 사용하여 컨트롤러로 데이터 전달
     $.ajax({
@@ -201,14 +208,14 @@ function modSchedule(){
             content: content
         },
         timeout: 5000, // 타임아웃 시간 설정 (5초)
-        success: function (result) {
+        success: function () {
             $("#title").val("");
             $("#place").val("");
             $("#content").val("");
             $("#start-time").val("00:00");
             $("#end-time").val("23:59");
             // 성공적으로 데이터를 전달한 경우에 대한 처리
-           window.location.replace(window.location.href); // 현재 페이지를 리다이렉트합니다.
+            getScheduleList(clubSeq, scheduleDate);
         },
         error: function (xhr, status, error) {
             // 데이터 전달 실패에 대한 처리
@@ -218,7 +225,7 @@ function modSchedule(){
 }
 
 function delSchedule(){
-    var scheduleSeq = $("input:checked[name=scheduleSeq]");
+    const scheduleSeq = $("input[type=checkbox][name=scheduleSeq]:checked").val();
 
     // Ajax를 사용하여 컨트롤러로 데이터 전달
     $.ajax({
@@ -228,14 +235,14 @@ function delSchedule(){
             scheduleSeq : scheduleSeq
         },
         timeout: 5000, // 타임아웃 시간 설정 (5초)
-        success: function (result) {
+        success: function () {
             $("#title").val("");
             $("#place").val("");
             $("#content").val("");
             $("#start-time").val("00:00");
             $("#end-time").val("23:59");
             // 성공적으로 데이터를 전달한 경우에 대한 처리
-           window.location.replace(window.location.href); // 현재 페이지를 리다이렉트합니다.
+            getScheduleList(clubSeq, scheduleDate);
         },
         error: function (xhr, status, error) {
             // 데이터 전달 실패에 대한 처리

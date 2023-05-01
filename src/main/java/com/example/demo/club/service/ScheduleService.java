@@ -65,6 +65,7 @@ public class ScheduleService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         schedule.setStartTime(LocalTime.parse(scheduleDTO.getStTime(), formatter));
         schedule.setEndTime(LocalTime.parse(scheduleDTO.getEdTime(), formatter));
+        schedule.setScheduleSeq(scheduleDTO.getScheduleSeq());
         scheduleRepository.updateSchedule(schedule);
     }
 

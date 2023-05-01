@@ -33,6 +33,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
                 .set(schedule.content, shdl.getContent())
                 .set(schedule.startTime, shdl.getStartTime())
                 .set(schedule.endTime, shdl.getEndTime())
-                .where(schedule.scheduleSeq.eq(shdl.getScheduleSeq()));
+                .where(schedule.scheduleSeq.eq(shdl.getScheduleSeq()))
+                .execute();
     }
 }
