@@ -2,59 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link th:href="@{/images/main/favicon.png}" rel="icon">
-  <link th:href="@{/images/main/apple-touch-icon.png}" rel="apple-touch-icon">
-  <link th:href="@{/fullcalendar-4.4.0/examples/daygrid-views.html}" rel="import">
+    <!-- Favicons -->
+    <link th:href="@{/images/main/favicon.png}" rel="icon">
+    <link th:href="@{/images/main/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/fullcalendar-4.4.0/examples/daygrid-views.html}" rel="import">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <!-- <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" /> -->
-  <link th:href="@{/css/main/vendor/bootstrap/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/boxicons/boxicons.min.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/quill/quill.snow.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/quill/quill.bubble.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/remixicon/remixicon.css}" rel="stylesheet">
-  <link th:href="@{/css/main/vendor/simple-datatables/style.css}" rel="stylesheet">
-  <!--<link th:href="@{/css/common/side.css}" rel="stylesheet"> -->
+    <!-- Vendor CSS Files -->
+    <!-- <link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" /> -->
+    <link th:href="@{/css/main/vendor/bootstrap/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/boxicons/boxicons.min.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/quill/quill.snow.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/quill/quill.bubble.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/remixicon/remixicon.css}" rel="stylesheet">
+    <link th:href="@{/css/main/vendor/simple-datatables/style.css}" rel="stylesheet">
+    <!--<link th:href="@{/css/common/side.css}" rel="stylesheet"> -->
 
-  <!-- Template Main CSS File -->
-  <link th:href="@{/css/main/style.css}" rel="stylesheet">
-  <!-- calendar Template -->
-  
-  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link th:href="@{/css/main/style.css}" rel="stylesheet">
+    <!-- calendar Template -->
 
- <!-- Calendar File -->
- <link th:href="@{/css/calendar/core/main.css}" rel="stylesheet">
- <link th:href="@{/css/calendar/daygrid/main.css}" rel="stylesheet">
- <link th:href="@{/css/calendar/list/main.css}" rel="stylesheet">
- 
- <link th:href="@{/css/common/side.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" rel="stylesheet">
 
- <script type="text/javascript" th:src="@{/js/calendar/core/main.js}"></script>
- <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
- <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
- <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
- <script type="text/javascript" th:src="@{/js/club/club.js}"></script>
+    <!-- Calendar File -->
+    <link th:href="@{/css/calendar/core/main.css}" rel="stylesheet">
+    <link th:href="@{/css/calendar/daygrid/main.css}" rel="stylesheet">
+    <link th:href="@{/css/calendar/list/main.css}" rel="stylesheet">
 
- <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link th:href="@{/css/common/side.css}" rel="stylesheet">
 
- <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/calendar/core/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/calendar/interaction/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/calendar/daygrid/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/calendar/list/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/club/club.js}"></script>
 
+    <script type="text/javascript" th:src="@{/js/common/side.js}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 <style>
 
   body {
