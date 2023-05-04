@@ -24,17 +24,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(request);
+        String token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
+        String refreshToken = null;
         String blackToken = null;
 
-        String refreshToken = null;
-        //if (token == null && "/member/main".equals(request.getRequestURI())){
-        if (token == null && !"/login".equals(request.getRequestURI()) && !"/logout".equals(request.getRequestURI())){
-            token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
-            if(token != null){
-                //memberId = jwtTokenProvider.getSubjectFromToken(token);
-                refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
-            }
+        if(token != null){
+            refreshToken = jwtTokenProvider.getJwtTokenFromCookie(request,"refreshToken");
         }
         try {
             Authentication auth = null;
