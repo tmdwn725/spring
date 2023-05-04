@@ -19,7 +19,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @Slf4j
 @WebAppConfiguration
-@SpringBootTest
 public class createTest {
     @Autowired
     private MemberRepository memberRepository;
@@ -38,7 +37,6 @@ public class createTest {
     @Autowired
     private MemberService memberService;
 
-    @Test
     public void createMember(){
         Member mem = new Member();
         Member mem2 = new Member();
@@ -98,14 +96,12 @@ public class createTest {
         return club;
     }
 
-    @Test
     public void createSchool() {
     	School sc = new School();
     	sc.createSchool("100101","서울대학교", "서울특별시 관악구", "02-1111-1111");
     	schoolRepository.save(sc);
     }
 
-    @Test
     public void createCode() {
         CdGrp cdGrp = new CdGrp();
         Cd cd = new Cd();

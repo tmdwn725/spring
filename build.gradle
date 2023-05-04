@@ -62,6 +62,8 @@ dependencies {
 	// 캐시 설정
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 	/**
 	 * 테스트 lombok 추가
 	 */

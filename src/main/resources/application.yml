@@ -1,6 +1,17 @@
 server:
  port: 8080
 spring:
+ security:
+  oauth2:
+   client:
+    registration:
+     naver:
+      client-id: XDGBtoL9xSpef9ollyL5
+      client-secret: yoPVki69hY
+      redirect-uri: http://localhost:8080/login/oauth/code/naver
+      authorization-grant-type: authorization_code
+      client-name: Naver
+      scope : name, email
  datasource:
   driverClassName: org.mariadb.jdbc.Driver
   url: jdbc:mariadb://3.112.49.158:3306/club?useUnicode=true&characterEncoding=utf-8

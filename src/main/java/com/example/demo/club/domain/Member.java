@@ -47,5 +47,4 @@ public class Member extends BaseEntity {
         this.authority = authority;
         this.role = role;
     }
-
 }

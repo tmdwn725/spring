@@ -19,4 +19,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 			.fetchOne();
 	}
 
+
+
 }

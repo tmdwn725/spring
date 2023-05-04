@@ -68,4 +68,9 @@ public class LoginController {
 		memberService.createMember(member);
 	}
 
+	@GetMapping("/oauth")
+	public String oauth() {
+		return "member/oauth";
+	}
+
 }

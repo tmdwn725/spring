@@ -62,22 +62,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.httpBasic().disable()
                 .csrf().disable()
+                .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .authorizeRequests()
-                // 인증없이 접근을 허용
-                .antMatchers("/login").permitAll()
-                .antMatchers("/logout").permitAll()
-                // 요청들에 대한 접근제한을 설정
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling()
-                // 권한 부족 예외에 대한 처리를 위한 핸들러를 설정하는 메서드
-                .accessDeniedHandler(jwtAccessDeniedHandler)
-                // 인증 실패 예외에 대한 처리를 위한 핸들러를 설정하는 메서드
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()// Apply JWT
-                .apply(new JwtSecurityConfig(jwtTokenProvider));  // JwtSecurityConfig 클래스에서 정의한 JWT 인증 방식 설정을 HttpSecurity 객체에 적용
+                .antMatchers("/oauth").permitAll()
+                .anyRequest().authenticated();
+
 
         return http.build();
     }
