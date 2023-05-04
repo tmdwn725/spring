@@ -28,7 +28,6 @@ import java.util.Map;
 @RequestMapping("/club")
 @RequiredArgsConstructor
 public class ClubController {
-
 	private final ClubService clubService;
 	private final ClubInfoService clubInfoService;
 	private final MemberService memberService;
@@ -36,7 +35,6 @@ public class ClubController {
 	private final CdService cdService;
 	private final JwtTokenProvider jwtTokenProvider;
 
-	
 	@GetMapping("/myClub")
 	public String getClub(HttpServletRequest request, Model model, ClubDTO cDTO) {
 		ClubDTO club = clubService.selectClub(cDTO.getClubSeq());

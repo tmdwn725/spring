@@ -68,6 +68,7 @@ public class SecurityConfig {
                 // 인증없이 접근을 허용
                 .antMatchers("/login").permitAll()
                 .antMatchers("/logout").permitAll()
+                .antMatchers("/refresh").permitAll()
                 // 요청들에 대한 접근제한을 설정
                 .anyRequest().authenticated()
                 .and()

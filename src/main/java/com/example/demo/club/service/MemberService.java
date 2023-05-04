@@ -2,6 +2,7 @@ package com.example.demo.club.service;
 
 import java.util.List;
 
+import com.example.demo.club.common.CookieUtil;
 import com.example.demo.club.common.RedisUtil;
 import com.example.demo.club.dto.TokenDTO;
 import com.example.demo.club.exception.CustomException;
@@ -29,6 +30,7 @@ import com.example.demo.club.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +42,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final RedisUtil redisUtil;
+    private final CookieUtil cookieUtil;
 
     /** 생성 **/
     /* 회원 생성 */
@@ -73,7 +76,7 @@ public class MemberService {
     /**  
      * 로그인
      */
-    public ResponseEntity<TokenDTO> signIn(MemberDTO member) {
+    public ResponseEntity<TokenDTO> signIn(MemberDTO member, HttpServletRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -82,13 +85,17 @@ public class MemberService {
                     )
             );
 
+            String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request, "accessToken");
+            //  이전 블랙리스트 삭제
+            if (redisUtil.hasKeyBlackList(accessToken)){
+                // Refresh Token을 삭제
+                redisUtil.deleteBlackList(accessToken);
+            }
+
             TokenDTO tokenDto = jwtTokenProvider.generateToken(authentication);
             redisUtil.setValues(authentication.getName(), tokenDto.getRefreshToken(), tokenDto.getExpireTime());
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccessToken());
-
-            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(tokenDto, HttpStatus.OK);
         } catch (AuthenticationException e) {
             throw new CustomException("입력하신 정보와 일치한 사용자가 없습니다", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -97,24 +104,19 @@ public class MemberService {
     /**
      * 로그아웃
      */
-    public void signout(HttpServletRequest request, String memberId) {
+    public void signout(HttpServletRequest request, HttpServletResponse response, String memberId) {
         String accessToken = jwtTokenProvider.getJwtTokenFromCookie(request, "accessToken");
-        if (!jwtTokenProvider.validateToken(accessToken,true)){
-            throw new IllegalArgumentException("로그아웃 : 유효하지 않은 토큰입니다.");
-        }
-
-        // Access Token에서 MemberId를 가져온다
-        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-
-        // Redis에서 해당 User email로 저장된 Refresh Token 이 있는지 여부를 확인 후에 있을 경우 삭제를 한다.
-        if (redisUtil.getValues(authentication.getName())!=null){
-            // Refresh Token을 삭제
-            redisUtil.deleteValues(authentication.getName());
-        }
-
         // 해당 Access Token 유효시간을 가지고 와서 BlackList에 저장하기
         long expiration = jwtTokenProvider.getExpirationDateFromToken(accessToken);
-        redisUtil.setBlackList(accessToken,"logout", expiration);
-    }
+        redisUtil.setBlackList(accessToken,"logout");
 
+        // Redis에서 해당 User email로 저장된 Refresh Token 이 있는지 여부를 확인 후에 있을 경우 삭제를 한다.
+        if (redisUtil.getValues(memberId)!=null){
+            // Refresh Token을 삭제
+            redisUtil.deleteValues(memberId);
+        }
+
+        cookieUtil.expiringCookie(request,response,"refreshToken");
+
+    }
 }

@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -94,9 +95,10 @@ public class JwtTokenProvider {
      * @return
      */
     public String getJwtTokenFromCookie(HttpServletRequest request, String type) {
-        String token = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals(type))
-                .findFirst() .map(Cookie::getValue)
+        String token = Optional.ofNullable(request.getCookies())
+                .map(Arrays::stream)
+                .flatMap(stream -> stream.filter(c -> c.getName().equals(type)).findFirst())
+                .map(Cookie::getValue)
                 .orElse(null);
         return token;
     }

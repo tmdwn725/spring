@@ -16,7 +16,7 @@ var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
 
 var socket = new SockJS('/ws-stomp');
-var stompClient = Stomp.over(socket);
+const stompClient = Stomp.over(socket);
 stompClient.connect({}, onConnected, onError);
 //var stompClient = null;
 var memberSeq = null;

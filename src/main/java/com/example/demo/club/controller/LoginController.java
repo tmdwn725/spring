@@ -8,6 +8,7 @@ import com.example.demo.club.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,11 +44,15 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(@Validated MemberDTO member, HttpServletResponse response, ModelMap model) throws Exception {
+	public String login(@Validated MemberDTO member, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		try{
-			ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member);
-			Cookie cookie = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
-			response.addCookie(cookie);
+			ResponseEntity<TokenDTO> tokenDtoResponseEntity = memberService.signIn(member,request);
+
+			Cookie accessToken = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
+			Cookie refreshToken  = cookieUtil.createCookie("refreshToken",tokenDtoResponseEntity.getBody().getRefreshToken());
+			response.addCookie(accessToken);
+			response.addCookie(refreshToken );
+
 		}catch (CustomException e){
 			model.addAttribute("message", e.getMessage());
 			return "member/login";
@@ -56,9 +61,9 @@ public class LoginController {
 	}
 
 	@GetMapping("/logout/{memberId}")
-	public String logout(@RequestParam(value = "fail", required = false) String memberId, HttpServletRequest request) {
-		//return ResponseEntity.ok(memberService.signout(request, memberId));
-		memberService.signout(request, memberId);
+	public String logout(@RequestParam(value = "fail", required = false) String memberId, HttpServletRequest request, HttpServletResponse response) {
+		memberId = SecurityContextHolder.getContext().getAuthentication().getName();
+		memberService.signout(request, response, memberId);
 		return "redirect:/login";
 	}
 

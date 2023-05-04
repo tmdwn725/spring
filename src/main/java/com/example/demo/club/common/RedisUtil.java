@@ -39,9 +39,9 @@ public class RedisUtil {
     /**
      *  key, value, expire time(minutes)을 매개변수로 받아 Redis BlackList에 저장
      */
-    public void setBlackList(String key, Object o, long minutes) {
+    public void setBlackList(String key, Object o) {
         redisBlackListTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(o.getClass()));
-        redisBlackListTemplate.opsForValue().set(key, o, minutes, TimeUnit.MINUTES);
+        redisBlackListTemplate.opsForValue().set(key, o);
     }
     /**
      *  key를 매개변수로 받아 Redis BlackList에 해당하는 값이 존재하는지 확인
