@@ -51,7 +51,7 @@ public class LoginController {
 			Cookie accessToken = cookieUtil.createCookie("accessToken",tokenDtoResponseEntity.getBody().getAccessToken());
 			Cookie refreshToken  = cookieUtil.createCookie("refreshToken",tokenDtoResponseEntity.getBody().getRefreshToken());
 			response.addCookie(accessToken);
-			response.addCookie(refreshToken );
+			response.addCookie(refreshToken);
 
 		}catch (CustomException e){
 			model.addAttribute("message", e.getMessage());
