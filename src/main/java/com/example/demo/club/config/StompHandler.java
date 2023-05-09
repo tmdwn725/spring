@@ -29,7 +29,7 @@ public class StompHandler implements ChannelInterceptor {
         if(accessor.getCommand() == StompCommand.CONNECT) {
             String token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
             if (!jwtTokenProvider.validateToken(token, true)){
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException("인증");
             }
         }
         return message;
