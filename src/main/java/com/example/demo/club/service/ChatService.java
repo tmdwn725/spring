@@ -26,28 +26,11 @@ public class ChatService {
     //private final ModelMapper modelMapper;
 
     // roomID 기준으로 채팅방 찾기
-     /*public ChatRoomDTO findRoomById(String roomId){
+    public ChatRoomDTO findRoomById(String roomId){
         return ChatRoomMap.getInstance().getChatRooms().get(roomId);
     }
 
-    // 채팅방 인원+1
-    public void plusUserCnt(String roomId,String senderId,String sender){
-       log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
 
-        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
-        room.setChatRoomSeq(chatRoomSeq);
-        room.setRoomName(chatRoom.getClub().getClubNm());
-        room.setUserCount(room.getUserCount()+1);
-        room.getUserList().put(senderId, sender);
-
-
-    }
-
-    // 채팅방 인원-1
-    public void minusUserCnt(String roomId){
-        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
-        room.setUserCount(room.getUserCount()-1);
-    }
 
     // maxUserCnt 에 따른 채팅방 입장 여부
     public boolean chkRoomUserCnt(String roomId){
@@ -57,8 +40,23 @@ public class ChatService {
             return false;
         }
         return true;
-    }*/
+    }
 
+    // 채팅방 인원+1
+    public void plusUserCnt(String roomId,String senderId,String sender){
+        log.info("cnt {}",ChatRoomMap.getInstance().getChatRooms().get(roomId).getUserCount());
+        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+        //room.setChatRoomSeq(roomId);
+        //room.setRoomName(chatRoom.getClub().getClubNm());
+        room.setUserCount(room.getUserCount()+1);
+        room.getUserList().put(senderId, sender);
+    }
+
+    // 채팅방 인원-1
+    public void minusUserCnt(String roomId){
+        ChatRoomDTO room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+        room.setUserCount(room.getUserCount()-1);
+    }
     public List<ChatDTO> findChatList(Long clubSeq) {
         List<ChatDTO> selectChatList = chatRepository.selectChatListByClubSeq(clubSeq);
         return  selectChatList;
@@ -74,7 +72,7 @@ public class ChatService {
         chat.setClubInfo(clubInfo);
         chatRepository.save(chat);
     }
-/*
+
     public ArrayList<String> getUserList(Map<String, ChatRoomDTO> chatRoomMap, String roomId){
         ArrayList<String> list = new ArrayList<>();
 
@@ -84,6 +82,6 @@ public class ChatService {
         // value 값만 뽑아내서 list 에 저장 후 reutrn
         room.getUserList().forEach((key, value) -> list.add((String) value));
         return list;
-    }*/
+    }
 
 }

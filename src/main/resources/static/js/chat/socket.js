@@ -53,7 +53,6 @@ $(document).ready(function(){
 });
 
 function onConnected() {
-
     // sub 할 url => /sub/chat/room/clubSeq 로 구독한다
     stompClient.subscribe('/sub/chat/room/' + clubSeq, onMessageReceived);
 
@@ -93,9 +92,9 @@ function isDuplicateName() {
 // 유저 리스트 받기
 // ajax 로 유저 리스를 받으며 클라이언트가 입장/퇴장 했다는 문구가 나왔을 때마다 실행된다.
 function getUserList() {
-/*
-    const $list = $("#list");
 
+    const $list = $("#list");
+/*
     $.ajax({
         type: "GET",
         url: "/chat/userlist",
@@ -105,10 +104,10 @@ function getUserList() {
         success: function (data) {
             var users = "";
             for (let i = 0; i < data.length; i++) {
-                //console.log("data[i] : "+data[i]);
+                console.log("data[i] : "+data[i]);
                 users += "<li class='dropdown-item'>" + data[i] + "</li>"
             }
-            $list.html(users);
+            $memberlist.html(users);
         }
     })
     */

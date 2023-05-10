@@ -24,14 +24,14 @@ public class StompHandler implements ChannelInterceptor {
     // websocket을 통해 들어온 요청이 처리 되기전 실행된다.
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        /*HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         if(accessor.getCommand() == StompCommand.CONNECT) {
             String token = jwtTokenProvider.getJwtTokenFromCookie(request,"accessToken");
             if (!jwtTokenProvider.validateToken(token, true)){
                 throw new AccessDeniedException("인증");
             }
-        }
+        }*/
         return message;
     }
 }

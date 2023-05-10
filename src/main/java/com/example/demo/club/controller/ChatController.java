@@ -33,8 +33,7 @@ public class ChatController {
 
     @MessageMapping("/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        MemberDTO member = memberService.selectMemberById(userId);
+        MemberDTO member = memberService.selectMemberById(chat.getSenderId());
         // 채팅방 유저+1
         //chatService.plusUserCnt(chat.getChatRoomSeq(), chat.getSenderId(), chat.getSender());
 
@@ -88,9 +87,9 @@ public class ChatController {
 
         return "chatroom";
     }
-/*
+
     // 유저 카운트
-    @GetMapping("/chat/chkUserCnt/{chatRoomSeq}")
+    /*@GetMapping("/chat/chkUserCnt/{chatRoomSeq}")
     @ResponseBody
     public boolean chUserCnt(@PathVariable String chatRoomSeq){
 
@@ -100,8 +99,8 @@ public class ChatController {
     // 채팅에 참여한 유저 리스트 반환
     @GetMapping("/chat/userlist")
     @ResponseBody
-    public ArrayList<String> userList(String chatRoomSeq) {
+    public ArrayList<String> userList(String roomId) {
 
-        return chatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), chatRoomSeq);
+        return chatService.getUserList(ChatRoomMap.getInstance().getChatRooms(), roomId);
     }*/
 }

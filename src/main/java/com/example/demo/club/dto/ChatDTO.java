@@ -28,6 +28,8 @@ public class ChatDTO {
     private Long clubInfoSeq;
     private MessageType type; // 메시지 타입
     private String sender; // 채팅을 보낸 사람
+    private String senderId;
     private Long memberSeq;
     private String messageId;
+
 }

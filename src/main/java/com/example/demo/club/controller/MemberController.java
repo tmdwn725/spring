@@ -1,6 +1,7 @@
 package com.example.demo.club.controller;
 
 import com.example.demo.club.dto.CdDTO;
+import com.example.demo.club.security.jwt.JwtTokenProvider;
 import com.example.demo.club.service.CdService;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -21,6 +22,7 @@ import com.example.demo.club.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -32,6 +34,7 @@ public class MemberController {
     private final ClubService clubService;
     private final ClubInfoService clubInfoService;
     private final CdService cdService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/main")
     public String main(Model model, @AuthenticationPrincipal UserDetails userDetails) {
