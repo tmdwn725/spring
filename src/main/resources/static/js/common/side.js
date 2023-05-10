@@ -1,7 +1,12 @@
 $(function(){
     var duration = 300;
     var $sidebar = $('.sidebar');
+    // Authorization 헤더에서 JWT 토큰 추출
+    const authHeader = response.headers.get('Authorization');
+    const token = authHeader.split(' ')[1];
 
+    // JWT 토큰을 로컬 스토리지에 저장
+    localStorage.setItem('jwtToken', token);
     var $sidebarButton = $sidebar.find('.sidebar-btn').on('click', function(){
         $sidebar.toggleClass('close');
         if($sidebar.hasClass('close')){
