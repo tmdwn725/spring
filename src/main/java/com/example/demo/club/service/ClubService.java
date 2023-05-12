@@ -31,7 +31,6 @@ public class ClubService {
     
     private final ModelMapper modelMapper;
 
-
 	public List<ClubDTO> selectClubList(){
 		List<ClubDTO> selectClubList = ModelMapperUtil.mapAll(clubRepository.findNewClub(), ClubDTO.class);
 		return selectClubList;
